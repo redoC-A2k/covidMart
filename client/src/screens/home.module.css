@@ -1,0 +1,37 @@
+.card{
+    display: inline-block ;
+    width: 100%;
+    border: 3px solid lightblue;
+    position: relative;
+    transition-property: top;
+    transition-duration: 2s;
+}
+
+.btn{
+    color:white !important;
+    background-color: #00BFFF !important;
+    width: 100%;
+}
+
+.btn:hover{
+    color:white !important;
+    background-color: #00BFFF !important;
+}
+
+.animatedRow{
+    animation-name: moverow;
+    animation-duration: 2s;
+}
+
+@keyframes moverow{
+    0%{
+        transform: translateY(50%);
+    }
+    100%{
+        transform: translateY(100%);
+    }
+}
+
+.myrow:hover .animatedRow{
+color: violet;
+}
