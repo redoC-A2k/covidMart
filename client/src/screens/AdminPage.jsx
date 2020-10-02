@@ -1,21 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { TextField, Grid, Input, FormControl, Button } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
 import "../App.css"
-
-const useStyles = makeStyles((theme) => {
-    const marginvar = theme.spacing(2);
-    return {
-        item: {
-            margin: marginvar, marginvar,
-        }
-    }
-})
 
 
 
 function AdminPage() {
-    const classes = useStyles()
+    
     let descriptionComponent = (<input style={{ margin: '0px 16px', width: '98%', marginBottom: '5px' }} onChange={(e) => { setDescriptionval([...descriptionval, e.target.value]) }} type="text" placeholder="Enter description Points"  />)
     const [description, setDescription] = useState([descriptionComponent])
     const [images, setImages] = useState([]);
@@ -67,8 +56,11 @@ function AdminPage() {
     }, [urls])
 
     return (
-        <Grid container direction="column">
+        <div style={{display:"flex",flexDirection:"column"}}>
+            <div>
             <h1 className="item">Add product in website</h1>
+            </div>
+            <div>
             <form>
                 <input
                     className="item"
@@ -119,7 +111,7 @@ function AdminPage() {
                     />
                 </div>
                 <br /><br />
-                <p className={classes.item}>Add description below</p>
+                <p>Add description below</p>
                 <ol>
                     {description.map((desc, ind) => {
                         return (<li key={ind}>{desc}</li>)
@@ -128,7 +120,8 @@ function AdminPage() {
                 <a className="btn waves-effect" style={{ color:"#3f51b5" ,backgroundColor:"white" ,marginLeft: '16px', width: '15%' }} onClick={() => setDescription([...description, descriptionComponent])}>Add more description field</a>
             </form>
             <a className="btn waves-effect" style={{ backgroundColor:"#3f51b5" ,marginLeft: 'auto',marginRight:'auto'}} onClick={() => addProduct()}>Add product</a>
-        </Grid>
+            </div>
+        </div>
     )
 }
 export default AdminPage

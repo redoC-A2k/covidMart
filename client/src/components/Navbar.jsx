@@ -33,10 +33,10 @@ class Navbar extends Component {
         const menu = (
             <Menu style={{border:"0.2px solid #434343",width:"100%",marginRight:"30px"}}>
                 <Menu.Item>
-                    <Link className = {styles.ddlink} >Logout</Link>
+                    <Link><span className={styles.ddlink}>Logout</span></Link>
                 </Menu.Item>
                 <Menu.Item>
-                    <Link styles={{backgroundColor:"red",color:"red"}} className="ddlink"><span className={styles.ddlnk} style={{color:"red"}}>Cart</span></Link>
+                    <Link ><span className={styles.ddlink}>Cart</span></Link>
                 </Menu.Item>
             </Menu>
         )
