@@ -16,20 +16,23 @@ class Navbar extends Component {
             collapsed: true,
         }
     }
+
+    componentDidMount() {
+        window.onscroll = () => {
+            let elem = document.getElementById("hider")
+            if(window.pageYOffset>150){
+                elem.style.top="0";
+            }
+            if(window.pageYOffset<150){
+                elem.style.top="-55px";
+            }
+        }
+    }
+
     toggle = () => {
         this.setState({ collapsed: !this.state.collapsed, })
     }
     render() {
-            window.onscroll = () => {
-                let elem = document.getElementById("hider")
-                if(window.pageYOffset>150){
-                    elem.style.top="0";
-                    
-                }
-                if(window.pageYOffset<150){
-                    elem.style.top="-55px";
-                }
-            }
         const menu = (
             <Menu style={{border:"0.2px solid #434343",width:"100%",marginRight:"30px"}}>
                 <Menu.Item>

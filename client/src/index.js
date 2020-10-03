@@ -17,16 +17,16 @@ import Product from "./screens/Product"
 
 const routing = (
   <Provider store={store}>
-  <BrowserRouter>
-    <Switch>
-      <Route exact path="/" component={App} />
-      <Route path="/auth" component={UserAdminAuth} />
-      <Route path="/addproduct" component={AdminPage}/>
-      <Route path="/home" component={Home}/>
-      <Route path="/navbar" component={Navbar}/>
-      <Route path="/:productid" component={Product}/>
-    </Switch>
-  </BrowserRouter>
+    <BrowserRouter>
+      <Switch>
+        <Route exact path="/" component={App} />
+        <Route path="/auth" component={UserAdminAuth} />
+        <Route path="/addproduct" component={AdminPage}/>
+        <Route path="/home" component={Home}/>
+        <Route path="/navbar" component={Navbar}/>
+        <Route path="/:productid" component={Product}/>
+      </Switch>
+    </BrowserRouter>
   </Provider>
 );
 

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, Redirect, useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Img from "../assets/images/back2.jpg";
 
 export default function UserAdminAuth() {
@@ -35,6 +35,7 @@ export default function UserAdminAuth() {
 			<img
 				src={Img}
 				style={{ height: "100%", width: "inherit", top: "0", position: "absolute" }}
+				alt="sampleImg"
 			/>
 			<div
 				style={{ height: "100%", display: "flex", alignItems: 'center', margin: "0px", position: "absolute", width: 'inherit', top: "0", backgroundColor: "rgba(240,240,240,0.5)" }}
@@ -75,6 +76,7 @@ export default function UserAdminAuth() {
 								/>
 								<div>
 									<a
+										href="/"
 										className="waves-effect waves-light btn"
 										style={{ backgroundColor: "#3f51b5" }}
 										onClick={()=>{

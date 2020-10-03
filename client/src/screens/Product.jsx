@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Header from '../components/Header';
 import { connect } from "react-redux";
 import { PageHeader, Row, Carousel } from 'antd';
 import styles from "./Product.module.css"
@@ -26,6 +27,9 @@ class Product extends Component {
           };
         return (
             <Row>
+                <div style={{display: "none"}}>
+                    <Header></Header>
+                </div>
                 <Row style={{ width: "100%" }}>
                     {myproduct ? (<PageHeader className={styles.pageClass} onBack={() => { this.props.history.goBack() }} title={myproduct[0].title} />) : (<div>Hello</div>)}
                 </Row>

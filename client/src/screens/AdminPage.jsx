@@ -31,7 +31,7 @@ function AdminPage() {
     }
 
     useEffect(() => {
-        if (urls != [] && urls.length == images.length) {
+        if (urls !== [] && urls.length === images.length) {
             console.log(urls)
             setTimeout(() => {
                 fetch("/addproductindb", {

@@ -12,7 +12,7 @@ class Header extends Component {
         <div style={{display:"block",fontSize:"13vh",position:"absolute",top:"10px",color:"white"}}>We Care for you </div>
         <div style={{display:"block",fontSize:"3vh",position:"absolute",top:"17vh",color:"white"}}>CovidMart </div>
         </div>
-        <img style={{ width:"100%",height:"30vh"}} src={back} />
+        <img style={{ width:"100%",height:"30vh"}} src={back} alt="backimg" />
         </div>
       </div>
     );
