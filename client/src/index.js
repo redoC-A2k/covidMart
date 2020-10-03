@@ -10,7 +10,8 @@ import AdminPage from "./screens/AdminPage";
 import Home from "./screens/Home"
 import Navbar from './components/Navbar'
 import {store} from "./redux/store"
-import {Provider} from "react-redux"
+import {Provider} from "react-redux";
+import Product from "./screens/Product"
 
 
 
@@ -23,6 +24,7 @@ const routing = (
       <Route path="/addproduct" component={AdminPage}/>
       <Route path="/home" component={Home}/>
       <Route path="/navbar" component={Navbar}/>
+      <Route path="/:productid" component={Product}/>
     </Switch>
   </BrowserRouter>
   </Provider>

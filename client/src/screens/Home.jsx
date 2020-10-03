@@ -3,6 +3,7 @@ import Header from '../components/Header';
 import { obj } from "../redux/ActionCreators/fetchAllProducts";
 import { connect } from "react-redux";
 import { Card, Row, Divider, Col, Button, Spin } from 'antd';
+import {Link, useHistory} from "react-router-dom"
 import styles from './home.module.css'
 
 // import {prom} from "../redux/ActionCreators/fetchAllProducts"
@@ -36,9 +37,11 @@ class Home extends Component {
     Cardgroup = () => {
         const productArray = this.props.allproducts.map((product, ind) =>
             <Col xs={20} sm={16} md={10} lg={8} xl={5}>
+                <Link to = {`/${product._id}`}>
                 <Card hoverable
                     onClick={() => {
-                        console.log("card clicked")
+                        console.log(product._id);
+                        // this.history.push(`/${product._id}`)
                     }}
                     onMouseOut={() => {
                         let elem = document.getElementsByClassName("myrow")[ind].children[0].children[0]
@@ -69,6 +72,7 @@ class Home extends Component {
                         </Col>
                     </Row>
                 </Card>
+                </Link>
             </Col >
         )
         return productArray;
