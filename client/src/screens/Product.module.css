@@ -39,7 +39,7 @@
 }
 .picdivs{
   width: 60vw;
-  height: 59vh;
+  height: auto;
   margin-left: auto;
   margin-right: auto;
   position: relative;
@@ -57,12 +57,12 @@
 .addbtn{
   font-size: 2em;
   height: 2.5em;
-  border:2px solid #ff7a45;
-  color:#ff7a45;
+  border:2px solid #ff7a45 !important;
+  color:#ff7a45 !important;
 }
 
 .addbtn:hover{
-  background-color: #ff7a45;
-  color: white;
-  border:2px solid #ff7a45;
+  background-color: #ff7a45 !important;
+  color: white !important;
+  border:2px solid #ff7a45 !important;
 }

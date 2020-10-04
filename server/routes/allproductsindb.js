@@ -4,7 +4,7 @@ const Product = require("../models/productModel");
 const requireLogin = require("../middleware/requireLogin");
 
 let counter = 1;
-router.get("/products",requireLogin,(req,res)=>{
+router.get("/allproducts",requireLogin,(req,res)=>{
     Product.find().limit(counter*5).then(products => {
         console.log("request recieved")
         counter+=1

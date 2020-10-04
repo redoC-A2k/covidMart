@@ -12,22 +12,24 @@ import Navbar from './components/Navbar'
 import {store} from "./redux/store"
 import {Provider} from "react-redux";
 import Product from "./screens/Product"
-
+import Cart from "./components/Cart"
 
 
 const routing = (
+  <BrowserRouter>
   <Provider store={store}>
-    <BrowserRouter>
       <Switch>
         <Route exact path="/" component={App} />
+        <Route path="/cart" component={Cart}/>
         <Route path="/auth" component={UserAdminAuth} />
         <Route path="/addproduct" component={AdminPage}/>
         <Route path="/home" component={Home}/>
         <Route path="/navbar" component={Navbar}/>
         <Route path="/:productid" component={Product}/>
       </Switch>
+      </Provider>
     </BrowserRouter>
-  </Provider>
+  
 );
 
 ReactDOM.render(
