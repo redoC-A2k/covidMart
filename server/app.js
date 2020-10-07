@@ -8,7 +8,7 @@ const routeradmin = require("./routes/adminauth")
 const routeraddproduct = require("./routes/addproductindb");
 const routerallproduct = require("./routes/allproductsindb")
 const routerproduct = require("./routes/product.js");
-
+const cors = require("cors")
 
 mongoose.connect(MONGOURI,{
     useNewUrlParser:true,
@@ -25,6 +25,7 @@ mongoose.connection.on("error",()=>{
   console.log("error is",err)
 })
 
+app.use(cors())
 app.use(express.json())
 //routes
 app.use(routeruser)

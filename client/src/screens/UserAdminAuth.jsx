@@ -18,7 +18,7 @@ export default function UserAdminAuth() {
 				autoComplete="off"
 				placeholder="Enter your name"
 				id="email"
-				onChange={(e)=>{setName(e.target.value)}}
+				onChange={(e) => { setName(e.target.value) }}
 			/>)
 		}
 	}
@@ -65,66 +65,72 @@ export default function UserAdminAuth() {
 									autoComplete="off"
 									placeholder="Enter your email"
 									id="email"
-									onChange={(e)=>{setEmail(e.target.value)}}
+									onChange={(e) => { setEmail(e.target.value) }}
 								/>
 								<input
 									style={{ marginBottom: "8px", marginTop: "8px", width: "70%" }}
 									placeholder="Enter your password"
 									type="password"
 									id="password"
-									onChange={(e)=>{setPassword(e.target.value)}}
+									onChange={(e) => { setPassword(e.target.value) }}
 								/>
 								<div>
 									<a
 										href="/"
 										className="waves-effect waves-light btn"
 										style={{ backgroundColor: "#3f51b5" }}
-										onClick={()=>{
-											if(showname){
-												fetch("/signup",{
-													method:"post",
-													headers:{
-														"Content-Type":"application/json"
+										onClick={(eve) => {
+											if (showname) {
+												eve.preventDefault()
+												fetch("http://localhost:4000/signup", {
+													method: "post",
+													headers: {
+														"Content-Type": "application/json"
 													},
-													body:JSON.stringify({
-														name:name,
-														email:email,
-														password:password
+													body: JSON.stringify({
+														name: name,
+														email: email,
+														password: password
 													})
 												})
-												.then(res => res.json())
-												.then(data => alert("now login again"))
-											}
-											else{
-												fetch("/signin",{
-													method:"post",
-													headers:{
-														"Content-Type":"application/json"
-													},
-													body:JSON.stringify({
-														email:email,
-														password:password
-													})
-												})
-												.then(res => res.json())
-												.then(data => {
-													if(data.error){
-														console.log(data.error)
-													}
-													else{
-														localStorage.setItem("jwt",data.token)
+													.then(res => res.json())
+													.then(data =>{
 														console.log(data)
-														history.push("/home")
-													}
+														alert("now login with credentials")
+													} )
+											}
+											else {
+												eve.preventDefault()
+												fetch("http://localhost:4000/signin", {
+													method: "post",
+													headers: {
+														"Content-Type": "application/json"
+													},
+													body: JSON.stringify({
+														email: email,
+														password: password
+													})
 												})
+													.then(res => res.json())
+													.then(data => {
+														if (data.error) {
+															console.log(data.error)
+															alert("incorrect email or password")
+														}
+														else {
+															localStorage.setItem("jwt", data.token)
+															console.log(data)
+															history.push("/home")
+														}
+													})
 											}
 										}}
 									>
 										<i className="right material-icons">account_circle</i>
 										{showname ? "Signup" : "Signin"}
 									</a>
-									<Link style={{ textDecoration: "none", color: "black", marginLeft: "2%" }} 
-									onClick={() => console.log("hello world")}>{showname || isAdmin ? "" : "Forgot password"}</Link>
+									<Link style={{ textDecoration: "none", color: "black", marginLeft: "2%" }}
+										onClick={() => console.log("hello world")}>{showname || isAdmin ? "" : "Forgot password"}</Link>
 								</div>
 								<div style={{ marginTop: "10px" }}>
 									<Link

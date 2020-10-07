@@ -6,7 +6,6 @@ import { Card, Row, Divider, Col, Button, Spin } from 'antd';
 import {Link, } from "react-router-dom"
 import styles from './home.module.css'
 
-// import {prom} from "../redux/ActionCreators/fetchAllProducts"
 
 
 const mapStateToProps = state => {
@@ -40,7 +39,7 @@ class Home extends Component {
                 <Card hoverable
                     onClick={() => {
                         console.log(product._id);
-                        // this.history.push(`/${product._id}`)
+                        this.props.history.push(`/${product._id}`)
                     }}
                     onMouseOut={() => {
                         let elem = document.getElementsByClassName("myrow")[ind].children[0].children[0]
@@ -79,9 +78,10 @@ class Home extends Component {
 
     async componentDidMount() {
         await this.props.fetchdata()
+        console.log("fetching content")
     }
     render() {
-        // console.log(this.props.allproducts)
+        console.log(this.props.allproducts)
         return (
             <div className="main">
                 <Header />

@@ -1,10 +1,10 @@
 import {FETCH_A_PRODUCT} from "../types";
 export const fetchAProduct = ()=>{
     return (dispatch)=>{
-        fetch("/product",{
+        fetch("http://localhost:4000/product",{
             method:"post",
             headers:{
-                authorization:"Bearer"+localStorage.getItem("jwt"),
+                authorization:"Bearer "+localStorage.getItem("jwt"),
                 "Content-Type":"application/json",
             },
             body:JSON.stringify({

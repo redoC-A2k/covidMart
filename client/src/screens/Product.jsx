@@ -1,43 +1,47 @@
 import React, { Component } from 'react';
-import Header from '../components/Header';
 import { connect } from "react-redux";
-import { PageHeader, Row, Button, Rate, Col, Divider, Spin } from 'antd';
+import { PageHeader, Row, Button, Rate, Col, Divider, Spin, Badge, } from 'antd';
 import styles from "./Product.module.css";
 import { fetchAProduct } from "../redux/ActionCreators/fetchAProduct"
-
+import { incrementProductInCart } from "../redux/ActionCreators/incrementProductInCart";
+import { addProductInCart } from "../redux/ActionCreators/addproductincart";
+import { PlusOutlined, MinusOutlined, ShoppingCartOutlined } from '@ant-design/icons';
 const mapStateToProps = state => {
     return { myproduct: state.myproduct };
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchAProduct: () => { dispatch(fetchAProduct()) }
+        fetchAProduct: () => { dispatch(fetchAProduct()) },
+        addProductInCart: (productId) => { dispatch(addProductInCart(productId)) },
+        updateProductInCart: (productId, quantityno) => { dispatch(incrementProductInCart(productId, quantityno)) }
     }
 }
 
 class Product extends Component {
-    // constructor(props) {
-    //     super(props);
-
-    //     console.log("sending request")
-    //     this.props.fetchAProduct()
-    // }
+    constructor(props) {
+        super(props);
+        this.state = {
+            showcartdiv: false,
+            inputquantity: 0,
+            showbadge: false
+        }
+    }
     async componentDidMount() {
+        console.log(this.state.showcartdiv)
         this.props.fetchAProduct()
         await console.log("sending request")
     }
 
     render() {
         let myproduct = this.props.myproduct
-        console.log(this.props.myproduct)
-
+        let myproductId = localStorage.getItem("_id")
+        console.log(myproductId)
         let slideIndex = 0;
         let myslides = document.getElementsByClassName(styles.myimages)
         let mydivs = document.getElementsByClassName(styles.picdivs)
-        console.log(mydivs, myslides)
         setTimeout(() => {
             for (let i = slideIndex + 1; i < myslides.length; i += 1) {
-                console.log("in for")
                 myslides[i].style.display = "none";
                 mydivs[i].style.display = "none"
             }
@@ -65,14 +69,13 @@ class Product extends Component {
         }
 
         let ProductComponent = () => {
+
             if (this.props.myproduct) {
                 return (
                     <Row>
-                        <div style={{ display: "none" }}>
-                            <Header></Header>
-                        </div>
                         <Row style={{ width: "100%" }}>
-                            {myproduct ? (<PageHeader className={styles.pageClass} onBack={() => { this.props.history.goBack() }} title={myproduct.title} />) : (<div>Hello</div>)}
+                            {myproduct ? (<PageHeader className={styles.pageClass} onBack={() => { this.props.history.goBack() }} title={myproduct.title}
+                                extra={[<Badge count={(this.state.showbadge) ? 1 : 0} ><ShoppingCartOutlined style={{ fontSize: "2em" }} /></Badge>]} />) : (<div>Hello</div>)}
                         </Row>
                         <Row style={{ width: "100%" }}>
                             {
@@ -102,9 +105,63 @@ class Product extends Component {
                                 <Rate defaultValue={3} disabled style={{ marginLeft: "auto", marginRight: "auto" }} />
                             </Col>
                             <Col span={12}>
-                                <Button block className={styles.addbtn}>
-                                    Add to Cart
-                        </Button>
+                                <div id="cartdiv">
+                                    {this.state.showcartdiv ?
+                                        (<div style={{ display: "flex", justifyContent: "space-between", width: "50%", marginLeft: "auto", marginRight: "auto", height: "7vh" }}>
+                                            <PlusOutlined onClick={() => {
+                                                new Promise(
+                                                    (res, rej) => {
+                                                        this.setState((State) => {
+                                                            res()
+                                                            return { inputquantity: this.state.inputquantity + 1 }
+                                                        })
+                                                    }
+                                                )
+                                                    .then(() => {
+                                                        console.log(this.state.inputquantity)
+                                                        this.props.updateProductInCart(myproductId, this.state.inputquantity)
+                                                    })
+                                            }}
+                                                style={{ color: "#1890ff", border: "2px solid #1890ff", fontSize: "3.5em" }} />
+                                            <input style={{ fontSize: "2em", width: "20%", marginBottom: "0px" }} readOnly value={this.state.inputquantity} min={1} max={this.props.myproduct.quantity} type="text" />
+                                            <MinusOutlined onClick={() => {
+                                                if ((this.state.inputquantity - 1) === 0) {
+                                                    this.setState({ showbadge: false })
+                                                    this.setState({ showcartdiv: false })
+                                                }
+                                                new Promise(
+                                                    (res, rej) => {
+                                                        this.setState((State) => {
+                                                            res()
+                                                            return { inputquantity: this.state.inputquantity - 1 }
+                                                        })
+                                                    }
+                                                )
+                                                    .then(() => {
+                                                        console.log(this.state.inputquantity)
+                                                        this.props.updateProductInCart(myproductId, this.state.inputquantity)
+                                                    })
+                                            }} style={{ border: "2px solid #1890ff", color: "#1890ff", fontSize: "3.5em" }} />
+                                        </div >) : (<Button block onClick={() => {
+                                            this.setState({ showcartdiv: true });
+                                            this.setState({ showbadge: true });
+                                            new Promise(
+                                                (res, rej) => {
+                                                    this.setState((State) => {
+                                                        res()
+                                                        return { inputquantity: this.state.inputquantity + 1 }
+                                                    })
+                                                }
+                                            )
+                                                .then(() => {
+                                                    console.log(this.state.inputquantity)
+                                                    this.props.addProductInCart(myproductId)
+                                                })
+                                        }} className={styles.addbtn}>
+                                            Add to Cart
+                                        </Button>)
+                                    }
+                                </div>
                             </Col>
                         </Row>
                         <Divider />
@@ -113,19 +170,19 @@ class Product extends Component {
                                 Description
                     </h3>
                             <ul style={{ listStyleType: "disc" }}>
-                                {myproduct.description.map((desc) => {
-                                    return <li><h5>{desc}</h5></li>
+                                {myproduct.description.map((desc, ind) => {
+                                    return <li key={ind}><h5>{desc}</h5></li>
                                 })}
                             </ul>
                         </Row>
                     </Row>
                 )
             }
-            else{
-                return(
-                <div>
-                    <Spin/>
-                </div>
+            else {
+                return (
+                    <div>
+                        <Spin />
+                    </div>
                 )
             }
         }

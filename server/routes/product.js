@@ -3,7 +3,7 @@ const router = express.Router();
 const Product = require("../models/productModel");
 const requireLogin = require("../middleware/requireLogin");
 
-router.post("/product", (req, res) => {
+router.post("/product", requireLogin,(req, res) => {
   let { _id } = req.body;
   console.log(_id);
   Product.findById(_id, (err, product) => {

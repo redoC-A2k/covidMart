@@ -32,6 +32,8 @@ router.post("/signup", (req, res) => {
         });
     });
   });
+},err=>{
+  console.log("error in signup"+err)
 });
 
 router.post("/signin", (req, res) => {
@@ -48,6 +50,7 @@ router.post("/signin", (req, res) => {
       .then((domatch) => {
         if (domatch) {
           const token = jwt.sign({ _id: savedUser._id }, JWT_SECRET);
+          console.log(token)
           res.json({
             message: "sign in successfull",
             token: token,
@@ -60,6 +63,8 @@ router.post("/signin", (req, res) => {
         console.log("error in comparing", err);
       });
   });
+},err => {
+  console.log("error in signin"+err)
 });
 
 module.exports = router;
