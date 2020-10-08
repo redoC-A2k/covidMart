@@ -8,6 +8,7 @@ const routeradmin = require("./routes/adminauth")
 const routeraddproduct = require("./routes/addproductindb");
 const routerallproduct = require("./routes/allproductsindb")
 const routerproduct = require("./routes/product.js");
+const routercart = require("./routes/cart")
 const cors = require("cors")
 
 mongoose.connect(MONGOURI,{
@@ -33,7 +34,7 @@ app.use(routeradmin)
 app.use(routeraddproduct)
 app.use(routerallproduct)
 app.use(routerproduct)
-
+app.use(routercart)
 app.listen(Port, () => {
   console.log("server is running on ", Port);
 });

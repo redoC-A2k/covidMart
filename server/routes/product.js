@@ -5,7 +5,6 @@ const requireLogin = require("../middleware/requireLogin");
 
 router.post("/product", requireLogin,(req, res) => {
   let { _id } = req.body;
-  console.log(_id);
   Product.findById(_id, (err, product) => {
     if (err) {
       console.log(err);

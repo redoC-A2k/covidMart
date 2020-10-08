@@ -11,7 +11,22 @@ const userSchema=new mongoose.Schema({
     password:{
         type:String,
         required:true
-    }
+    },
+    cart:[{
+        _id:false,
+        productId:{
+            type:String,
+        },
+        quantity:{
+            type:Number,
+        },
+        title:{
+            type:String
+        },
+        price:{
+            type:Number
+        }
+    }]
 })
 
 const User = mongoose.model("User",userSchema)

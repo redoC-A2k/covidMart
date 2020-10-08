@@ -7,7 +7,6 @@ export const fetchAllProducts= () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data)
         dispatch({ type: FETCH_ALL_PRODUCTS, dbdata: data });
       });
   };

@@ -119,6 +119,7 @@ export default function UserAdminAuth() {
 														}
 														else {
 															localStorage.setItem("jwt", data.token)
+															localStorage.setItem("userId",data.userId)
 															console.log(data)
 															history.push("/home")
 														}

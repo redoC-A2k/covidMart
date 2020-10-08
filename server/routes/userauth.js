@@ -20,7 +20,9 @@ router.post("/signup", (req, res) => {
         name: name,
         email: email,
         password: hashedpassword,
+        cart:[{productId:"empty"}]
       });
+      console.log(user)
       user
         .save()
         .then(() => {
@@ -54,6 +56,7 @@ router.post("/signin", (req, res) => {
           res.json({
             message: "sign in successfull",
             token: token,
+            userId:savedUser._id
           });
         } else {
           res.status(422).json({ error: "invalid email or password" });

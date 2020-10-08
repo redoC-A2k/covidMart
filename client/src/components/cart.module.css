@@ -1,7 +1,10 @@
 .cart{
+    top:0;
     height:100vh;
-    position:absolute;
-    right:-5vw;
-    visibility: hidden;
+    position: absolute;
+    right:-10vw;
+    width: 20vw;
+    /* visibility: hidden; */
+    opacity: 0%;
     background-color: wheat;
 }
