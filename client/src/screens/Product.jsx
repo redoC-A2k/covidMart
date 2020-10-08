@@ -9,6 +9,7 @@ import { PlusOutlined, MinusOutlined, ShoppingCartOutlined } from '@ant-design/i
 import Header from "../components/Header"
 import { fetchcart } from '../redux/ActionCreators/fetchCart';
 import { deleteProductFromCart } from '../redux/ActionCreators/deleteProductFromCart';
+import { Link } from 'react-router-dom';
 const mapStateToProps = state => {
   return {
     myproduct: state.myproduct,
@@ -83,6 +84,8 @@ class Product extends Component {
     //   console.log("promise running")
     if (this.props.mycart && this.props.myproduct && !this.state.bool) {
       cartLength = this.props.mycart.length
+      if(this.props.mycart[0].productId!=="empty")
+      this.setState({showbadge:true})
       this.props.mycart.map((cartelem, ind) => {
         console.log(ind)
         if (localStorage.getItem("_id") === cartelem.productId) {
@@ -94,6 +97,7 @@ class Product extends Component {
               return {
                 inputquantity: cartelem.quantity,
                 showcartdiv: false,
+                showbadge:true,
                 bool: true
               }
             })
@@ -128,7 +132,7 @@ class Product extends Component {
             <div style={{ display: "none" }}><Header /></div>
             <Row style={{ width: "100%" }}>
               {myproduct ? (<PageHeader className={styles.pageClass} onBack={() => { this.props.history.goBack() }} title={myproduct.title}
-                extra={[<Badge count={(this.state.showbadge&&this.props.mycart[0].productId!="empty") ? 1 : 0} ><ShoppingCartOutlined  style={{ fontSize: "2em" }} /></Badge>]} />) : (<div>failed to load product</div>)}
+                extra={[<Link to="/cart"><Badge count={(this.state.showbadge) ? this.props.mycart.length : 0} ><ShoppingCartOutlined  style={{ fontSize: "2em" }} /></Badge></Link>]} />) : (<div>failed to load product</div>)}
             </Row>
             <Row style={{ width: "100%" }}>
               {
@@ -198,6 +202,7 @@ class Product extends Component {
                       <input style={{ fontSize: "2em", width: "20%", marginBottom: "0px" }} readOnly value={this.state.inputquantity} min={1} max={this.props.myproduct.quantity} type="text" />
                       <MinusOutlined onClick={() => {
                         if ((this.state.inputquantity - 1) === 0) {
+                          if(this.props.mycart[0].productId!=="empty")
                           this.setState({ showbadge: false })
                           this.setState({ showcartdiv: true })
                           this.props.deleteProductFromCart(localStorage.getItem("userId"), localStorage.getItem("_id"))

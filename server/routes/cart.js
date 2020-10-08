@@ -44,7 +44,8 @@ router.post("/updateCart", (req, res) => {
       }).then(() => {
         savedUser.cart = newCart
         savedUser.save()
-      });
+      })
+      .catch(err => console.log("error in updateCart ",err));
     }
   });
 });
