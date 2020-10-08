@@ -73,6 +73,11 @@ class Home extends Component {
   }
 
   async componentDidMount() {
+    if (localStorage.getItem("jwt")==null) {
+      console.log("not logged in")
+      window.location = ("http://localhost:3000/auth")
+      alert("you are not logged in")
+    }
     await this.props.fetchdata()
     console.log("fetching content")
   }

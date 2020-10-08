@@ -1,13 +1,13 @@
 import React from 'react';
 import './App.css';
 // import AdminSignin from "./screens/adminSifnin.jsx";
-import UserAdminAuth from "./screens/UserAdminAuth.jsx";
+import Home from "./screens/Home";
 
 
 function App() {
   return (
     <div className="App">
-      <UserAdminAuth/>
+      <Home/>
     </div>
   );
 }

@@ -7,7 +7,6 @@ import UserAdminAuth from "./screens/UserAdminAuth.jsx";
 import * as serviceWorker from "./serviceWorker";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import AdminPage from "./screens/AdminPage";
-import Home from "./screens/Home";
 import { store } from "./redux/store";
 import { Provider } from "react-redux";
 import Product from "./screens/Product";
@@ -18,12 +17,11 @@ const routing = (
     {/* <PersistGate loading={null} persistor={persistor}> */}
     <BrowserRouter>
       <Switch>
-        <Route exact path="/" component={App} />
-        <Route exact path="/home" component={Home} />
-        <Route exact path="/auth" component={UserAdminAuth} />
         <Route exact path="/addproduct" component={AdminPage} />
+        <Route exact path="/auth" component={UserAdminAuth} />
         <Route exact path="/cart" component={Cart} />
         <Route exact path="/:productId" component={Product} />
+        <Route exact path="/" component={App} />
       </Switch>
     </BrowserRouter>
     {/* </PersistGate> */}

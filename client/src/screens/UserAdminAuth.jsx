@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import Img from "../assets/images/back2.jpg";
+import Header from "../components/Header";
 
 export default function UserAdminAuth() {
 	const [showname, setShowname] = useState(false)
@@ -32,6 +33,9 @@ export default function UserAdminAuth() {
 				width: "100%",
 			}}
 		>
+			<div style={{display:"none"}}>
+				<Header/>
+			</div>
 			<img
 				src={Img}
 				style={{ height: "100%", width: "inherit", top: "0", position: "absolute" }}
@@ -121,7 +125,7 @@ export default function UserAdminAuth() {
 															localStorage.setItem("jwt", data.token)
 															localStorage.setItem("userId",data.userId)
 															console.log(data)
-															history.push("/home")
+															history.push("/")
 														}
 													})
 											}

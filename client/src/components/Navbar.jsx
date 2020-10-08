@@ -37,7 +37,9 @@ class Navbar extends Component {
         const menu = (
             <Menu style={{ border: "0.2px solid #434343", width: "100%", marginRight: "30px" }}>
                 <Menu.Item>
-                    <Link><span className={styles.ddlink}>Logout</span></Link>
+                    <Link to="/auth" onClick={()=>{
+                        localStorage.clear();
+                    }}><span className={styles.ddlink}>Logout</span></Link>
                 </Menu.Item>
                 <Menu.Item>
                     <Link to="/cart" ><span className={styles.ddlink}>Cart</span></Link>

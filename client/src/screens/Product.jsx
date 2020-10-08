@@ -207,18 +207,20 @@ class Product extends Component {
                           this.setState({ showcartdiv: true })
                           this.props.deleteProductFromCart(localStorage.getItem("userId"), localStorage.getItem("_id"))
                         }
-                        new Promise(
-                          (res, rej) => {
-                            this.setState((State) => {
-                              res()
-                              return { inputquantity: this.state.inputquantity - 1 }
+                        else{
+                          new Promise(
+                            (res, rej) => {
+                              this.setState((State) => {
+                                res()
+                                return { inputquantity: this.state.inputquantity - 1 }
+                              })
+                            }
+                          )
+                            .then(() => {
+                              console.log(this.state.inputquantity)
+                              this.props.updateProductInCart(myproductId, this.state.inputquantity, price, myproductTitle)
                             })
-                          }
-                        )
-                          .then(() => {
-                            console.log(this.state.inputquantity)
-                            this.props.updateProductInCart(myproductId, this.state.inputquantity, price, myproductTitle)
-                          })
+                        }
                       }} style={{ border: "2px solid #1890ff", color: "#1890ff", fontSize: "3.5em" }} />
                     </div >)
                   }
