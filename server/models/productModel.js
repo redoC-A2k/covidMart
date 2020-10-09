@@ -19,10 +19,19 @@ const productSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    rating: {
-        type: Number,
-        required: true
+    category:{
+        type:String,
+        required:true
     },
+    rating: [{
+        _id:false,
+        userId:{
+            type:String
+        },
+        value:{
+            type:Number
+        }
+    }],
     description: [
         { type: String }
     ],

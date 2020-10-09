@@ -1,6 +1,6 @@
 import {createStore,applyMiddleware,compose,combineReducers} from "redux"
 import thunk from "redux-thunk"
-import {fetchAllproductsReducer} from './Reducers/fetchAllproductsReducer'
+import {dbdataReducer} from './Reducers/dbdataReducer'
 import {fetchAProductReducer} from "./Reducers/fetchAProductReducer";
 import { manageCartReducer } from "./Reducers/manageCartReducer";
 // import { persistStore, persistReducer } from 'redux-persist'
@@ -8,7 +8,7 @@ import { manageCartReducer } from "./Reducers/manageCartReducer";
 
 
 const masterReducer = combineReducers({
-    dbdata:fetchAllproductsReducer,
+    dbdata:dbdataReducer,
     myproduct:fetchAProductReducer,
     cart:manageCartReducer
 })
@@ -22,5 +22,5 @@ const masterReducer = combineReducers({
 // const persistedReducer = persistReducer(persistConfig,masterReducer)
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-export const store = createStore(masterReducer,{dbdata:"afshan",myproduct:null,cart:null},composeEnhancers(applyMiddleware(thunk)))
+export const store = createStore(masterReducer,{dbdata:null,myproduct:null,cart:null},composeEnhancers(applyMiddleware(thunk)))
 // export const persistor = persistStore(store)

@@ -20,8 +20,8 @@ const routing = (
         <Route exact path="/addproduct" component={AdminPage} />
         <Route exact path="/auth" component={UserAdminAuth} />
         <Route exact path="/cart" component={Cart} />
-        <Route exact path="/:productId" component={Product} />
         <Route exact path="/" component={App} />
+        <Route exact path="/:productId" component={Product} />
       </Switch>
     </BrowserRouter>
     {/* </PersistGate> */}

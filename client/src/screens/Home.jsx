@@ -9,7 +9,7 @@ import styles from './home.module.css'
 
 
 const mapStateToProps = state => {
-  return { allproducts: state.dbdata.products }
+  return { allproducts: state.dbdata }
 }
 const mapDispatchToProps = dispatch => {
   return {
@@ -34,7 +34,7 @@ class Home extends Component {
 
   Cardgroup = () => {
     const productArray = this.props.allproducts.map((product, ind) =>
-      <Col xs={20} sm={16} md={10} lg={8} xl={5}>
+      <Col key ={ind} xs={20} sm={16} md={10} lg={8} xl={5}>
         <Link onClick={() => { localStorage.setItem("_id", product._id) }} to={`/${product._id}`}>
           <Card hoverable
             onMouseOut={() => {

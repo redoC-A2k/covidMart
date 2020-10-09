@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { PageHeader, Row, Button, Rate, Col, Divider, Spin, Badge, } from 'antd';
 import styles from "./Product.module.css";
-import { fetchAProduct } from "../redux/ActionCreators/fetchAProduct"
+import { fetchAProduct, giveRating } from "../redux/ActionCreators/fetchAProduct"
 import { incrementProductInCart } from "../redux/ActionCreators/incrementProductInCart";
 import { addProductInCart } from "../redux/ActionCreators/addproductincart";
 import { PlusOutlined, MinusOutlined, ShoppingCartOutlined } from '@ant-design/icons';
@@ -24,9 +24,22 @@ const mapDispatchToProps = dispatch => {
     addProductInCart: (productId, price, myproductTitle) => { dispatch(addProductInCart(productId, price, myproductTitle)) },
     updateProductInCart: (productId, quantityno, price, myproductTitle) => { dispatch(incrementProductInCart(productId, quantityno, price, myproductTitle)) },
     deleteProductFromCart: (userId, productId) => { dispatch(deleteProductFromCart(userId, productId)) },
-    fetchCart: () => { dispatch(fetchcart()) }
+    fetchCart: () => { dispatch(fetchcart()) },
+    giveRating: (productId, userId, value) => { dispatch(giveRating(productId, userId, value)) }
   }
 }
+
+//clearing localStorage on back
+window.addEventListener("popstate", () => {
+  localStorage.removeItem("productRate")
+  localStorage.removeItem("myRate")
+})
+
+window.addEventListener("beforeunload", () => {
+  localStorage.removeItem("productRate")
+  localStorage.removeItem("myRate")
+})
+
 class Product extends Component {
   constructor(props) {
     super(props);
@@ -45,9 +58,12 @@ class Product extends Component {
   }
 
 
+
   render() {
     let myproduct = this.props.myproduct;
-    let cartLength ;
+    let cartLength;
+    let productRate;
+    let myRate = 0;
     //code for carousel
     let slideIndex = 0;
     let myslides = document.getElementsByClassName(styles.myimages)
@@ -84,35 +100,61 @@ class Product extends Component {
     //   console.log("promise running")
     if (this.props.mycart && this.props.myproduct && !this.state.bool) {
       cartLength = this.props.mycart.length
-      if(this.props.mycart[0].productId!=="empty")
-      this.setState({showbadge:true})
-      this.props.mycart.map((cartelem, ind) => {
-        console.log(ind)
-        if (localStorage.getItem("_id") === cartelem.productId) {
-          console.log("matched product")
-          console.log("quantity: " + cartelem.quantity)
-          new Promise((res, req) => {
-            this.setState((state) => {
-              res()
-              return {
-                inputquantity: cartelem.quantity,
-                showcartdiv: false,
-                showbadge:true,
-                bool: true
-              }
-            })
-          })
-            .then(() => {
-              console.log("this is executing")
+      let userId = localStorage.getItem("userId")
+      new Promise((resolve, rej) => {
+        if (myproduct.rating.length !== 0) {
+          let sumOfRatings = 0
+          for (let i = 0; i < myproduct.rating.length; i++) {
+            sumOfRatings = sumOfRatings + myproduct.rating[i].value
+            if (userId === myproduct.rating[i].userId) {
+              myRate = myproduct.rating[i].value
+            }
+            if (i + 1 === myproduct.rating.length)
+              resolve()
+          }
+          productRate = sumOfRatings;
+          productRate = productRate / myproduct.rating.length
+          console.log(productRate)
+          localStorage.setItem("productRate", productRate)
+          console.log(myRate)
+          localStorage.setItem("myRate", myRate)
+          // window.location.reload()
+        }
+        else {
+          localStorage.setItem("myRate",0)
+          localStorage.setItem("productRate",0)
+          resolve()
+        }
+      }).then(() => {
+        if (this.props.mycart[0].productId !== "empty")
+          this.setState({ showbadge: true })
+        this.props.mycart.map((cartelem, ind) => {
+          if (localStorage.getItem("_id") === cartelem.productId) {
+            console.log("matched product")
+            console.log("quantity: " + cartelem.quantity)
+            new Promise((res, req) => {
               this.setState((state) => {
-                return { bool: true }
+                res()
+                return {
+                  inputquantity: cartelem.quantity,
+                  showcartdiv: false,
+                  showbadge: true,
+                  bool: true
+                }
               })
             })
-        }
-        else if (ind === (cartLength - 1)) {
-          console.log("not matched")
-          this.setState({ bool: true })
-        }
+              .then(() => {
+                console.log("this is executing")
+                this.setState((state) => {
+                  return { bool: true }
+                })
+              })
+          }
+          else if (ind === (cartLength - 1)) {
+            console.log("not matched")
+            this.setState({ bool: true })
+          }
+        })
       })
     }
     // })
@@ -132,7 +174,7 @@ class Product extends Component {
             <div style={{ display: "none" }}><Header /></div>
             <Row style={{ width: "100%" }}>
               {myproduct ? (<PageHeader className={styles.pageClass} onBack={() => { this.props.history.goBack() }} title={myproduct.title}
-                extra={[<Link to="/cart"><Badge count={(this.state.showbadge) ? this.props.mycart.length : 0} ><ShoppingCartOutlined  style={{ fontSize: "2em" }} /></Badge></Link>]} />) : (<div>failed to load product</div>)}
+                extra={[<Link to="/cart"><Badge count={(this.state.showbadge) ? this.props.mycart.length : 0} ><ShoppingCartOutlined style={{ fontSize: "2em" }} /></Badge></Link>]} />) : (<div>failed to load product</div>)}
             </Row>
             <Row style={{ width: "100%" }}>
               {
@@ -159,7 +201,8 @@ class Product extends Component {
             <Divider />
             <Row style={{ width: "60vw", marginTop: "10px", marginLeft: "auto", marginRight: "auto" }}>
               <Col span={12}>
-                <Rate defaultValue={3} disabled style={{ marginLeft: "auto", marginRight: "auto" }} />
+                <Rate defaultValue={localStorage.getItem("productRate")} disabled style={{ marginLeft: "auto", marginRight: "auto" }} />
+                <h5>({myproduct.rating.length})</h5>
               </Col>
               <Col span={12}>
                 <div id="cartdiv">
@@ -202,12 +245,12 @@ class Product extends Component {
                       <input style={{ fontSize: "2em", width: "20%", marginBottom: "0px" }} readOnly value={this.state.inputquantity} min={1} max={this.props.myproduct.quantity} type="text" />
                       <MinusOutlined onClick={() => {
                         if ((this.state.inputquantity - 1) === 0) {
-                          if(this.props.mycart[0].productId!=="empty")
-                          this.setState({ showbadge: false })
+                          if (this.props.mycart[0].productId !== "empty")
+                            this.setState({ showbadge: false })
                           this.setState({ showcartdiv: true })
                           this.props.deleteProductFromCart(localStorage.getItem("userId"), localStorage.getItem("_id"))
                         }
-                        else{
+                        else {
                           new Promise(
                             (res, rej) => {
                               this.setState((State) => {
@@ -238,12 +281,24 @@ class Product extends Component {
                 })}
               </ul>
             </Row>
+            <Row style={{ width: "60vw", marginLeft: "auto", marginRight: "auto" }}>
+              <Col span={16}>
+                <h4>Give your Rating</h4>
+              </Col>
+              <Col span={8}>
+                <Rate style={{ fontSize: "2.5em" }} onChange={(value) => {
+                  console.log("clicked", localStorage.getItem("_id"), localStorage.getItem("userId"), value)
+                  this.props.giveRating(localStorage.getItem("_id"), localStorage.getItem("userId"), value)
+                }} defaultValue={localStorage.getItem("myRate")} />
+              </Col>
+            </Row>
           </Row>
         )
       }
       else {
         return (
           <div style={{ display: "flex", justifyContent: "center" }}>
+            <div style={{ display: "none" }}><Header /></div>
             <Spin style={{ position: "relative", marginTop: "40vh" }} size="large" tip="Loading..." />
           </div>
         )

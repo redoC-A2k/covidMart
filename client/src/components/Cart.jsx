@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import styles from "./cart.module.css"
-import { Row, Col } from 'antd';
+import { Row, Col, Button, Divider } from 'antd';
 import { connect } from "react-redux";
-import { DeleteOutlined} from '@ant-design/icons';
+import { DeleteOutlined } from '@ant-design/icons';
 import { deleteProductFromCart } from '../redux/ActionCreators/deleteProductFromCart'
 import { fetchcart } from '../redux/ActionCreators/fetchCart';
 import Header from './Header';
@@ -17,16 +17,26 @@ const mapDispatchToProps = dispatch => {
         deleteProductFromCart: (userId, productId) => { dispatch(deleteProductFromCart(userId, productId)) }
     }
 }
-// let MyCart = () => {return (<h4>afshan</h4>)}
 class Cart extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            totalprice: 0
+        }
+    }
     componentDidMount() {
         console.log("fetching ..")
         this.props.fetchcart()
     }
     render() {
+        let sum = 0;
         let MyCart = () => {
             if (this.props.mycart && this.props.mycart[0].productId != "empty") {
                 let myproductsarray = this.props.mycart.map((eachProduct, ind) => {
+                    sum = sum + eachProduct.quantity * eachProduct.price
+                    if ((this.props.mycart.length - 1 === ind) && (this.state.totalprice === 0)) {
+                        this.setState({ totalprice: sum })
+                    }
                     return (
                         <Row key={ind} style={{ width: "100%" }}>
                             <Col span={11}>
@@ -42,7 +52,7 @@ class Cart extends Component {
                                 {eachProduct.quantity * eachProduct.price}
                             </Col>
                             <Col span={1}>
-                                <DeleteOutlined onClick={()=>{this.props.deleteProductFromCart(localStorage.getItem("userId"),eachProduct.productId)}}/>
+                                <DeleteOutlined onClick={() => { this.props.deleteProductFromCart(localStorage.getItem("userId"), eachProduct.productId) }} />
                             </Col>
                         </Row>
                     )
@@ -50,9 +60,12 @@ class Cart extends Component {
                 return myproductsarray
             }
             else {
-                return (<h4 style={{textAlign:"center",width:"100%"}}>cart is empty</h4>)
+                return (<h4 style={{ textAlign: "center", width: "100%" }}>cart is empty</h4>)
             }
         }
+        // if((this.props.mycart.length-1===ind)&&(this.state.totalprice===0))
+        // totalprice=sum
+        // // this.setState({totalprice:sum})
         return (
             <Row style={{ width: "100%" }}>
                 <div style={{ display: 'none' }}>
@@ -77,8 +90,12 @@ class Cart extends Component {
                         <h5>Total price</h5>
                     </Col>
                 </Row>
-                <Row style={{width:"100%"}}>
-                    <MyCart/>
+                <Row style={{ width: "100%" }}>
+                    <MyCart />
+                </Row>
+                <Divider/>
+                <Row style={{ width: "100%" ,justifyContent:"center"}}>
+                    <Button type="primary">Proceed to pay {this.state.totalprice}</Button>
                 </Row>
             </Row>
         )
