@@ -15,7 +15,7 @@ const mapStateToProps = state => {
   return {
     myproduct: state.myproduct,
     mycart: state.cart,
-    userdata:state.user
+    userdata: state.user
   };
 }
 let myproductId;
@@ -28,7 +28,7 @@ const mapDispatchToProps = dispatch => {
     deleteProductFromCart: (userId, productId) => { dispatch(deleteProductFromCart(userId, productId)) },
     fetchCart: () => { dispatch(fetchcart()) },
     giveRating: (productId, userId, value) => { dispatch(giveRating(productId, userId, value)) },
-    fetchUserdata : (userId) => {dispatch(fetchUserdata(userId))}
+    fetchUserdata: (userId) => { dispatch(fetchUserdata(userId)) }
   }
 }
 
@@ -53,16 +53,16 @@ class Product extends Component {
     console.log("sending request")
   }
 
-myRate = 0
+  myRate = 0
 
   render() {
     let myproduct = this.props.myproduct;
     let cartLength;
 
     //code for updating myRating
-    if(this.props.userdata){
-      this.props.userdata.myRatings.map((eachRating,ind) =>{
-        if(eachRating.productId === localStorage.getItem("_id")){
+    if (this.props.userdata) {
+      this.props.userdata.myRatings.map((eachRating, ind) => {
+        if (eachRating.productId === localStorage.getItem("_id")) {
           this.myRate = eachRating.value
         }
       })
@@ -181,8 +181,8 @@ myRate = 0
             <Divider />
             <Row style={{ width: "60vw", marginTop: "10px", marginLeft: "auto", marginRight: "auto" }}>
               <Col span={12}>
-                <Rate defaultValue={myproduct.rating.value} allowHalf disabled style={{ marginLeft: "auto", marginRight: "auto" }} />
-                <h5>({myproduct.rating.count})</h5>
+                <Rate defaultValue={myproduct.rating.value} allowHalf disabled style={{ fontSize:"3vw" ,marginLeft: "auto", marginRight: "auto" }} />
+                <h3>({myproduct.rating.count})</h3>
               </Col>
               <Col span={12}>
                 <div id="cartdiv">
@@ -222,7 +222,7 @@ myRate = 0
                           })
                       }}
                         style={{ color: "#1890ff", border: "2px solid #1890ff", fontSize: "3.5em" }} />
-                      <input style={{ fontSize: "2em", width: "20%", marginBottom: "0px",border:"none" }} readOnly value={this.state.inputquantity} min={1} max={this.props.myproduct.quantity} type="text" />
+                      <input style={{ fontSize: "2em", width: "20%", marginBottom: "0px", border: "none" }} readOnly value={this.state.inputquantity} min={1} max={this.props.myproduct.quantity} type="text" />
                       <MinusOutlined onClick={() => {
                         if ((this.state.inputquantity - 1) === 0) {
                           if (this.props.mycart[0].productId !== "empty")
@@ -252,18 +252,20 @@ myRate = 0
             </Row>
             <Divider />
             <Row style={{ width: "60vw", marginLeft: "auto", marginRight: "auto" }}>
-              <h3>
-                Description
-                    </h3>
+              <Col span={24}>
+                <h1 style={{ width: "100%" }}>
+                  Description
+              </h1>
+              </Col>
               <ul style={{ listStyleType: "disc" }}>
                 {myproduct.description.map((desc, ind) => {
-                  return <li key={ind}><h5>{desc}</h5></li>
+                  return <li key={ind}><h2>{desc}</h2></li>
                 })}
               </ul>
             </Row>
-            <Row style={{ width: "60vw", marginLeft: "auto", marginRight: "auto" }}>
+            <Row style={{ width: "60vw", marginLeft: "auto", marginRight: "auto",marginBottom:"4px" }}>
               <Col span={16}>
-                <h4>Give your Rating</h4>
+                <h1>Give your Rating</h1>
               </Col>
               <Col span={8}>
                 <Rate style={{ fontSize: "2.5em" }} onChange={(value) => {
