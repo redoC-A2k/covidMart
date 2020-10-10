@@ -222,7 +222,7 @@ myRate = 0
                           })
                       }}
                         style={{ color: "#1890ff", border: "2px solid #1890ff", fontSize: "3.5em" }} />
-                      <input style={{ fontSize: "2em", width: "20%", marginBottom: "0px" }} readOnly value={this.state.inputquantity} min={1} max={this.props.myproduct.quantity} type="text" />
+                      <input style={{ fontSize: "2em", width: "20%", marginBottom: "0px",border:"none" }} readOnly value={this.state.inputquantity} min={1} max={this.props.myproduct.quantity} type="text" />
                       <MinusOutlined onClick={() => {
                         if ((this.state.inputquantity - 1) === 0) {
                           if (this.props.mycart[0].productId !== "empty")
