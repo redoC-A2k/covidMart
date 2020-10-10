@@ -9,7 +9,7 @@ router.post("/product", requireLogin, (req, res) => {
     if (err) {
       console.log("error in /product in product.js", err);
     } else {
-      res.json(product);
+      res.json({product:product});
     }
   });
 });

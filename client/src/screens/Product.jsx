@@ -10,10 +10,12 @@ import Header from "../components/Header"
 import { fetchcart } from '../redux/ActionCreators/fetchCart';
 import { deleteProductFromCart } from '../redux/ActionCreators/deleteProductFromCart';
 import { Link } from 'react-router-dom';
+import { fetchUserdata } from '../redux/ActionCreators/fetchUserdata';
 const mapStateToProps = state => {
   return {
     myproduct: state.myproduct,
-    mycart: state.cart
+    mycart: state.cart,
+    userdata:state.user
   };
 }
 let myproductId;
@@ -25,20 +27,13 @@ const mapDispatchToProps = dispatch => {
     updateProductInCart: (productId, quantityno, price, myproductTitle) => { dispatch(incrementProductInCart(productId, quantityno, price, myproductTitle)) },
     deleteProductFromCart: (userId, productId) => { dispatch(deleteProductFromCart(userId, productId)) },
     fetchCart: () => { dispatch(fetchcart()) },
-    giveRating: (productId, userId, value) => { dispatch(giveRating(productId, userId, value)) }
+    giveRating: (productId, userId, value) => { dispatch(giveRating(productId, userId, value)) },
+    fetchUserdata : (userId) => {dispatch(fetchUserdata(userId))}
   }
 }
 
 //clearing localStorage on back
-window.addEventListener("popstate", () => {
-  localStorage.removeItem("productRate")
-  localStorage.removeItem("myRate")
-})
 
-window.addEventListener("beforeunload", () => {
-  localStorage.removeItem("productRate")
-  localStorage.removeItem("myRate")
-})
 
 class Product extends Component {
   constructor(props) {
@@ -54,16 +49,24 @@ class Product extends Component {
   componentDidMount() {
     this.props.fetchCart()
     this.props.fetchAProduct()
+    this.props.fetchUserdata(localStorage.getItem("userId"))
     console.log("sending request")
   }
 
-
+myRate = 0
 
   render() {
     let myproduct = this.props.myproduct;
     let cartLength;
-    let productRate;
-    let myRate = 0;
+
+    //code for updating myRating
+    if(this.props.userdata){
+      this.props.userdata.myRatings.map((eachRating,ind) =>{
+        if(eachRating.productId === localStorage.getItem("_id")){
+          this.myRate = eachRating.value
+        }
+      })
+    }
     //code for carousel
     let slideIndex = 0;
     let myslides = document.getElementsByClassName(styles.myimages)
@@ -98,33 +101,10 @@ class Product extends Component {
     //deciding when to show main productComponent
     // new Promise((res, req) => {
     //   console.log("promise running")
-    if (this.props.mycart && this.props.myproduct && !this.state.bool) {
+    if (this.props.userdata && this.props.mycart && this.props.myproduct && !this.state.bool) {
       cartLength = this.props.mycart.length
-      let userId = localStorage.getItem("userId")
       new Promise((resolve, rej) => {
-        if (myproduct.rating.length !== 0) {
-          let sumOfRatings = 0
-          for (let i = 0; i < myproduct.rating.length; i++) {
-            sumOfRatings = sumOfRatings + myproduct.rating[i].value
-            if (userId === myproduct.rating[i].userId) {
-              myRate = myproduct.rating[i].value
-            }
-            if (i + 1 === myproduct.rating.length)
-              resolve()
-          }
-          productRate = sumOfRatings;
-          productRate = productRate / myproduct.rating.length
-          console.log(productRate)
-          localStorage.setItem("productRate", productRate)
-          console.log(myRate)
-          localStorage.setItem("myRate", myRate)
-          // window.location.reload()
-        }
-        else {
-          localStorage.setItem("myRate",0)
-          localStorage.setItem("productRate",0)
-          resolve()
-        }
+        resolve()
       }).then(() => {
         if (this.props.mycart[0].productId !== "empty")
           this.setState({ showbadge: true })
@@ -201,8 +181,8 @@ class Product extends Component {
             <Divider />
             <Row style={{ width: "60vw", marginTop: "10px", marginLeft: "auto", marginRight: "auto" }}>
               <Col span={12}>
-                <Rate defaultValue={localStorage.getItem("productRate")} disabled style={{ marginLeft: "auto", marginRight: "auto" }} />
-                <h5>({myproduct.rating.length})</h5>
+                <Rate defaultValue={myproduct.rating.value} allowHalf disabled style={{ marginLeft: "auto", marginRight: "auto" }} />
+                <h5>({myproduct.rating.count})</h5>
               </Col>
               <Col span={12}>
                 <div id="cartdiv">
@@ -289,7 +269,7 @@ class Product extends Component {
                 <Rate style={{ fontSize: "2.5em" }} onChange={(value) => {
                   console.log("clicked", localStorage.getItem("_id"), localStorage.getItem("userId"), value)
                   this.props.giveRating(localStorage.getItem("_id"), localStorage.getItem("userId"), value)
-                }} defaultValue={localStorage.getItem("myRate")} />
+                }} defaultValue={this.myRate} />
               </Col>
             </Row>
           </Row>

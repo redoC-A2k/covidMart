@@ -3,12 +3,13 @@ const app = express();
 const Port = 4000;
 const { MONGOURI } = require("./keys");
 const mongoose = require("mongoose");
-const routeruser = require("./routes/userauth")
+const routeruserauth = require("./routes/userauth")
 const routeradmin = require("./routes/adminauth")
 const routeraddproduct = require("./routes/addproductindb");
 const routerallproduct = require("./routes/allproductsindb")
 const routerproduct = require("./routes/product.js");
 const routercart = require("./routes/cart")
+const routeruser = require("./routes/user")
 const cors = require("cors")
 
 mongoose.connect(MONGOURI,{
@@ -29,12 +30,13 @@ mongoose.connection.on("error",()=>{
 app.use(cors())
 app.use(express.json())
 //routes
-app.use(routeruser)
+app.use(routeruserauth)
 app.use(routeradmin)
 app.use(routeraddproduct)
 app.use(routerallproduct)
 app.use(routerproduct)
 app.use(routercart)
+app.use(routeruser)
 app.listen(Port, () => {
   console.log("server is running on ", Port);
 });

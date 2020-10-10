@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Header from '../components/Header';
 import { fetchAllProducts } from "../redux/ActionCreators/fetchAllProducts";
 import { connect } from "react-redux";
-import { Card, Row, Divider, Col, Button, Spin } from 'antd';
+import { Card, Row, Divider, Col, Button, Spin, Rate } from 'antd';
 import { Link, } from "react-router-dom"
 import styles from './home.module.css'
 
@@ -32,45 +32,6 @@ class Home extends Component {
     </Row>
   </Row>)
 
-  Cardgroup = () => {
-    const productArray = this.props.allproducts.map((product, ind) =>
-      <Col key ={ind} xs={20} sm={16} md={10} lg={8} xl={5}>
-        <Link onClick={() => { localStorage.setItem("_id", product._id) }} to={`/${product._id}`}>
-          <Card hoverable
-            onMouseOut={() => {
-              let elem = document.getElementsByClassName("myrow")[ind].children[0].children[0]
-              elem.style.opacity = "0%"
-              elem.style.transitionProperty = "opacity,bottom";
-              elem.style.transitionDuration = "2s";
-              elem.style.bottom = "0vh"
-            }}
-            onMouseOver={() => {
-              let elem = document.getElementsByClassName("myrow")[ind].children[0].children[0];
-              elem.style.display = "block"
-              elem.style.opacity = "100%"
-              elem.style.transitionProperty = "opacity,bottom";
-              elem.style.transitionDuration = "2s"
-              elem.style.bottom = "40%"
-            }}
-            cover={<img src={product.images[0]} style={{ height: "30vh" }} />}
-            key={ind}
-            className={styles.card}
-            title={<span style={{ color: "#434343", fontSize: "1.2em" }} ><b>{product.title}</b></span>}>
-            <this.MyRow product={product} />
-            <Row>
-              <Col span={15}>
-                <Button onClick={() => { console.log("to the cart") }} className={styles.btn}>Add to cart </Button>
-              </Col>
-              <Col span={9}>
-                <div style={{ color: "#391085", marginLeft: "7px" }}>{product.price}/- Rs</div>
-              </Col>
-            </Row>
-          </Card>
-        </Link>
-      </Col >
-    )
-    return productArray;
-  }
 
   async componentDidMount() {
     if (localStorage.getItem("jwt")==null) {
@@ -82,13 +43,56 @@ class Home extends Component {
     console.log("fetching content")
   }
   render() {
+    let Cardgroup
+    if(this.props.allproducts){
+      // console.log(this.props.allproducts)
+      Cardgroup = () => {
+        const productArray = this.props.allproducts.map((product, ind) =>
+          <Col key ={ind} xs={20} sm={16} md={10} lg={8} xl={5}>
+            <Link onClick={() => { localStorage.setItem("_id", product._id) }} to={`/${product._id}`}>
+              <Card hoverable
+                onMouseOut={() => {
+                  let elem = document.getElementsByClassName("myrow")[ind].children[0].children[0]
+                  elem.style.opacity = "0%"
+                  elem.style.transitionProperty = "opacity,bottom";
+                  elem.style.transitionDuration = "2s";
+                  elem.style.bottom = "0vh"
+                }}
+                onMouseOver={() => {
+                  let elem = document.getElementsByClassName("myrow")[ind].children[0].children[0];
+                  elem.style.display = "block"
+                  elem.style.opacity = "100%"
+                  elem.style.transitionProperty = "opacity,bottom";
+                  elem.style.transitionDuration = "2s"
+                  elem.style.bottom = "40%"
+                }}
+                cover={<img src={product.images[0]} style={{ height: "30vh" }} />}
+                key={ind}
+                className={styles.card}
+                title={<span style={{ color: "#434343", fontSize: "1.2em" }} ><b>{product.title}</b></span>}>
+                <this.MyRow product={product} />
+                <Row>
+                  <Col span={12}>
+                    <Rate disabled defaultValue={product.rating.value} style={{width:"100%",fontSize:"0.8em"}}/>
+                  </Col>
+                  <Col span={12}>
+                    <div style={{margin:"0",padding:"0", color: "#391085", marginLeft: "7px" }}>{product.price}/- Rs</div>
+                  </Col>
+                </Row>
+              </Card>
+            </Link>
+          </Col >
+        )
+        return productArray;
+      }
+    }
     // console.log(this.props.allproducts)
     return (
       <div className="main">
         <Header />
         <Divider />
         <Row gutter={[{ xs: 8, sm: 16, md: 24, lg: 32 }, { xs: 8, sm: 16, md: 24, lg: 32 }]} justify="center">
-          {this.props.allproducts ? <this.Cardgroup /> : (<Spin size="large" tip="Loading..."></Spin>)}
+          {this.props.allproducts ? <Cardgroup /> : (<Spin size="large" tip="Loading..."></Spin>)}
         </Row>
         <Row>
           <Button onClick={() => {
