@@ -27,6 +27,69 @@ class Cart extends Component {
     componentDidMount() {
         console.log("fetching ..")
         this.props.fetchcart()
+        //razorpay script loading
+        const script = document.createElement("script");
+        script.src = "https://checkout.razorpay.com/v1/checkout.js";
+        script.async = true;
+        document.body.appendChild(script);
+
+    }
+
+    openPayModal = (amount, fetchcart, setTotalpricezero) => {
+        amount = amount * 100;
+        amount = Math.ceil(amount)
+        let options = {
+            "key": "rzp_test_hGL6N8M5oGjVNF",
+            "amount": "",
+            "currency": "INR",
+            "name": "CovidMart",
+            "order_id": "",
+            "handler": function (response) {
+                fetch("http://localhost:4000/payment", {
+                    method: "post",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        razorpay_signature: response.razorpay_signature,
+                        razorpay_order_id: response.razorpay_order_id,
+                        razorpay_payment_id: response.razorpay_payment_id,
+                        userId: localStorage.getItem("userId")
+                    })
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.message === "ok") {
+                            console.log("if runs")
+                            fetchcart()
+                            setTotalpricezero()
+                            alert("Payment successful")
+                        }
+                    })
+            }
+        }
+        fetch("http://localhost:4000/order", {
+            method: "post",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                amount: amount
+            })
+        })
+            .then(res => res.json())
+            .then(data => {
+                options.amount = data.amount;
+                options.order_id = data.id;
+                // console.log(options)
+                let rzp1 = new window.Razorpay(options)
+                rzp1.open()
+            })
+    }
+
+    setTotalpricezero = () => {
+        console.log("state saved")
+        this.setState({ totalprice: 0 })
     }
     render() {
         let sum = 0;
@@ -78,24 +141,26 @@ class Cart extends Component {
                 </Row>
                 <Row style={{ width: "100%" }}>
                     <Col span={11}>
-                        <h5>Product title</h5>
+                        <h3>Product title</h3>
                     </Col>
                     <Col span={4}>
-                        <h5>Product qunatity</h5>
+                        <h3>Product qunatity</h3>
                     </Col>
                     <Col span={4}>
-                        <h5>Product price</h5>
+                        <h3>Product price</h3>
                     </Col>
                     <Col span={4}>
-                        <h5>Total price</h5>
+                        <h3>Total price</h3>
                     </Col>
                 </Row>
                 <Row style={{ width: "100%" }}>
                     <MyCart />
                 </Row>
-                <Divider/>
-                <Row style={{ width: "100%" ,justifyContent:"center"}}>
-                    <Button type="primary">Proceed to pay {this.state.totalprice}</Button>
+                <Divider />
+                <Row style={{ width: "100%", justifyContent: "center" }}>
+                    <Button onClick={() => {
+                        this.openPayModal(this.state.totalprice, this.props.fetchcart, this.setTotalpricezero)
+                    }} type="primary">Proceed to pay {this.state.totalprice}</Button>
                 </Row>
             </Row>
         )
