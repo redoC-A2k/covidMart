@@ -89,7 +89,15 @@ class Cart extends Component {
 
     setTotalpricezero = () => {
         console.log("state saved")
-        this.setState({ totalprice: 0 })
+        new Promise((res, req) => {
+            this.setState((state) => {
+                res();
+                return { totalprice: 0 }
+            })
+        })
+            .then(() => {
+                window.location.reload()
+            })
     }
     render() {
         let sum = 0;
