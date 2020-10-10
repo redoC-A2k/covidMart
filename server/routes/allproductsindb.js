@@ -3,7 +3,6 @@ const router = express.Router();
 const Product = require("../models/productModel");
 const requireLogin = require("../middleware/requireLogin");
 
-let counter = 1;
 router.get("/allproducts", requireLogin, (req, res) => {
   Product.find()
     .then((products) => {
