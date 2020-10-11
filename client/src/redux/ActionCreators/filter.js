@@ -54,6 +54,7 @@ export const applyFilter = (price, category, noOfProducts) => {
     fetch("http://localhost:4000/filter", {
       method: "post",
       headers: {
+        authorization:"Bearer "+localStorage.getItem("jwt"),
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -64,10 +65,10 @@ export const applyFilter = (price, category, noOfProducts) => {
     })
       .then((res) => res.json())
       .then((products) => {
-        if(products.error==="jwtNotMatched"){
-        window.alert("Problem with current account create new account")
-        window.location.href = "http://localhost:3000/auth"
-        }
+        // if(products.error==="jwtNotMatched"){
+        // window.alert("Problem with current account create new account")
+        // window.location.href = "http://localhost:3000/auth"
+        // }
         console.log(products)
         // console.log(products);
         let newArrayOfProducts = [];
