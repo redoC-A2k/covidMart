@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import Img from "../assets/images/back2.jpg";
 import { Button, Row, Col, Input } from "antd";
+import Header from "../components/Header";
 
 export default function UserAdminAuth() {
 	const [showname, setShowname] = useState(false)
@@ -162,6 +163,9 @@ export default function UserAdminAuth() {
 						</Row>
 					</Col>
 				</Row>
+			</div>
+			<div style={{display:"none"}}>
+				<Header/>
 			</div>
 		</div>
 	);

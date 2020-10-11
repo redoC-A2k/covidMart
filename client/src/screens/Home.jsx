@@ -45,12 +45,12 @@ class Home extends Component {
   </Row>)
 
   applyFilterPrice = (price) => {
-    this.setState({ filterApplied:true,price: price })
+    this.setState({ filterApplied: true, price: price })
     // this.props.applyFilter(price,category,noOfProducts)
   }
 
   applyFilterCategory = (category) => {
-    this.setState({ filterApplied:true,category: category })
+    this.setState({ filterApplied: true, category: category })
   }
 
   componentDidMount() {
@@ -73,12 +73,21 @@ class Home extends Component {
   }
 
   render() {
+    let timeup
     // if(this.state.noOfProducts < this.p)
     // console.log({"price":this.state.price,"noOfProducts":this.state.noOfProducts,"category":this.state.category})
-    if(this.state.filterApplied){
+    if (this.state.filterApplied) {
+      if (!this.props.allproducts && !this.state.bool)
+        timeup = setTimeout(() => {
+          alert("either your internet connection is not proper or the filter you applied does not match to any product")
+        }, 3000)
       this.props.applyFilter(this.state.price, this.state.category, this.state.noOfProducts)
-      this.setState({filterApplied:false})
+      this.setState({ filterApplied: false })
     }
+
+    if (this.props.allproducts || this.state.bool)
+      clearTimeout(timeup)
+
     let Cardgroup
     if (this.props.allproducts) {
       // console.log(this.props.allproducts)

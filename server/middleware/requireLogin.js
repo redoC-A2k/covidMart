@@ -7,7 +7,7 @@ const User = require("../models/userModel");
 module.exports = (req,res,next)=>{
     const {authorization} = req.headers
     if(!authorization){
-        return res.status(401).json({error:"You must be logged in"})
+        return res.status(401).json({error:"jwtNotMatched"})
     }
     const token = authorization.replace("Bearer ","")
 

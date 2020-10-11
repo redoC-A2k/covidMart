@@ -64,6 +64,10 @@ export const applyFilter = (price, category, noOfProducts) => {
     })
       .then((res) => res.json())
       .then((products) => {
+        if(products.error==="jwtNotMatched"){
+        window.alert("Problem with current account create new account")
+        window.location.href = "http://localhost:3000/auth"
+        }
         console.log(products)
         // console.log(products);
         let newArrayOfProducts = [];

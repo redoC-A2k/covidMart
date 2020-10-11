@@ -46,8 +46,9 @@ router.post("/signin", (req, res) => {
   }
   User.findOne({ email: email }).then((savedUser) => {
     if (!savedUser) {
-      return res.status(422).json({ error: "invalid email or password" });
+      return res.status(422).json({ error: "userNotExist" });
     }
+    console.log(savedUser)
     bcryptjs
       .compare(password, savedUser.password)
       .then((domatch) => {

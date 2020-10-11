@@ -38,7 +38,7 @@ router.get("/allproducts", requireLogin, (req, res) => {
 //     });
 //   }
 // });
-router.post("/filter", (req, res) => {
+router.post("/filter",requireLogin, (req, res) => {
   const { price, category, noOfProducts } = req.body;
   let filter ;
   if(category==="all"){
