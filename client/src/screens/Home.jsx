@@ -54,7 +54,7 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    if (localStorage.getItem("jwt") == null) {
+    if (localStorage.getItem("jwt") === null) {
       console.log("not logged in")
       window.location = ("http://localhost:3000/auth")
       alert("you are not logged in")
@@ -77,10 +77,6 @@ class Home extends Component {
     // if(this.state.noOfProducts < this.p)
     // console.log({"price":this.state.price,"noOfProducts":this.state.noOfProducts,"category":this.state.category})
     if (this.state.filterApplied) {
-      if (!this.props.allproducts && !this.state.bool)
-        timeup = setTimeout(() => {
-          alert("either your internet connection is not proper or the filter you applied does not match to any product")
-        }, 3000)
       this.props.applyFilter(this.state.price, this.state.category, this.state.noOfProducts)
       this.setState({ filterApplied: false })
     }

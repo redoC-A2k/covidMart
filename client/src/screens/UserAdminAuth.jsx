@@ -118,8 +118,10 @@ export default function UserAdminAuth() {
 														.then(res => res.json())
 														.then(data => {
 															if (data.error) {
-																console.log(data.error)
-																alert("incorrect email or password")
+																if(data.error==="userNotExist")
+																alert("Your account not exist ! Create new")
+																else
+																alert("Incorrect email or password")
 															}
 															else {
 																localStorage.setItem("jwt", data.token)

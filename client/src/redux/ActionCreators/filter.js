@@ -65,10 +65,13 @@ export const applyFilter = (price, category, noOfProducts) => {
     })
       .then((res) => res.json())
       .then((products) => {
-        // if(products.error==="jwtNotMatched"){
-        // window.alert("Problem with current account create new account")
-        // window.location.href = "http://localhost:3000/auth"
-        // }
+        if(products.error==="jwtNotMatched"){
+        window.alert("Problem with current account create new account")
+        window.location.href = "http://localhost:3000/auth"
+        }
+        if(products.length===0){
+          window.alert("Applied filter does not match to our products range")
+        }
         console.log(products)
         // console.log(products);
         let newArrayOfProducts = [];
