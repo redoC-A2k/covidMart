@@ -5,26 +5,19 @@ import { Component } from "react"
 import styles from "./navbar.module.css"
 import { Link } from 'react-router-dom';
 import { MenuOutlined, ArrowLeftOutlined, UserOutlined, ShoppingOutlined } from "@ant-design/icons"
-import { filterByPrice, filterByCategory } from "../redux/ActionCreators/filter";
-import { connect } from "react-redux";
 
 const { Header, Sider } = Layout;
 const { SubMenu } = Menu;
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        filterByPrice: (price) => { dispatch(filterByPrice(price)) },
-        filterByCategory:(category) => {dispatch(filterByCategory(category))}
-    }
-}
 
 class Navbar extends Component {
     constructor(props) {
         super(props);
         this.state = {
             collapsed: true,
-            priceInput: 10000,
-            bool:true
+            price:10000,
+            bool: true,
+            category:"all"
         }
     }
 
@@ -32,10 +25,10 @@ class Navbar extends Component {
         window.onscroll = () => {
             let elem = document.getElementById("hider")
             if (window.pageYOffset > 150) {
-                if(elem!==undefined)
-                elem.style.top = "0";
+                if (elem !== undefined)
+                    elem.style.top = "0";
             }
-            if ((window.pageYOffset < 150)&&(this.state.bool)) {
+            if ((window.pageYOffset < 150) && (this.state.bool)) {
                 elem.style.top = "-55px";
             }
         }
@@ -45,6 +38,7 @@ class Navbar extends Component {
         this.setState({ collapsed: !this.state.collapsed, })
     }
     render() {
+        // this.props.applyFilter(this.state.price,this.state.category)
         const menu = (
             <Menu style={{ border: "0.2px solid #434343", width: "100%", marginRight: "30px" }}>
                 <Menu.Item>
@@ -67,13 +61,14 @@ class Navbar extends Component {
                             <Menu.Item key="1">
                                 <Row style={{ width: "100%" }}>
                                     <Col span={16}>
-                                        <Slider value={this.state.priceInput} tipFormatter={null} onChange={(value) => {
-                                            this.setState({ priceInput: value })
-                                            this.props.filterByPrice(this.state.priceInput)
+                                        <Slider value={this.state.price} tipFormatter={null} onChange={(value) => {
+                                            this.props.toggleBool(false)
+                                            this.setState({ price: value })
+                                            this.props.applyFilterPrice(value)
                                         }} min={100} max={10000} />
                                     </Col>
                                     <Col span={8}>
-                                        <input value={this.state.priceInput} onChange={(value) => { this.setState({ priceInput: value.target.value }) }} />
+                                        <input value={this.state.price} />
                                     </Col>
                                 </Row>
                             </Menu.Item>
@@ -82,8 +77,10 @@ class Navbar extends Component {
                             {/* <Menu.Item key="2">Masks</Menu.Item>
                             <Menu.Item key="3">PPE kit</Menu.Item> */}
                             <Radio.Group onChange={(e) => {
+                                this.props.toggleBool(false)
                                 let category = e.target.value;
-                                this.props.filterByCategory(category)
+                                this.setState({category:category})
+                                this.props.applyFilterCategory(category)
                             }}>
                                 <br />
                                 <Radio value={"all"}>
@@ -103,22 +100,21 @@ class Navbar extends Component {
                                 </Radio>
                                 <br />
                                 <Radio value={"disinfectant"}>
-                                    disinfectant
+                                    Disinfectant
                                 </Radio>
                                 <br />
                                 <Radio value={"sanitizer"}>
-                                    sanitizer
+                                    Sanitizer
                                 </Radio>
                                 <br />
                                 <Radio value={"thermometer"}>
-                                    thermometer
+                                    Thermometer
                                 </Radio>
                                 <br />
                                 <Radio value={"other"}>
-                                    other
+                                    Other
                                 </Radio>
                                 <br />
-
                             </Radio.Group>
                         </SubMenu>
                     </Menu>
@@ -126,7 +122,7 @@ class Navbar extends Component {
                 <Layout>
                     <div id="hider" className={styles.nav} >
                         <Header className="navHeader" style={{ borderBottom: "4px solid #1890ff" }}>
-                            {this.state.collapsed ? <MenuOutlined className="menuicon" onClick={()=>{this.toggle();this.setState({bool:false})}} /> : <ArrowLeftOutlined className="arrowicon" onClick={()=>{this.toggle();this.setState({bool:true})}} />}
+                            {this.state.collapsed ? <MenuOutlined className="menuicon" onClick={() => { this.toggle(); this.setState({ bool: false }) }} /> : <ArrowLeftOutlined className="arrowicon" onClick={() => { this.toggle(); this.setState({ bool: true }) }} />}
                             <div style={{ position: "relative", display: "inline-block", fontSize: "3em", paddingBottom: "4px", color: "#1890ff" }}><b>CovidMart<ShoppingOutlined /> </b></div>
                             <Dropdown arrow placement="bottomCenter" overlay={menu}><UserOutlined className="usericon" /></Dropdown>
                         </Header>
@@ -138,4 +134,4 @@ class Navbar extends Component {
     }
 }
 
-export default connect(null, mapDispatchToProps)(Navbar);
+export default Navbar;

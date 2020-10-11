@@ -32,8 +32,6 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-//clearing localStorage on back
-
 
 class Product extends Component {
   constructor(props) {

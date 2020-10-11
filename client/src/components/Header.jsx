@@ -6,7 +6,7 @@ class Header extends Component {
 
     return (
       <div className="header">
-        <Navbar/>
+        <Navbar toggleBool={(value)=>{this.props.toggleBool(value)}} applyFilterPrice={(price)=>{this.props.applyFilterPrice(price)}} applyFilterCategory={(category)=>{this.props.applyFilterCategory(category)}}/>
         <div>
         <div style={{minWidth:"15vh",display:"flex",justifyContent:"center"}}>
         <div style={{display:"block",fontSize:"13vh",position:"absolute",top:"10px",color:"white"}}>We Care for you </div>
