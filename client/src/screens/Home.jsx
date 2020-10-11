@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Header from '../components/Header';
-import { fetchAllProducts } from "../redux/ActionCreators/fetchAllProducts";
+// import { fetchAllProducts } from "../redux/ActionCreators/fetchAllProducts";
+import { applyFilter } from '../redux/ActionCreators/filter'
 import { connect } from "react-redux";
 import { Card, Row, Divider, Col, Button, Spin, Rate } from 'antd';
 import { Link, } from "react-router-dom"
@@ -13,18 +14,22 @@ const mapStateToProps = state => {
 }
 const mapDispatchToProps = dispatch => {
   return {
-    fetchdata: () => { dispatch(fetchAllProducts()) }
+    applyFilter: (price, category, noOfProducts) => { dispatch(applyFilter(price, category, noOfProducts)) }
   }
 }
 
 class Home extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
-      quantity: 5,
-      bool: false
+      noOfProducts: 5,
+      bool: false,
+      filterApplied: false,
+      price: 10000,
+      category: "all"
     }
   }
+
   Myfeature = ({ features }) => (
     features.map((feature, ind) => {
       return <div key={ind} style={{ display: "block", backgroundColor: "rgba(255,255,255,0.9)", marginLeft: "auto", marginRight: "auto", marginTop: "4px", width: "70%", textAlign: "center", color: "#003a8c" }}>{feature}</div>
@@ -39,31 +44,46 @@ class Home extends Component {
     </Row>
   </Row>)
 
+  applyFilterPrice = (price) => {
+    this.setState({ filterApplied:true,price: price })
+    // this.props.applyFilter(price,category,noOfProducts)
+  }
 
-  async componentDidMount() {
+  applyFilterCategory = (category) => {
+    this.setState({ filterApplied:true,category: category })
+  }
+
+  componentDidMount() {
     if (localStorage.getItem("jwt") == null) {
       console.log("not logged in")
       window.location = ("http://localhost:3000/auth")
       alert("you are not logged in")
     }
-    await this.props.fetchdata()
+    // await this.props.fetchdata(this.state.noOfProducts)
+    this.props.applyFilter(this.state.price, this.state.category, this.state.noOfProducts)
     console.log("fetching content")
+    this.setState({ bool: true })
   }
-  myarray = []
+
+  componentWillReceiveProps() {
+    this.setState({ bool: true })
+  }
+  toggleBool = (value) => {
+    this.setState({ bool: value })
+  }
+
   render() {
-    let Cardgroup
-    if (this.props.allproducts && !this.state.bool) {
-      for (let i = this.state.quantity - 5; i < this.state.quantity; i++) {
-        this.myarray.push(this.props.allproducts[i])
-        if (i === this.state.quantity - 1) {
-          // console.log(newArray)
-          this.setState({ bool: true })
-        }
-      }
+    // if(this.state.noOfProducts < this.p)
+    // console.log({"price":this.state.price,"noOfProducts":this.state.noOfProducts,"category":this.state.category})
+    if(this.state.filterApplied){
+      this.props.applyFilter(this.state.price, this.state.category, this.state.noOfProducts)
+      this.setState({filterApplied:false})
     }
-    if (this.props.allproducts && this.state.bool)
+    let Cardgroup
+    if (this.props.allproducts) {
+      // console.log(this.props.allproducts)
       Cardgroup = () => {
-        const productArray = this.myarray.map((product, ind) =>
+        const productArray = this.props.allproducts.map((product, ind) =>
           <Col key={ind} xs={20} sm={16} md={10} lg={8} xl={5}>
             <Link onClick={() => { localStorage.setItem("_id", product._id) }} to={`/${product._id}`}>
               <Card hoverable
@@ -101,23 +121,36 @@ class Home extends Component {
         )
         return productArray;
       }
+    }
     // console.log(this.props.allproducts)
     return (
       <div className="main">
-        <Header />
+        <Header toggleBool={(value) => { this.toggleBool(value) }} applyFilterPrice={(price) => { this.applyFilterPrice(price) }} applyFilterCategory={(category) => { this.applyFilterCategory(category) }} />
         <Divider />
         <Row gutter={[{ xs: 8, sm: 16, md: 24, lg: 32 }, { xs: 8, sm: 16, md: 24, lg: 32 }]} justify="center">
           {this.props.allproducts && this.state.bool ? <Cardgroup /> : (<Spin size="large" tip="Loading..."></Spin>)}
         </Row>
         <Row>
           <Button onClick={() => {
-            if (this.state.quantity <this.props.allproducts.length) {
-              this.setState({ bool: false })
-              this.setState({ quantity: this.state.quantity + 5 })
-            }
-            else {
-              console.log("limit reached")
-            }
+            new Promise((res, rej) => {
+              this.setState(() => {
+                res()
+                return {
+                  bool: false,
+                  noOfProducts: this.state.noOfProducts + 5
+                }
+              })
+            })
+              .then(() => {
+                new Promise((res, rej) => {
+                  this.setState((state) => {
+                    res()
+                    return { price: this.state.price + 5 }
+                  })
+                }).then(() => {
+                  this.props.applyFilter(this.state.price, this.state.category, this.state.noOfProducts)
+                })
+              })
           }} style={{ marginRight: "auto", marginLeft: "auto", marginBottom: "10px" }}>More</Button>
         </Row>
       </div >
