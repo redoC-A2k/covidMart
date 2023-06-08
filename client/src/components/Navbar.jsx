@@ -45,7 +45,7 @@ function Navbar(props){
             <h1 className="brand"><Link to="/">CovidMart</Link><img src={logo} alt="logo" /> </h1>
             
             <div>
-                <input type="text"></input>
+                {/* <input type="text"></input> */}
                 <i className="fa fa-user" onClick={toggleUserPopup}></i>
             </div>
         </section>

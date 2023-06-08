@@ -4,6 +4,7 @@ import Img from "../assets/images/backimage.jpg";
 import Header from "../components/Header";
 
 // TODO: Make responsive
+// TODO: Verify Authentication flow and messages
 export default function UserAdminAuth() {
   const [showname, setShowname] = useState(false)
   const [isAdmin, setIsAdmin] = useState(false)
