@@ -1,5 +1,4 @@
-body {
-  margin: 0;
+/*body   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -11,3 +10,825 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+*/
+
+*{
+  margin: 0px;
+  padding: 0px;
+}
+
+:root{
+  --primary-blue: #1890ff;
+  --primary-dark-blue: #243053;
+  --secondary-blue: #31708E;
+  --secondary-dark-blue: #112D32;
+  --primary-green: #3AAFA9;
+  --primary-dark:#687684;
+  --primary-white: rgb(250,250,250);
+  --primary-grey:#f0f0f0; 
+  --primary-yellow: #FFE900;
+  --primary-green-yellow: #9ACD32;
+  --primary-orange: #de6600;
+  --primary-red: #ff4a4a;
+  --primary-grey-1: #6c757d;
+  --primary-grey-2: #s212529;
+
+  --space-from-top:85px;
+}
+
+a{
+  text-decoration: none !important;
+  color: black !important;
+}
+
+/* General */
+html {
+  font-size: 62.5%;
+}
+
+body {
+  font-size: 1.6rem;
+  padding-top: var(--space-from-top);
+}
+
+
+/* typography */
+h1 {
+  font-size: 5rem;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  margin-bottom: 0;
+}
+
+h2 {
+  font-size: 4rem;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 400;
+  margin-bottom: 0;
+}
+
+h3 {
+  font-size: 3rem;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 400;
+  margin-bottom: 0;
+}
+
+h3.gradient{
+  background-image: linear-gradient(to right, var(--primary-green) , 40% , var(--primary-blue));
+  color: transparent;
+  font-weight: 900 !important;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  background-clip: text;
+  -webkit-background-clip: text;
+  margin-bottom: 0;
+}
+
+h4{
+  font-size:1.8rem;
+  font-family: 'Roboto', sans-serif;
+  letter-spacing: 1px;
+  margin-bottom: 0;
+}
+
+/* Toast */
+@keyframes toastDown {
+  from{
+    top:-1rem;
+  }
+  to{
+    top:9rem;
+  }
+}
+
+div#toast{
+  color: black;
+  background-image: linear-gradient(40deg, var(--primary-green-yellow) 20% , var(--primary-green));
+  padding: 0.4rem 0.4rem;
+  border-radius: 20px;
+  position: fixed;
+  left: 0 ;
+  right: 0 ;
+  top: 9rem;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: fit-content;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  visibility: hidden;
+}
+
+div#toast.show{
+  visibility: visible;
+}
+
+
+div#toast span{
+  background-color: white;
+  border-radius: 15px;
+  padding: 0.8rem 1.4rem ;
+  text-transform: uppercase;
+  font-size: 1.2rem;
+  letter-spacing: 0.3rem;
+}
+
+/* customized headings */
+h1.brand {
+  text-align: center;
+  text-shadow: 2px 2px 0px #eee, 2.5px 2.5px 0px #000;
+  color:var(--secondary-dark-blue);
+  margin: 0 auto;
+  width: 100%;
+}
+h1.brand a{
+  display:inline-block;
+  margin: 0 1.5rem;
+}
+h1.brand a::first-letter {
+  color: var(--primary-blue);
+}
+
+/* customized buttons */
+  button.type1 {
+  outline: none;
+  padding: 4px 24px;
+  border-radius: 50px;
+  font-size: 1.8rem;
+  border: 3px solid var(--primary-green);
+  transition: all 0.5s;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+button.type1 span.background{
+  position: absolute;
+  background-color: var(--primary-green);
+  top: -1%;
+  height: 102%;
+  left: -1%;
+  width: 102%;
+  transition: all 0.4s;
+}
+
+button.type1 span.text {
+  transform: translateX(0%);
+  transition: all 0.4s;
+  letter-spacing: 5px;
+  color: black;
+}
+
+button.type1 span.icon {
+  position: absolute;
+  transition: opacity 0.4s;
+  color: white;
+  opacity: 0;
+  left: 4%;
+}
+
+button.type1:hover {
+  border: 3px solid var(--primary-blue) ;
+  box-shadow: 0px 0px 4px 1px var(--primary-blue);
+}
+
+button.type1:hover span.background {
+  width:20%;
+  box-shadow: 0px 0px 4px 1px var(--primary-green);
+}
+
+button.type1:hover span.text {
+  transform: translateX(55%);
+  letter-spacing: 2px;
+  text-shadow: 0px 0px 12px #999;
+}
+
+button.type1:hover span.icon {
+  opacity: 1;
+}
+
+button.type2 {
+  outline: none;
+  padding: 4px 24px;
+  border-radius: 50px;
+  font-size: 1.8rem;
+  border: 3px solid var(--primary-green);
+  transition: all 0.5s;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+button.type2 span.text {
+  transform: translateX(0%);
+  transition: all 0.4s;
+  letter-spacing: 4px;
+  color: black;
+}
+
+button.type2 span.icon {
+  position: absolute;
+  transition: opacity 0.4s;
+  color: black;
+  opacity: 0;
+  left: 4%;
+}
+
+button.type2:hover {
+  border: 3px solid var(--primary-blue) ;
+  box-shadow: 0px 0px 4px 1px var(--primary-blue);
+}
+
+button.type2:hover span.text {
+  transform: translateX(30%);
+  letter-spacing: 1.5px;
+  text-shadow: 0px 0px 12px #999;
+}
+
+button.type2:hover span.icon {
+  opacity: 1;
+}
+
+/* ------------ Utility classes ----------*/
+div.accordion {
+  background-color: #eeeeee;
+  padding: 1.5rem 2rem;
+  margin: 0.4rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 0.3ch;
+  margin-bottom: 0;
+}
+
+div.accordion:hover {
+  background-color: #dedede;
+}
+
+div.accordion + div.panel{
+  position: absolute;
+  margin: 0.4rem;
+  visibility: hidden;
+  transition: visibility 0.2s;
+  z-index: -9;
+  margin-top: 0;
+  padding: 0.2rem;
+  padding-top: 0.5rem;
+  background-color: #efefef;
+}
+
+div.accordion + div.panel.active{
+  visibility: visible;
+  position: relative;
+  z-index: 1;
+}
+
+/* ------------ Navbar ---------*/
+#header #navbar {
+  border: 2px solid white;
+  padding: 0.5rem;
+  box-shadow: 0rem 0rem 1rem 0.3rem grey;
+  margin-bottom: 2rem;
+  display: flex;
+  position: fixed;
+  width: 100%;
+  z-index: 1;
+  background-color: white;
+  margin-top:calc(var(--space-from-top)*-1);
+}
+
+
+#header #navbar > div {
+  display: inline-block;
+  font-size: 4rem;
+  width: 6rem;
+  text-align: center;
+}
+
+#header #navbar img {
+  height: 4.5rem;
+  width: auto;
+}
+
+#header #navbar i{
+  padding: 1rem;
+  border: 0.2rem solid white;
+  transition: border 0.2s;
+}
+
+#header #navbar i:hover{
+  cursor: pointer;
+  border: 0.2rem solid black;
+}
+
+/* header sidebar */
+#header #sidebar{
+  position: fixed;
+  display: inline-block;
+  top: 0px;
+  width:39rem;
+  box-shadow: 0rem 0rem 1rem 0.3rem grey;
+  background-color: white;
+  z-index: 2;
+  bottom: 0px;
+  visibility: hidden;
+  animation: slideSidebar 0.3s ease-in-out ;
+}
+
+@keyframes slideSidebar {
+  0%{
+    left: -30rem;
+  }
+  100%{
+    left: 0rem;
+  }
+}
+
+#header #sidebar div.heading{
+  display: flex;
+  margin: 1rem 0;
+}
+
+#header #sidebar div.heading h3.gradient{
+  padding: 0.5rem 1rem;
+}
+
+#header #sidebar div.heading h3.icon {
+  padding:0.5rem 1.5rem;
+  margin-right: 1.5rem;
+  border-width: 0.2rem;
+  border-color: white; 
+  border-style: solid;
+  transition: border 0.2s;
+}
+#header #sidebar div.heading h3.icon:hover{
+  color: var(--primary-green-yellow);
+  border-style: solid;
+  border-color: var(--primary-green-yellow);
+}
+
+#header #sidebar div.filter-price + div.panel span:nth-child(1){
+  width: 80%;
+  display: inline-block;
+}
+#header #sidebar div.filter-price + div.panel span:nth-child(2){
+  width: 20%;
+  display: inline-block;
+}
+
+#header #sidebar div.filter-price + div.panel span:nth-child(1) input{
+  width: 80%;
+}
+
+#header #sidebar div.filter-price + div.panel span:nth-child(1) i{
+  font-size: large;
+  width: 10%;
+  text-align: center;
+  vertical-align: top;
+}
+
+
+#header #sidebar div.filter-price + div.panel span:nth-child(2) input{
+  display: inline;
+  width: 100%;
+}
+
+/* header popup */
+#header #popup {
+  border: 2px solid var(--primary-green);
+  width: auto;
+  height: fit-content;
+  position: fixed;
+  background-color: white;
+  right: 0.5rem;
+  z-index: 10;
+  border-radius: 0.7rem;
+  top: 7rem ;
+  visibility: hidden;
+  transition: visibility 0.3s ;
+}
+
+#header #popup h4{
+  padding: 0.8rem 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.3rem;
+  font-size: 1.4rem;
+  text-align: center;
+  transition: all 0.2s;
+  font-weight: 700;
+}
+
+#header #popup h4:first-child{
+  border-top-left-radius: 0.7rem;
+  border-top-right-radius: 0.7rem;
+}
+
+#header #popup h4:last-child{
+  border-bottom-left-radius: 0.7rem;
+  border-bottom-right-radius: 0.7rem;
+  color: var(--primary-red);
+}
+
+#header #popup h4:hover{
+  background-image: linear-gradient(40deg, var(--primary-yellow) 10% , var(--primary-green-yellow), var(--primary-orange));
+  box-shadow:0 0 4px 4px #aaa ;
+}
+
+#header #popup h4:not(:last-child){
+  border-bottom: 2px solid var(--primary-green);
+}
+
+#header #popup h4 a{
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+}
+
+/*header banner*/
+
+#header #banner {
+  position: relative;
+  width: 100%;
+  backdrop-filter: blur(10px) ;
+}
+
+#header #banner > h1.title,h2.subtitle {
+  position: absolute;
+  color: #f0f0f0;
+  text-align: center;
+  width: 100%;
+  backdrop-filter: blur(20px);
+}
+
+#header #banner h1 {
+  top:20%;
+  font-size: 9vw;
+}
+
+#header #banner h2 {
+  bottom:20%;
+  font-size: 5vw;
+}
+
+#header #banner span {
+  border: 2px solid #f0f0f0;
+  padding: 0 2rem;
+}
+
+#header #banner img{
+  width: 100%;
+}
+
+/* ------------ UserAdminAuth Section------------ */
+#useradminauth {
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+#useradminauth .backimage {
+  height: 100%;
+  width: 100%;
+  top: 0;
+  position: absolute;
+}
+
+#useradminauth div.backdrop {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  position: relative;
+  flex-direction: row-reverse;
+  top: 0;
+  background-color : rgba(240,240,240,0.5);
+}
+
+#useradminauth div.backdrop div.row{
+  width: 35%;
+  display: block;
+}
+
+#useradminauth div.backdrop div.row div.heading {
+  margin-bottom: 1rem;
+}
+#useradminauth div.backdrop div.row div.heading h4.title {
+  text-align: center;
+}
+
+#useradminauth div.backdrop div.row div.body div.field{
+  position: relative;
+}
+
+#useradminauth div.backdrop div.row div.body div.auth {
+  margin-top: 5rem;
+  margin-bottom: 1rem;
+}
+
+#useradminauth div.backdrop div.row div.body div.field input {
+  display: block;
+  margin: 2rem 0;
+  padding-top: 2rem;
+  background-color: transparent;
+  border-top: none;
+  border-right: none;
+  outline: none;
+  border-left: none;
+  border-bottom: 4px solid transparent;
+  font-size: 2rem;
+  width: 70%;
+  transition: border 0.2s;
+  position:relative ;
+}
+#useradminauth div.backdrop div.row div.body div.field label {
+  position: absolute;  
+  opacity: 0;
+  color: var(--primary-dark-blue);
+  top: 10px;
+  transition: top 0.2s;
+}
+#useradminauth div.backdrop div.row div.body div.field input:focus + label {
+  font-weight: bold;
+  top:0px;
+  opacity: 1;
+  font-size: 1.6rem;
+  color:var(--primary-blue)
+}
+
+#useradminauth div.backdrop div.row div.body input:focus {
+  border-bottom: 4px solid var(--primary-blue) !important; 
+}
+
+#useradminauth div.backdrop div.row div.body input::placeholder {
+  color: var(--secondary-dark-blue);
+  font-size: 2rem;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+  font-weight: 700;
+}
+
+div.backdrop div.row div.body input:focus::placeholder {
+  opacity: 0 !important;
+}
+
+#useradminauth div.backdrop div.row div.body button {
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+
+#useradminauth button.type1 span.icon {
+  color: black;
+}
+
+#useradminauth button.type1:hover span.background {
+  width: 25%;
+}
+
+/* ------------Main section------------ */
+#main .mycard{
+height: 50rem;
+padding: 2rem;
+}
+#main .mycard .content{
+  border: 3px solid var(--primary-grey);
+  border-radius: 5px;
+  width: 100%;
+  height: 100%;
+  background-size: 100%;
+  background-position-y: 30%;
+  background-position-x: 0%;
+  background-repeat: no-repeat;
+  transition: background-size 0.3s;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+#main .mycard a:hover{
+  text-decoration: none;
+}
+#main .mycard .content:hover {
+  background-size: 130%;
+  background-position-x: 60%;
+  background-position-y: 60%;
+  box-shadow: 0 0 40px 10px #aaa ;
+}
+#main .mycard .content .background {
+  position: absolute;
+  top: 0;
+  left:0;
+  background-color: var(--primary-blue);
+  width: 100%;
+  height: 100%;
+  opacity:0 ;
+  transition: opacity 0.3s;
+}
+#main .mycard .content .background span {
+  position: relative;
+  display: block;
+  text-align: center;
+  top: 42%;
+  color:var(--secondary-dark-blue);
+  font-size: 4rem;
+}
+#main .mycard .content:hover .background {
+  opacity: 0.75;
+}
+#main .mycard .content .title{
+  width: 100%;
+  height: 20%;
+  background-color: var(--primary-grey);
+  color: var(--primary-orange);
+  display: flex;
+  transition: opacity 0.2s;
+}
+#main .mycard .content:hover .title {
+  opacity: 0;
+}
+#main .mycard .content .title h4{
+  text-align: center;
+  width:80%;
+  display: inline-block;
+  margin: auto;
+}
+#main .mycard .content .title div.rating{
+  width: 20%;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+}
+#main .mycard .content .title div.rating span{
+  font-size:2rem;
+  color:var(--primary-yellow);
+}
+#main .mycard .content .title div.rating span.text{
+  font-size:2.2rem;
+  margin-right: 4px;
+  color:black
+}
+#main .mycard .content div.price{
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 8%;
+  transition: opacity 0.2s;
+}
+
+#main .mycard .content:hover div.price {
+  opacity: 0;
+}
+
+#main .mycard .content div.price h4{
+  background-color: var(--primary-green-yellow);
+  display: inline-flex;
+  font-size: 2rem;
+  width: 40%;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  color: white;
+}
+
+#main .mycard .content div.price h4:first-child{
+  background-color: var(--primary-grey);
+  text-transform: uppercase;
+  width: 60%;
+  color: var(--primary-blue);
+}
+
+/* ------------Product Page------------ */
+
+/* Gallery */
+#gallery #currdiv {
+  z-index: -1 ;
+}
+
+#gallery #scrolldiv {
+  overflow: scroll;
+}
+
+#gallery #scrolldiv div {
+  box-sizing: border-box;
+}
+
+#gallery #scrolldiv div.selected {
+  border: 2px solid var(--primary-dark-blue);
+}
+
+@media screen and (max-width:576px) {
+  #gallery #scrolldiv{
+    flex-wrap: nowrap;
+  }
+}
+
+/* Actions */
+#actions{
+  padding-top:30px;
+}
+
+#actions div.list {
+  position: relative;
+  padding: 1rem ;
+  box-shadow: 0 0 4px 1px #aaa ;
+  margin: 2rem;
+  border-radius: 5px;
+  margin-top: 30px;
+}
+
+#actions div.list span{
+  display: inline-block;
+  position: absolute;
+  top: -1rem;
+  left: -1rem;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 5px;
+  padding: 2rem;
+  background-image: linear-gradient(40deg, var(--primary-green-yellow) 10% , var(--primary-green));
+  color: white;
+  font-weight: 900;
+  font-size: 2rem;
+}
+
+#actions div.list p{
+  font-size: 2rem;
+  display: inline-block;
+  padding-left: 5rem;
+}
+
+#actions div.rating span.star-icon{
+  font-size: 4rem ;
+  font-weight: 900;
+  color: white;
+  text-shadow: 0px 0px 2px black;
+}
+#actions div.rating span.solid{
+  color: var(--primary-yellow);
+}
+#actions div.rating p{
+  display: inline-block;
+  font-size: 3rem;
+  margin-left: 2rem;
+}
+
+#actions div.btndiv {
+  display: flex;
+  flex-direction: column;
+}
+
+#actions div.btndiv button {
+  margin: 1rem;
+}
+
+#actions div.btndiv button#removefromcart {
+  border-color:var(--primary-red);
+}
+#actions div.btndiv button#removefromcart:hover {
+  box-shadow: 0px 0px 4px 1px var(--primary-red);
+}
+
+#actions div.btndiv button#addtocart {
+  border-color:var(--primary-green);
+}
+#actions div.btndiv button#addtocart:hover {
+  border-color:var(--primary-blue);
+  box-shadow: 0px 0px 4px 1px var(--primary-blue);
+}
+/* Description */
+#description {
+  font-size: 1.8rem;
+  margin: 5rem 0;
+  box-shadow: 0 0 4px 1px #aaa ;
+  padding : 5rem
+}
+
+/* review */
+#review div.rating span.star-icon{
+  font-size: 4rem ;
+  font-weight: 900;
+  color: white;
+  text-shadow: 0px 0px 2px black;
+}
+#review div.rating span.solid{
+  color: var(--primary-yellow);
+}
+#review div.rating span:hover{
+  cursor: pointer;
+}
+#review div.review textarea{
+  border: 2px solid var(--primary-dark-blue);
+  font-size: 2rem;
+  outline: none;
+}
+

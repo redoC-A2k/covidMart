@@ -1,16 +1,17 @@
-import React, { Component } from 'react';
+import React, {useEffect } from 'react';
 import { connect } from "react-redux";
-import { PageHeader, Row, Button, Rate, Col, Divider, Spin, Badge, } from 'antd';
-import styles from "./Product.module.css";
 import { fetchAProduct, giveRating } from "../redux/ActionCreators/fetchAProduct"
 import { incrementProductInCart } from "../redux/ActionCreators/incrementProductInCart";
 import { addProductInCart } from "../redux/ActionCreators/addproductincart";
-import { PlusOutlined, MinusOutlined, ShoppingCartOutlined } from '@ant-design/icons';
-import Header from "../components/Header"
 import { fetchcart } from '../redux/ActionCreators/fetchCart';
 import { deleteProductFromCart } from '../redux/ActionCreators/deleteProductFromCart';
-import { Link } from 'react-router-dom';
 import { fetchUserdata } from '../redux/ActionCreators/fetchUserdata';
+import { useState } from 'react';
+import Gallery from '../components/Gallery';
+import Actions from '../components/Actions';
+import Description from '../components/Descriptions';
+import Review from '../components/Review';
+
 const mapStateToProps = state => {
   return {
     myproduct: state.myproduct,
@@ -18,11 +19,9 @@ const mapStateToProps = state => {
     userdata: state.user
   };
 }
-let myproductId;
-let myproductTitle;
 const mapDispatchToProps = dispatch => {
   return {
-    fetchAProduct: () => { dispatch(fetchAProduct()) },
+    fetchAProduct: (productId) => { dispatch(fetchAProduct(productId)) },
     addProductInCart: (productId, price, myproductTitle) => { dispatch(addProductInCart(productId, price, myproductTitle)) },
     updateProductInCart: (productId, quantityno, price, myproductTitle) => { dispatch(incrementProductInCart(productId, quantityno, price, myproductTitle)) },
     deleteProductFromCart: (userId, productId) => { dispatch(deleteProductFromCart(userId, productId)) },
@@ -32,35 +31,52 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
+function Product(props){
+  let productId=props.location.pathname.split("/")[2];
+  const [showcartdiv, setShowCartDiv] = useState(true);
+  const [inputquantity, setShowInputQuantity] = useState(0)
+  const [showbadge,setShowBadge ] = useState(false)
+  const [bool, setBool] = useState(false)
 
-class Product extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showcartdiv: true,
-      inputquantity: 0,
-      showbadge: false,
-      bool: false
-    }
-  }
+  useEffect(()=>{
+    props.fetchCart();
+    props.fetchAProduct(productId)
+    props.fetchUserdata(localStorage.getItem("userId"))
+  },[])
 
-  componentDidMount() {
-    this.props.fetchCart()
-    this.props.fetchAProduct()
-    this.props.fetchUserdata(localStorage.getItem("userId"))
-    console.log("sending request")
-  }
+  return(
+    <section id="product" className='container'>
+      {
+        (props.myproduct!=null&&props.mycart!=null&&props.userdata!=null)
+        ?
+        (<div className='row'>
+          <div className="col-sm-7">
+            <Gallery product={props.myproduct}/>
+          </div>
+          <div className="col-sm-5">
+            <Actions user={props.userdata} product={props.myproduct} addToCart={props.addProductInCart} deleteFromCart={props.deleteProductFromCart}/>
+          </div>
+          <div className="col-12">
+            <Description product={props.myproduct}/>
+          </div>
+          <div className="col-12">
+            <Review productId={props.myproduct._id} userId={props.userdata._id} giveRating={props.giveRating}/>
+          </div>
+        </div>)
+        :
+        (<div>Loading...</div>)
+      }
+    </section>
+  )
 
-  myRate = 0
-
-  render() {
+  /*render() {
     let myproduct = this.props.myproduct;
     let cartLength;
 
     //code for updating myRating
     if (this.props.userdata) {
       this.props.userdata.myRatings.map((eachRating, ind) => {
-        if (eachRating.productId === localStorage.getItem("_id")) {
+        if (eachRating.productId === this.productId) {
           this.myRate = eachRating.value
         }
       })
@@ -107,7 +123,7 @@ class Product extends Component {
         if (this.props.mycart[0].productId !== "empty")
           this.setState({ showbadge: true })
         this.props.mycart.map((cartelem, ind) => {
-          if (localStorage.getItem("_id") === cartelem.productId) {
+          if (this.productId=== cartelem.productId) {
             console.log("matched product")
             console.log("quantity: " + cartelem.quantity)
             new Promise((res, req) => {
@@ -148,13 +164,13 @@ class Product extends Component {
         myproductTitle = myproduct.title
         console.log(myproductId + "and price" + price)
         return (
-          <Row>
-            <div style={{ display: "none" }}><Header /></div>
-            <Row style={{ width: "100%" }}>
-              {myproduct ? (<PageHeader className={styles.pageClass} onBack={() => { this.props.history.goBack() }} title={myproduct.title}
-                extra={[<Link to="/cart"><Badge count={(this.state.showbadge) ? this.props.mycart.length : 0} ><ShoppingCartOutlined style={{ fontSize: "2em" }} /></Badge></Link>]} />) : (<div>failed to load product</div>)}
-            </Row>
-            <Row style={{ width: "100%" }}>
+          <section id="product">
+            //<div style={{ display: "none" }}><Header /></div> 
+            <div className='row' style={{ width: "100%" }}>
+            // {myproduct ? 
+            (<PageHeader className={styles.pageClass} onBack={() => { this.props.history.goBack() }} title={myproduct.title} extra={[<Link to="/cart"><span count={(this.state.showbadge) ? this.props.mycart.length : 0} ><ShoppingCartOutlined style={{ fontSize: "2em" }} /></span></Link>]} />) : (<div>failed to load product</div>)} 
+            </div>
+            <div style={{ width: "100%" }}>
               {
                 myproduct.images.map((image, ind) => {
                   return (
@@ -170,22 +186,23 @@ class Product extends Component {
                   )
                 })
               }
-            </Row>
-            <Row style={{ display: "block-flex", flexWrap: "wrap", width: "60vw", marginRight: "auto", marginLeft: "auto", justifyContent: "space-between" }}>
+            </div>
+            <div className='row' style={{ display: "block-flex", flexWrap: "wrap", width: "60vw", marginRight: "auto", marginLeft: "auto", justifyContent: "space-between" }}>
               {myproduct.features.map((feature, ind) => {
                 return (<div className={styles.feature} key={ind}>{feature}</div>)
               })}
-            </Row>
-            <Divider />
-            <Row style={{ width: "60vw", marginTop: "10px", marginLeft: "auto", marginRight: "auto" }}>
-              <Col span={12}>
-                <Rate defaultValue={myproduct.rating.value} allowHalf disabled style={{ fontSize:"3vw" ,marginLeft: "auto", marginRight: "auto" }} />
+            </div>
+            <hr/>
+            <div className='row' style={{ width: "60vw", marginTop: "10px", marginLeft: "auto", marginRight: "auto" }}>
+              <div className='col-6'>
+                Rating element here
+                // <Rate defaultValue={myproduct.rating.value} allowHalf disabled style={{ fontSize:"3vw" ,marginLeft: "auto", marginRight: "auto" }} /> 
                 <h3>({myproduct.rating.count})</h3>
-              </Col>
-              <Col span={12}>
+              </div>
+              <div className='col-6'>
                 <div id="cartdiv">
                   {this.state.showcartdiv ?
-                    (<Button block onClick={() => {
+                    (<button block onClick={() => {
                       this.setState({ showcartdiv: false });
                       this.setState({ showbadge: true });
                       new Promise(
@@ -203,9 +220,9 @@ class Product extends Component {
                         })
                     }} className={styles.addbtn}>
                       Add to Cart
-                    </Button>) :
+                    </button>) :
                     (<div style={{ display: "flex", justifyContent: "space-between", width: "50%", marginLeft: "auto", marginRight: "auto", height: "7vh" }}>
-                      <PlusOutlined onClick={() => {
+                      <span onClick={() => {
                         new Promise(
                           (res, rej) => {
                             this.setState((State) => {
@@ -219,14 +236,14 @@ class Product extends Component {
                             this.props.updateProductInCart(myproductId, this.state.inputquantity, price, myproductTitle)
                           })
                       }}
-                        style={{ color: "#1890ff", border: "2px solid #1890ff", fontSize: "3.5em" }} />
+                        style={{ color: "#1890ff", border: "2px solid #1890ff", fontSize: "3.5em" }}>Plus outlined</span>
                       <input style={{ fontSize: "2em", width: "20%", marginBottom: "0px", border: "none" }} readOnly value={this.state.inputquantity} min={1} max={this.props.myproduct.quantity} type="text" />
-                      <MinusOutlined onClick={() => {
+                      <span onClick={() => {
                         if ((this.state.inputquantity - 1) === 0) {
                           if (this.props.mycart[0].productId !== "empty")
                             this.setState({ showbadge: false })
                           this.setState({ showcartdiv: true })
-                          this.props.deleteProductFromCart(localStorage.getItem("userId"), localStorage.getItem("_id"))
+                          this.props.deleteProductFromCart(localStorage.getItem("userId"), this.productId)
                         }
                         else {
                           new Promise(
@@ -242,50 +259,51 @@ class Product extends Component {
                               this.props.updateProductInCart(myproductId, this.state.inputquantity, price, myproductTitle)
                             })
                         }
-                      }} style={{ border: "2px solid #1890ff", color: "#1890ff", fontSize: "3.5em" }} />
+                      }} style={{ border: "2px solid #1890ff", color: "#1890ff", fontSize: "3.5em" }}>Minus outlined </span>
                     </div >)
                   }
                 </div>
-              </Col>
-            </Row>
-            <Divider />
-            <Row style={{ width: "60vw", marginLeft: "auto", marginRight: "auto" }}>
-              <Col span={24}>
-                <h1 style={{ width: "100%" }}>
+              </div>
+            </div>
+            <hr/>
+            <div className='row' style={{ width: "60vw", marginLeft: "auto", marginRight: "auto" }}>
+              <div className='col'>
+                <h1>
                   Description
-              </h1>
-              </Col>
+                </h1>
+              </div>
               <ul style={{ listStyleType: "disc" }}>
                 {myproduct.description.map((desc, ind) => {
                   return <li key={ind}><h2>{desc}</h2></li>
                 })}
               </ul>
-            </Row>
-            <Row style={{ width: "60vw", marginLeft: "auto", marginRight: "auto",marginBottom:"4px" }}>
-              <Col span={16}>
+            </div>
+            <div className='row'>
+              <div className='col-5' span={16}>
                 <h1>Give your Rating</h1>
-              </Col>
-              <Col span={8}>
-                <Rate style={{ fontSize: "2.5em" }} onChange={(value) => {
-                  console.log("clicked", localStorage.getItem("_id"), localStorage.getItem("userId"), value)
-                  this.props.giveRating(localStorage.getItem("_id"), localStorage.getItem("userId"), value)
-                }} defaultValue={this.myRate} />
-              </Col>
-            </Row>
-          </Row>
+              </div>
+              <div className='col-7'>
+                //<span style={{ fontSize: "2.5em" }} onChange={(value) => {
+                //  console.log("clicked", localStorage.getItem("_id"), localStorage.getItem("userId"), value)
+                //  this.props.giveRating(localStorage.getItem("_id"), localStorage.getItem("userId"), value)
+                // }} defaultValue={this.myRate} />
+                Rating here
+              </div>
+            </div>
+          </section>
         )
       }
       else {
         return (
           <div style={{ display: "flex", justifyContent: "center" }}>
             <div style={{ display: "none" }}><Header /></div>
-            <Spin style={{ position: "relative", marginTop: "40vh" }} size="large" tip="Loading..." />
+            <span style={{ position: "relative", marginTop: "40vh" }}>Loading ... span</span>
           </div>
         )
       }
     }
     return <ProductComponent />
-  }
+  }*/
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Product)

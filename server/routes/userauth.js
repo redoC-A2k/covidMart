@@ -20,7 +20,7 @@ router.post("/signup", (req, res) => {
         name: name,
         email: email,
         password: hashedpassword,
-        cart:[{productId:"empty"}],
+        cart:[],
         myRatings:[{productId:"",value:0}]
       });
       console.log(user)

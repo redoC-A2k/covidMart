@@ -39,8 +39,9 @@ router.get("/allproducts", requireLogin, (req, res) => {
 //   }
 // });
 router.post("/filter",requireLogin, (req, res) => {
-  const { price, category, noOfProducts } = req.body;
+  const { price, category } = req.body;
   let filter ;
+  console.log("filter reached")
   if(category==="all"){
     filter={
       price:{$lt:price}
@@ -53,7 +54,6 @@ router.post("/filter",requireLogin, (req, res) => {
   }
   
   Product.find(filter)
-    .limit(noOfProducts)
     .then((products) => {
       res.json(products);
     }).catch(err => {

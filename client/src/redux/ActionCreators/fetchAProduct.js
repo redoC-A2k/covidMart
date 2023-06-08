@@ -1,6 +1,6 @@
 import { FETCH_A_PRODUCT } from "../types";
 import { FETCH_USER } from "../types";
-export const fetchAProduct = () => {
+export const fetchAProduct = (productId) => {
   return (dispatch) => {
     fetch("http://localhost:4000/product", {
       method: "post",
@@ -9,7 +9,7 @@ export const fetchAProduct = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        _id: localStorage.getItem("_id"),
+        _id: productId, 
       }),
     })
       .then((res) => res.json())

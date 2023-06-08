@@ -7,7 +7,7 @@ const User = require("../models/userModel");
 module.exports = (req,res,next)=>{
     const {authorization} = req.headers
     if(!authorization){
-        return res.status(401).json({error:"jwtNotMatched"})
+        return res.status(400).json({error:"jwtNotMatched"})
     }
     const token = authorization.replace("Bearer ","")
 
@@ -17,8 +17,11 @@ module.exports = (req,res,next)=>{
             return res.status(401).json({error:err.message})
         }
         const _id = payload._id;
-        User.findById(_id).then((userdata) => {
+        User.findById(_id,(err,userdata) => {
+            if(!userdata)
+                return res.status(401).json({error:"User not found in database"})
             req.user = userdata ;
+            console.log("next stage")
             next();
         })
     })

@@ -6,6 +6,7 @@ export const fetchcart = () => {
       method: "post",
       headers: {
         "Content-Type": "application/json",
+        authorization: "Bearer " + localStorage.getItem("jwt"),
       },
       body: JSON.stringify({
         userId: userId,
@@ -14,7 +15,14 @@ export const fetchcart = () => {
     .then(res => res.json())
     .then(data => {
       console.log(data)
-        dispatch({type:FETCH_CART,payload:data.Cart})
+        if (data.error) {
+          console.log(data.error)
+          alert(data.error)
+          window.location="/auth"
+        }
+        else{
+          dispatch({type:FETCH_CART,payload:data.Cart})
+        }
     })
   };
 };

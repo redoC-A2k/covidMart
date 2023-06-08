@@ -5,6 +5,7 @@ export const deleteProductFromCart = (userId,productId) => {
       method: "post",
       headers: {
         "Content-Type": "application/json",
+        authorization: "Bearer " + localStorage.getItem("jwt"),
       },
       body: JSON.stringify({
         userId: userId,

@@ -1,22 +1,29 @@
-import React, { Component } from "react"
+import React from "react"
+import { useLocation } from "react-router-dom";
 import back from '../assets/images/back5croppednew.jpg'
 import Navbar from "./Navbar";
-class Header extends Component {
-  render() {
-
-    return (
-      <div className="header">
-        <Navbar toggleBool={(value)=>{this.props.toggleBool(value)}} applyFilterPrice={(price)=>{this.props.applyFilterPrice(price)}} applyFilterCategory={(category)=>{this.props.applyFilterCategory(category)}}/>
-        <div>
-        <div style={{minWidth:"15vh",display:"flex",justifyContent:"center"}}>
-        <div style={{display:"block",fontSize:"13vh",position:"absolute",top:"10px",color:"white"}}>We Care for you </div>
-        <div style={{display:"block",fontSize:"3vh",position:"absolute",top:"17vh",color:"white"}}>CovidMart </div>
+import Popup from "./Popup";
+import Sidebar from "./Sidebar";
+function Header(props){
+  const location = useLocation();
+  return (
+    <section id="header">
+      <Navbar 
+        toggleBool={(value) => { props.toggleBool(value) }} 
+        applyFilterPrice={(price) => { props.applyFilterPrice(price) }} 
+        applyFilterCategory={(category) => { props.applyFilterCategory(category) }} 
+      />
+      <Popup/>
+      <Sidebar/>
+      {location.pathname==='/'?(<div>
+        <div id="banner">
+          <h1 className="title"><span>We Care for you</span></h1>
+          <h2 className="subtitle"><span>CovidMart</span></h2>
+          <img src={back} alt="backimg" />
         </div>
-        <img style={{ width:"100%",height:"30vh"}} src={back} alt="backimg" />
-        </div>
-      </div>
-    );
-  }
+      </div>):(<div></div>)}
+    </section>
+  );
 }
 
 export default Header;

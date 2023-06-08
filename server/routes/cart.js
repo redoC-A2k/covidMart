@@ -2,7 +2,9 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/userModel");
 const { Promise } = require("mongoose");
-router.post("/addToCart", (req, res) => {
+const requireLogin = require("../middleware/requireLogin");
+
+router.post("/addToCart",requireLogin, (req, res) => {
   const { userId, productId, quantity, title, price } = req.body;
   const cartelem = {
     productId: productId,
@@ -13,19 +15,23 @@ router.post("/addToCart", (req, res) => {
   User.findById(userId, (err, savedUser) => {
     if (err) console.log("error in cart.js addToCart" + err);
     else {
-      if(savedUser.cart[0].productId === "empty"){
-        savedUser.cart.pop();
+      let isProductInCart = false;
+      savedUser.cart.map((cartItem)=>{
+        if(cartItem.productId == cartelem.productId)
+          isProductInCart = true;
+      })
+      if(!isProductInCart){
+        savedUser.cart.push(cartelem);
+        res.json(cartelem)
+        savedUser.save();
       }
-      savedUser.cart.push(cartelem);
-      res.json(cartelem)
-      savedUser.save();
     }
   })
 });
 
 let newCart
 
-router.post("/updateCart", (req, res) => {
+router.post("/updateCart",requireLogin, (req, res) => {
   const { userId, productId, quantity, title, price } = req.body;
   User.findById(userId, (err, savedUser) => {
     if (err) console.log("error in cart.js updateCart");
@@ -50,29 +56,29 @@ router.post("/updateCart", (req, res) => {
   });
 });
 
-router.post("/deleteProductFromCart",(req,res)=>{
+router.post("/deleteProductFromCart", requireLogin, (req,res)=>{
   const {userId,productId} = req.body;
+  console.log("delete product from cart "+userId)
   User.findById(userId,(err,savedUser)=>{
     if(err){
       console.log("error in deleteProductFromCart in Cart.js"+err)
     }
     else{
+      // console.log(savedUser)
       savedUser.cart = savedUser.cart.filter((cartelem)=>{
         return cartelem.productId !== productId
       })
-      if(savedUser.cart.length === 0){
-        savedUser.cart.push({productId:"empty"})
-      }
       savedUser.save()
       res.json({Cart:savedUser.cart})
     }
   })
 })
 
-router.post("/getCart",(req,res)=>{
+router.post("/getCart", requireLogin, (req,res)=>{
     const {userId} = req.body
+    console.log(userId)
     User.findById(userId,(err,savedUser)=>{
-        if(err){
+        if(!savedUser){
             console.log("some error happened in cart.js in getCart")
         }
         else{

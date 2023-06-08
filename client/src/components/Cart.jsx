@@ -1,8 +1,8 @@
-import React, { Component } from 'react'
-import styles from "./cart.module.css"
-import { Row, Col, Button, Divider } from 'antd';
+import React, { Component, useState } from 'react'
+import { useEffect } from 'react';
+// import { Row, Col, Button, Divider } from 'antd';
 import { connect } from "react-redux";
-import { DeleteOutlined } from '@ant-design/icons';
+// import { DeleteOutlined } from '@ant-design/icons';
 import { deleteProductFromCart } from '../redux/ActionCreators/deleteProductFromCart'
 import { fetchcart } from '../redux/ActionCreators/fetchCart';
 import Header from './Header';
@@ -17,25 +17,19 @@ const mapDispatchToProps = dispatch => {
         deleteProductFromCart: (userId, productId) => { dispatch(deleteProductFromCart(userId, productId)) }
     }
 }
-class Cart extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            totalprice: 0
-        }
-    }
-    componentDidMount() {
+function Cart(props) {
+    const [totalprice,setTotalPrice] = useState(0)
+    useEffect(()=>{
         console.log("fetching ..")
-        this.props.fetchcart()
+        props.fetchcart()
         //razorpay script loading
         const script = document.createElement("script");
         script.src = "https://checkout.razorpay.com/v1/checkout.js";
         script.async = true;
         document.body.appendChild(script);
+    },[])
 
-    }
-
-    openPayModal = (amount, fetchcart, setTotalpricezero) => {
+    let openPayModal = (amount, fetchcart, setTotalpricezero) => {
         amount = amount * 100;
         amount = Math.ceil(amount)
         let options = {
@@ -87,45 +81,37 @@ class Cart extends Component {
             })
     }
 
-    setTotalpricezero = () => {
-        console.log("state saved")
-        new Promise((res, req) => {
-            this.setState((state) => {
-                res();
-                return { totalprice: 0 }
-            })
-        })
-            .then(() => {
-                window.location.reload()
-            })
+    let setTotalpricezero = () => {
+        setTotalPrice(0
+            // window.location.reload()
+        )
     }
-    render() {
-        let sum = 0;
         let MyCart = () => {
-            if (this.props.mycart && this.props.mycart[0].productId != "empty") {
-                let myproductsarray = this.props.mycart.map((eachProduct, ind) => {
+            let sum = 0;
+            if (props.mycart && props.mycart[0].productId != "empty") {
+                let myproductsarray = props.mycart.map((eachProduct, ind) => {
                     sum = sum + eachProduct.quantity * eachProduct.price
-                    if ((this.props.mycart.length - 1 === ind) && (this.state.totalprice === 0)) {
-                        this.setState({ totalprice: sum })
+                    if ((props.mycart.length - 1 === ind) && (totalprice === 0)) {
+                        setTotalPrice({ totalprice: sum })
                     }
                     return (
-                        <Row key={ind} style={{ width: "100%" }}>
-                            <Col span={11}>
+                        <div className="row" key={ind} style={{ width: "100%" }}>
+                            <div className="col-4">
                                 {eachProduct.title}
-                            </Col>
-                            <Col span={4}>
+                            </div>
+                            <div className="col-2">
                                 {eachProduct.quantity}
-                            </Col>
-                            <Col span={4}>
+                            </div>
+                            <div className='col-2'>
                                 {eachProduct.price}
-                            </Col>
-                            <Col span={4}>
+                            </div>
+                            <div className='col-2'>
                                 {eachProduct.quantity * eachProduct.price}
-                            </Col>
-                            <Col span={1}>
-                                <DeleteOutlined onClick={() => { this.props.deleteProductFromCart(localStorage.getItem("userId"), eachProduct.productId) }} />
-                            </Col>
-                        </Row>
+                            </div>
+                            <div className='col-2'>
+                                <span onClick={() => { props.deleteProductFromCart(localStorage.getItem("userId"), eachProduct.productId) }} > Delete </span>
+                            </div>
+                        </div>
                     )
                 })
                 return myproductsarray
@@ -134,45 +120,43 @@ class Cart extends Component {
                 return (<h4 style={{ textAlign: "center", width: "100%" }}>cart is empty</h4>)
             }
         }
-        // if((this.props.mycart.length-1===ind)&&(this.state.totalprice===0))
+        // if((props.mycart.length-1===ind)&&(state.totalprice===0))
         // totalprice=sum
-        // // this.setState({totalprice:sum})
+        // // setState({totalprice:sum})
         return (
-            <Row style={{ width: "100%" }}>
-                <div style={{ display: 'none' }}>
+            <div className='row'style={{ width: "100%" }}>
+                {/*</div><div style={{ display: 'none' }}>
                     <Header />
+        </div>*/}
+                <div className='col-12'>
+                    <h1 style={{ textAlign: "center" }}>Cart</h1>
                 </div>
-                <Row style={{ width: "100%" }}>
-                    <Col span={24}>
-                        <h1 style={{ textAlign: "center" }}>Cart</h1>
-                    </Col>
-                </Row>
-                <Row style={{ width: "100%" }}>
-                    <Col span={11}>
+                <div className='ro' style={{ width: "100%" }}>
+                    <div className='col-4'>
                         <h3>Product title</h3>
-                    </Col>
-                    <Col span={4}>
+                    </div>
+                    <div className='col-2'>
                         <h3>Product qunatity</h3>
-                    </Col>
-                    <Col span={4}>
+                    </div>
+                    <div className='col-2'>
                         <h3>Product price</h3>
-                    </Col>
-                    <Col span={4}>
+                    </div>
+                    <div className='col-2'>
                         <h3>Total price</h3>
-                    </Col>
-                </Row>
-                <Row style={{ width: "100%" }}>
+                    </div>
+                </div>
+                <div className='row' style={{ width: "100%" }}>
                     <MyCart />
-                </Row>
-                <Divider />
-                <Row style={{ width: "100%", justifyContent: "center" }}>
-                    <Button onClick={() => {
-                        this.openPayModal(this.state.totalprice, this.props.fetchcart, this.setTotalpricezero)
-                    }} type="primary">Proceed to pay {this.state.totalprice}</Button>
-                </Row>
-            </Row>
+                </div>
+                <hr />
+                <div className='row' style={{ width: "100%", justifyContent: "center" }}>
+                    <button onClick={() => {
+                        console.log(totalprice)
+                        openPayModal(totalprice, fetchcart, setTotalpricezero)
+                    }}>Proceed to pay </button>
+                </div>
+            </div>
         )
-    }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cart);

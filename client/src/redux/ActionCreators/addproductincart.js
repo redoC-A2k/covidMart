@@ -6,6 +6,7 @@ export const addProductInCart = (productId, price, title) => {
       method: "post",
       headers: {
         "Content-Type": "application/json",
+        authorization: "Bearer " + localStorage.getItem("jwt"),
       },
       body: JSON.stringify({
         userId: userId,
