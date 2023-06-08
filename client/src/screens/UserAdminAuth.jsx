@@ -3,7 +3,7 @@ import { Link, useHistory } from "react-router-dom";
 import Img from "../assets/images/backimage.jpg";
 import Header from "../components/Header";
 
-
+// TODO: Make responsive
 export default function UserAdminAuth() {
   const [showname, setShowname] = useState(false)
   const [isAdmin, setIsAdmin] = useState(false)
