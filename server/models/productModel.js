@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const mongoose_fuzzy = require("mongoose-fuzzy-searching")
 const productSchema = new mongoose.Schema({
     title: {
         type: String,
@@ -40,5 +41,10 @@ const productSchema = new mongoose.Schema({
     ]
 })
 
+// TODO: As this plugin has been added after all the products were already saved in the database,
+// So either clear products collection and repopulate it or add index
+productSchema.plugin(mongoose_fuzzy,{
+    fields:['title'],
+})
 const Products = mongoose.model("Product", productSchema)
 module.exports = Products;

@@ -1,4 +1,5 @@
-import React from "react"
+import React, { useState } from "react"
+import SearchResults from "./SearchResults";
 import { useLocation } from "react-router-dom";
 import back from '../assets/images/back5croppednew.jpg'
 import Navbar from "./Navbar";
@@ -6,14 +7,17 @@ import Popup from "./Popup";
 import Sidebar from "./Sidebar";
 function Header(props){
   const location = useLocation();
+  const [searchProducts, setSearchProducts] = useState([])
   return (
     <section id="header">
       <Navbar 
         toggleBool={(value) => { props.toggleBool(value) }} 
         applyFilterPrice={(price) => { props.applyFilterPrice(price) }} 
         applyFilterCategory={(category) => { props.applyFilterCategory(category) }} 
+        setSearchResult = {(result)=>setSearchProducts(result)}
       />
       <Popup/>
+      <SearchResults searchProducts={searchProducts} />
       <Sidebar/>
       {location.pathname==='/'?(<div>
         <div id="banner">

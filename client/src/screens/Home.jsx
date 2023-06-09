@@ -19,7 +19,6 @@ const mapDispatchToProps = dispatch => {
 
 function Home(props) {
     const [isLoading,setIsLoading] = useState(true);
-    const [filterApplied,setFilterApplied] = useState(false);
     const [price,setPrice] = useState(4000);
     const [category,setCategory] = useState("all");
 
@@ -28,7 +27,7 @@ function Home(props) {
       window.location = ("http://localhost:3000/auth")
       alert("you are not logged in")
     }
-    console.log(props);
+    // console.log(props);
     // await this.props.fetchdata(this.state.noOfProducts)
     if(props.allproducts==null)
     props.applyFilter(price,category)

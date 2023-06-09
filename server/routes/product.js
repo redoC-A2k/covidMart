@@ -7,7 +7,7 @@ router.post("/product", requireLogin, (req, res) => {
   let { _id } = req.body;
   Product.findById(_id, (err, product) => {
     if (err) {
-      console.log("error in /product in product.js", err);
+      logger.error("error in /product in product.js", err);
     } else {
       res.json({product:product});
     }
@@ -16,10 +16,10 @@ router.post("/product", requireLogin, (req, res) => {
 
 router.post("/rating", (req, res) => {
   let { productId, userId, value } = req.body;
-  console.log(productId, userId, value);
+  logger.debug(productId, userId, value);
   Product.findById(productId, (err, product) => {
     if (err) {
-      console.log("error in /rating in product.js", err);
+      logger.error("error in /rating in product.js", err);
     } else {
       if (product.rating.length !== 0) {
         let userIdFound = false;
@@ -30,12 +30,12 @@ router.post("/rating", (req, res) => {
               userIdFound = true;
               eachrating.value = value;
               if (ind === ratingArrayLength - 1) {
-                console.log(product);
+                logger.debug(product);
                 resolve();
               }
               return eachrating;
             } else if (ind === ratingArrayLength - 1) {
-              console.log(product);
+              logger.debug(product);
               resolve();
             } else return eachrating;
           });

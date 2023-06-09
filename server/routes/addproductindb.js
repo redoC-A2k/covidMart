@@ -1,10 +1,11 @@
 const express = require("express");
+const logger = require("../services/logger")
 const router = express.Router()
 const Product = require("../models/productModel")
 
 router.post("/addproductindb", (req, res) => {
     const { title, urls, features, price, quantity, description } = req.body;
-    console.log(title, urls, features, price, quantity, description)
+    logger.debug(title, urls, features, price, quantity, description)
     const product = new Product({
         title: title,
         features: features,
@@ -16,7 +17,7 @@ router.post("/addproductindb", (req, res) => {
         images: urls
     }).save().then(() => {
         res.json({ message: "product details saved successfully" })
-    }).catch((err) => { console.log(err) })
+    }).catch((err) => { logger.error(err) })
 })
 
 module.exports = router;

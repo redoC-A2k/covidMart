@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require("../models/userModel");
 const { Promise } = require("mongoose");
 const requireLogin = require("../middleware/requireLogin");
+const logger = require("../services/logger")
 
 router.post("/addToCart",requireLogin, (req, res) => {
   const { userId, productId, quantity, title, price } = req.body;
@@ -13,7 +14,7 @@ router.post("/addToCart",requireLogin, (req, res) => {
     price: price,
   };
   User.findById(userId, (err, savedUser) => {
-    if (err) console.log("error in cart.js addToCart" + err);
+    if (err) logger.error("error in cart.js addToCart" + err);
     else {
       let isProductInCart = false;
       savedUser.cart.map((cartItem)=>{
@@ -34,7 +35,7 @@ let newCart
 router.post("/updateCart",requireLogin, (req, res) => {
   const { userId, productId, quantity, title, price } = req.body;
   User.findById(userId, (err, savedUser) => {
-    if (err) console.log("error in cart.js updateCart");
+    if (err) logger.error("error in cart.js updateCart");
     else {
       new Promise((resolve, rej) => {
          newCart = savedUser.cart.map((cartelem) => {
@@ -51,20 +52,19 @@ router.post("/updateCart",requireLogin, (req, res) => {
         savedUser.cart = newCart
         savedUser.save()
       })
-      .catch(err => console.log("error in updateCart ",err));
+      .catch(err => logger.error("error in updateCart ",err));
     }
   });
 });
 
 router.post("/deleteProductFromCart", requireLogin, (req,res)=>{
   const {userId,productId} = req.body;
-  console.log("delete product from cart "+userId)
+  logger.debug("delete product from cart "+userId)
   User.findById(userId,(err,savedUser)=>{
     if(err){
-      console.log("error in deleteProductFromCart in Cart.js"+err)
+      logger.error("error in deleteProductFromCart in Cart.js"+err)
     }
     else{
-      // console.log(savedUser)
       savedUser.cart = savedUser.cart.filter((cartelem)=>{
         return cartelem.productId !== productId
       })
@@ -76,10 +76,10 @@ router.post("/deleteProductFromCart", requireLogin, (req,res)=>{
 
 router.post("/getCart", requireLogin, (req,res)=>{
     const {userId} = req.body
-    console.log(userId)
+    logger.debug(userId)
     User.findById(userId,(err,savedUser)=>{
         if(!savedUser){
-            console.log("some error happened in cart.js in getCart")
+            logger.warn("some error happened in cart.js in getCart")
         }
         else{
             res.json({Cart:savedUser.cart})

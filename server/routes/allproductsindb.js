@@ -1,4 +1,5 @@
 const express = require("express");
+const logger = require("../services/logger")
 const router = express.Router();
 const Product = require("../models/productModel");
 const requireLogin = require("../middleware/requireLogin");
@@ -6,42 +7,15 @@ const requireLogin = require("../middleware/requireLogin");
 router.get("/allproducts", requireLogin, (req, res) => {
   Product.find()
     .then((products) => {
-      console.log("request recieved");
+      logger.debug("request recieved");
       res.json(products);
     })
-    .catch((err) => console.log('server error in get "products" ' + err));
+    .catch((err) => logger.error('server error in get "products" ' + err));
 });
 
-// router.post("/filterByPrice", requireLogin, (req, res) => {
-//   const { price } = req.body;
-//   Product.find().then((products) => {
-//     let filteredProducts = products.filter((product) => {
-//       return product.price < price;
-//     });
-//     res.json(filteredProducts);
-//   });
-// });
-
-// router.post("/filterByCategory", (req, res) => {
-//   const { category } = req.body;
-//   if (category === "all") {
-//     Product.find().then((products) => {
-//       res.json(products);
-//     });
-//   } else {
-//     Product.find().then((products) => {
-//       let filteredProducts = products.filter((product) => {
-//         // console.log(product.category)
-//         return product.category=== category;
-//       });
-//       res.json(filteredProducts);
-//     });
-//   }
-// });
 router.post("/filter",requireLogin, (req, res) => {
   const { price, category } = req.body;
   let filter ;
-  console.log("filter reached")
   if(category==="all"){
     filter={
       price:{$lt:price}
@@ -57,7 +31,23 @@ router.post("/filter",requireLogin, (req, res) => {
     .then((products) => {
       res.json(products);
     }).catch(err => {
-      console.log("error in /filter in allproductsindb.js",err)
+      logger.error("error in /filter in allproductsindb.js",err)
     })
 });
+
+// fuzzy search for product when user enters some text in search box  
+// referenced from here - https://stackoverflow.com/a/38427476
+function escapeRegex(text) {
+    return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+}
+router.put("/products/search/",requireLogin,async (req,res)=>{
+  let searchTxt = req.body.searchTxt;
+  const regex = new RegExp(escapeRegex(searchTxt), 'gi');
+  // logger.info(regex.source)
+  Product.find({
+    "title":regex
+  }).limit(8).then(products=>res.json(products))
+  .catch(err=>logger.error(err))
+})
+
 module.exports = router;

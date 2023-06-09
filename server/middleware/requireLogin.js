@@ -1,4 +1,5 @@
 const jwt = require("../node_modules/jsonwebtoken");
+const logger = require("../services/logger")
 const {JWT_SECRET} = require("../keys");
 const User = require("../models/userModel");
 // const mongoose = require("mongoose")
@@ -13,7 +14,7 @@ module.exports = (req,res,next)=>{
 
     jwt.verify(token,JWT_SECRET,(err,payload)=>{
         if(err){
-            console.log(err)
+            logger.error(err)
             return res.status(401).json({error:err.message})
         }
         const _id = payload._id;
@@ -21,7 +22,7 @@ module.exports = (req,res,next)=>{
             if(!userdata)
                 return res.status(401).json({error:"User not found in database"})
             req.user = userdata ;
-            console.log("next stage")
+            logger.debug("next stage")
             next();
         })
     })

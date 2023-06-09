@@ -12,20 +12,23 @@ const routercart = require("./routes/cart")
 const routeruser = require("./routes/user")
 const routerorder = require("./routes/order")
 const cors = require("cors")
+const logger = require("./services/logger")
 
 mongoose.connect(MONGOURI,{
     useNewUrlParser:true,
-    useUnifiedTopology:true
+    useUnifiedTopology:true,
+    useCreateIndex: true,
 });
 
+mongoose.Promise = global.Promise;
 mongoose.connection.on("connected", () => {
-  console.log("connected to mongo yeah !");
+  logger.info("connected to mongo yeah !");
 });
 
 mongoose.connection.on("error",()=>{
-    console.log("error connecting to mongo " ,)
+   logger.fatal("error connecting to mongo " ,)
 }).catch(err =>{
-  console.log("error is",err)
+  logger.fatal("error is",err)
 })
 
 app.use(cors())
@@ -40,6 +43,6 @@ app.use(routercart)
 app.use(routeruser)
 app.use(routerorder)
 app.listen(Port, () => {
-  console.log("server is running on ", Port);
+  logger.info("server is running on "+ Port);
 });
 

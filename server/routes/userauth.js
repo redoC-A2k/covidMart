@@ -1,4 +1,5 @@
 const express = require("express");
+const logger = require("../services/logger")
 const router = express.Router();
 const bcryptjs = require("bcryptjs");
 const User = require("../models/userModel");
@@ -7,7 +8,7 @@ const jwt = require("../node_modules/jsonwebtoken");
 
 router.post("/signup", (req, res) => {
   const { name, email, password } = req.body;
-  console.log(name, email, password);
+  logger.debug(name, email, password);
   if (!name) {
     return res.status(422).json({ error: "Enter all fields" });
   }
@@ -23,20 +24,20 @@ router.post("/signup", (req, res) => {
         cart:[],
         myRatings:[{productId:"",value:0}]
       });
-      console.log(user)
+      logger.debug(user)
       user
         .save()
         .then(() => {
-          console.log("saved successfully");
+          logger.info("saved successfully");
           res.json({ message: "ok" });
         })
         .catch((err) => {
-          console.log("error in saving", err);
+          logger.error("error in saving", err);
         });
     });
   });
 },err=>{
-  console.log("error in signup"+err)
+  logger.error("error in signup"+err)
 });
 
 router.post("/signin", (req, res) => {
@@ -48,13 +49,13 @@ router.post("/signin", (req, res) => {
     if (!savedUser) {
       return res.status(422).json({ error: "userNotExist" });
     }
-    console.log(savedUser)
+    logger.debug(savedUser)
     bcryptjs
       .compare(password, savedUser.password)
       .then((domatch) => {
         if (domatch) {
           const token = jwt.sign({ _id: savedUser._id }, JWT_SECRET);
-          console.log(token)
+          logger.debug(token)
           res.json({
             message: "sign in successfull",
             token: token,
@@ -65,11 +66,11 @@ router.post("/signin", (req, res) => {
         }
       })
       .catch((err) => {
-        console.log("error in comparing", err);
+        logger.error("error in comparing", err);
       });
   });
 },err => {
-  console.log("error in signin"+err)
+  logger.error("error in signin"+err)
 });
 
 module.exports = router;

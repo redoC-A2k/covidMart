@@ -33,6 +33,8 @@ export default function Review (props) {
             </div>
             <div className="review">
                 {/* <textarea name="review" className='w-100' rows="2" placeholder='Write your review here!'></textarea> */}
+                {/* TODO: Add a review area  */}
+                {/* TODO: Style submit button */}
                 <button className="submit" onClick={giveRating}>Submit</button>
             </div>
         </div>

@@ -1,16 +1,3 @@
-/*body   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
-*/
 
 *{
   margin: 0px;
@@ -294,7 +281,6 @@ div.accordion + div.panel.active{
 
 /* ------------ Navbar ---------*/
 #header #navbar {
-  border: 2px solid white;
   padding: 0.5rem;
   box-shadow: 0rem 0rem 1rem 0.3rem grey;
   margin-bottom: 2rem;
@@ -308,10 +294,7 @@ div.accordion + div.panel.active{
 
 
 #header #navbar > div {
-  display: inline-block;
   font-size: 4rem;
-  width: 6rem;
-  text-align: center;
 }
 
 #header #navbar img {
@@ -321,13 +304,55 @@ div.accordion + div.panel.active{
 
 #header #navbar i{
   padding: 1rem;
-  border: 0.2rem solid white;
   transition: border 0.2s;
+  border: 0.2rem solid white;
 }
 
 #header #navbar i:hover{
   cursor: pointer;
   border: 0.2rem solid black;
+}
+
+#header #navbar > div.sidebar-icon {
+  width: 10%;
+  text-align: center;
+}
+#header #navbar > div.wrap-search-user {
+  width: 20%;
+  text-align: center;
+  display: flex;
+}
+#header #navbar > div.wrap-search-user input {
+  font-size: 2rem;
+  margin: auto 0;
+  max-width: 70%;
+  margin-left: auto;
+  margin-right: 0.1rem;
+  border: 0;
+  transition: 0.2s all;
+  outline: none;
+  border-bottom: 0.2rem solid transparent;
+}
+#header #navbar > div.wrap-search-user input:focus {
+  border: none;
+  border-bottom: 0.2rem solid var(--primary-blue) !important;
+}
+#header #navbar > div.wrap-search-user input:hover {
+  border: none;
+  border-bottom: 0.2rem solid var(--primary-blue) !important;
+}
+#header #navbar > div.wrap-search-user input::placeholder {
+  color: var(--primary-dark);
+}
+#header #navbar > div.wrap-search-user input:hover::placeholder {
+  color: black; 
+}
+#header #navbar > div.wrap-search-user input:focus::placeholder {
+  color: black; 
+}
+
+#header #navbar > h1 {
+  padding-left: 5%;
 }
 
 /* header sidebar */
