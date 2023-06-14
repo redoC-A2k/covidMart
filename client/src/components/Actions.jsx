@@ -6,19 +6,7 @@ import {showToast} from '../assets/js/showToast';
 // TODO: Make this component responsive on phone
 export default function Actions (props) {
     // console.log(props.product)
-    const [isInCart,setIsInCart] = useState(false);
-
-    useEffect(()=>{
-        props.user.cart.map((eachItem)=>{
-            if(eachItem.productId === props.product._id)
-            {
-                setIsInCart(true);
-            }
-            else{
-                setIsInCart(false)
-            }
-        })
-    },[props])
+    // const [isInCart,setIsInCart] = useState(false);
 
     let handleBuyNow = function() {
 
@@ -26,15 +14,15 @@ export default function Actions (props) {
 
     let handleAddCart = ()=>{
         props.addToCart(props.product._id, props.product.price, props.product.title);
-        setIsInCart(true)
-        showToast("product added to Cart");
+        // setIsInCart(true)
+        showToast("Product Added to Cart");
     }
 
-    let handleRemoveCart = ()=>{
-        props.deleteFromCart(props.user._id,props.product._id)
-        setIsInCart(false);
-        showToast("product removed from cart");
-    }
+    // let handleRemoveCart = ()=>{
+    //     props.deleteFromCart(props.user._id,props.product._id)
+    //     setIsInCart(false);
+    //     showToast("product removed from cart");
+    // }
 
     let List = function (props) {
         return (
@@ -90,13 +78,10 @@ export default function Actions (props) {
                 <Ratings product={props.product} />
                 <hr/>
                 <div className='btndiv row'>
+                    {/* TODO: Only Allow adding here and increment product when more than once add to cart button has been added */}
                     <div className="col-sm-7 offset-1">
                         <button id="buynow" onClick={handleBuyNow} className='type1 w-100'><span className="background"></span><span className='text'>Buy Now</span><span className="fa-solid fa-bag-shopping icon"></span></button>
-                        {isInCart
-                        ?
-                        (<button id="removefromcart" onClick={handleRemoveCart} className='type2 w-100'><span className="background"></span><span className='text'>Remove from Cart</span><span className="fa-solid fa-cart-shopping icon"></span></button>)
-                        :
-                        (<button id="addtocart" onClick={handleAddCart} className='type2 w-100'><span className="background"></span><span className='text'>Add to Cart</span><span className="fa-solid fa-cart-shopping icon"></span></button>)}
+                        <button id="addtocart" onClick={handleAddCart} className='type2 w-100'><span className="background"></span><span className='text'>Add to Cart</span><span className="fa-solid fa-cart-shopping icon"></span></button>
                     </div>
                 </div>
             </div>

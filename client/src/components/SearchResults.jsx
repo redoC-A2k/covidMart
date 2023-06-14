@@ -1,13 +1,24 @@
 import React from "react";
+import { Link } from "react-router-dom";
 function SearchResults(props) { 
-    if(props.searchProducts.length!=0){
+    if(props.searchResults.length!=0){
         return (
-            <div>
-                {props.searchProducts.map(eachTitle=>eachTitle)}
+            <div id="searchResults">
+                <ul>
+                    {props.searchResults.map((eachObj,ind)=>(
+                        <li key={ind}>
+                            <div>
+                                <img src={eachObj.image}/>
+                                <span><Link to={eachObj.url} onClick={()=>props.setSearchResult([])}>{eachObj.title}</Link></span>
+                            </div>
+                        </li>
+                        ))
+                    }
+                </ul>
             </div>
         )
     }
-    else return <div></div>
+    else return <></>
 }
 
 export default SearchResults;

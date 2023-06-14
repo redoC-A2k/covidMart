@@ -39,7 +39,7 @@ router.post("/payment", (req, res) => {
         resolve()
         }
         else {
-          savedUser.cart = [{ productId: "empty" }];
+          savedUser.cart = [];
           savedUser.save();
           resolve();
         }

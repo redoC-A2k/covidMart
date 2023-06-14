@@ -13,6 +13,7 @@ import UserAdminAuth from "./screens/UserAdminAuth.jsx";
 import "./index.css";
 import Footer from './components/Footer';
 import Toast from './components/Toast';
+import ErrorPage from './screens/ErrorPage';
 
 function App() {
   return (
@@ -21,13 +22,16 @@ function App() {
       <BrowserRouter>
         <Toast/>
         <Header/>
-        <Switch>
-          {<Route exact path="/auth" component={UserAdminAuth} />
-          /*<Route exact path="/addproduct" component={AdminPage} />*/}
-          <Route exact path="/user/cart" component={Cart} />
-          <Route exact path="/product/:productId" component={Product} />
-          <Route exact path="/" component={Home} />
-        </Switch>
+        <section id="main" className='container'>
+          <Switch>
+            <Route exact path="/auth" component={UserAdminAuth} />
+            {/*<Route exact path="/addproduct" component={AdminPage} />*/}
+            <Route exact path="/user/cart" component={Cart} />
+            <Route exact path="/product/:productId" component={Product} />
+            <Route exact path="/" component={Home} />
+            <Route path = "*" component={ErrorPage} />
+          </Switch>
+        </section>
         <Footer/>
       </BrowserRouter>
       {/* </PersistGate> */}

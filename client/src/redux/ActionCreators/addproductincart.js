@@ -30,13 +30,3 @@ export const addProductInCart = (productId, price, title) => {
       });
   };
 };
-
-// return {
-//   type: ADD_PRODUCT_IN_CART,
-//   payload :{
-//     productId: productId,
-//     quantity: 1,
-//     price:price,
-//     title:title
-//   }
-// };

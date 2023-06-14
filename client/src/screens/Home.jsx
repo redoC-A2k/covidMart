@@ -34,12 +34,12 @@ function Home(props) {
   },[])
 
   if (props.allproducts===null) {
-    return ( <section id="main" className='container'>
+    return ( 
     <div className='row'>Loading</div>
-    </section>)
+    )
   } 
   else{
-    return ( <section id="main" className='container'>
+    return ( <section id="home">
       <div className='row'>
       {props.allproducts.map((eachProduct , ind)=>{
         return (<Card product={eachProduct} key={ind}/>)

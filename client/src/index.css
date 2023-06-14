@@ -1,24 +1,35 @@
-
+html{
+  overflow-y: scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+html::-webkit-scrollbar{
+  width: 0;
+  height: 0;
+}
 *{
   margin: 0px;
   padding: 0px;
 }
 
 :root{
-  --primary-blue: #1890ff;
-  --primary-dark-blue: #243053;
-  --secondary-blue: #31708E;
-  --secondary-dark-blue: #112D32;
-  --primary-green: #3AAFA9;
-  --primary-dark:#687684;
-  --primary-white: rgb(250,250,250);
-  --primary-grey:#f0f0f0; 
-  --primary-yellow: #FFE900;
-  --primary-green-yellow: #9ACD32;
-  --primary-orange: #de6600;
-  --primary-red: #ff4a4a;
-  --primary-grey-1: #6c757d;
-  --primary-grey-2: #s212529;
+  --primary-blue: 24, 144, 255; 
+  --primary-dark-blue: 36, 48, 83;
+  --secondry-blue: 49, 112, 126;
+  --secondry-dark-blue:17, 45, 50; 
+  --primary-green:58, 175, 169; 
+  --primary-dark:104, 118, 132;
+  --primary-white: 250,250,250;
+  --primary-grey:240, 240, 240;
+  --primary-yellow: 255, 233, 0;
+  --primary-green-yellow:154, 205, 50; 
+  --primary-orange: 222, 102, 0;
+  --primary-red: 255, 74, 74;
+  --primary-grey-1: 108, 117, 125;
+  --primary-grey-2:33, 37, 41;
+  --primary-grey-3:50, 54, 58;
+  --secondry-grey-1:238, 238, 238;
+  --secondry-grey-2:221, 221, 221;
 
   --space-from-top:85px;
 }
@@ -35,7 +46,6 @@ html {
 
 body {
   font-size: 1.6rem;
-  padding-top: var(--space-from-top);
 }
 
 
@@ -61,8 +71,8 @@ h3 {
   margin-bottom: 0;
 }
 
-h3.gradient{
-  background-image: linear-gradient(to right, var(--primary-green) , 40% , var(--primary-blue));
+.gradient{
+  background-image: linear-gradient(to right, rgb(var(--primary-green)) , 40% , rgb(var(--primary-blue)));
   color: transparent;
   font-weight: 900 !important;
   letter-spacing: 2px;
@@ -91,7 +101,7 @@ h4{
 
 div#toast{
   color: black;
-  background-image: linear-gradient(40deg, var(--primary-green-yellow) 20% , var(--primary-green));
+  background-image: linear-gradient(40deg, rgb(var(--primary-green-yellow)) 20% , rgb(var(--primary-green)));
   padding: 0.4rem 0.4rem;
   border-radius: 20px;
   position: fixed;
@@ -126,16 +136,16 @@ div#toast span{
 h1.brand {
   text-align: center;
   text-shadow: 2px 2px 0px #eee, 2.5px 2.5px 0px #000;
-  color:var(--secondary-dark-blue);
+  color:rgb(var(--secondry-dark-blue));
   margin: 0 auto;
-  width: 100%;
+  /* width: 100%; */
 }
 h1.brand a{
   display:inline-block;
   margin: 0 1.5rem;
 }
 h1.brand a::first-letter {
-  color: var(--primary-blue);
+  color: rgb(var(--primary-blue));
 }
 
 /* customized buttons */
@@ -144,7 +154,7 @@ h1.brand a::first-letter {
   padding: 4px 24px;
   border-radius: 50px;
   font-size: 1.8rem;
-  border: 3px solid var(--primary-green);
+  border: 3px solid rgb(var(--primary-green));
   transition: all 0.5s;
   text-transform: uppercase;
   display: flex;
@@ -156,7 +166,7 @@ h1.brand a::first-letter {
 
 button.type1 span.background{
   position: absolute;
-  background-color: var(--primary-green);
+  background-color: rgb(var(--primary-green));
   top: -1%;
   height: 102%;
   left: -1%;
@@ -180,13 +190,13 @@ button.type1 span.icon {
 }
 
 button.type1:hover {
-  border: 3px solid var(--primary-blue) ;
-  box-shadow: 0px 0px 4px 1px var(--primary-blue);
+  border: 3px solid rgb(var(--primary-blue)) ;
+  box-shadow: 0px 0px 4px 1px rgb(var(--primary-blue));
 }
 
 button.type1:hover span.background {
   width:20%;
-  box-shadow: 0px 0px 4px 1px var(--primary-green);
+  box-shadow: 0px 0px 4px 1px rgb(var(--primary-green));
 }
 
 button.type1:hover span.text {
@@ -204,7 +214,7 @@ button.type2 {
   padding: 4px 24px;
   border-radius: 50px;
   font-size: 1.8rem;
-  border: 3px solid var(--primary-green);
+  border: 3px solid rgb(var(--primary-green));
   transition: all 0.5s;
   text-transform: uppercase;
   letter-spacing: 2px;
@@ -231,8 +241,8 @@ button.type2 span.icon {
 }
 
 button.type2:hover {
-  border: 3px solid var(--primary-blue) ;
-  box-shadow: 0px 0px 4px 1px var(--primary-blue);
+  border: 3px solid rgb(var(--primary-blue));
+  box-shadow: 0px 0px 4px 1px rgb(var(--primary-blue));
 }
 
 button.type2:hover span.text {
@@ -244,39 +254,364 @@ button.type2:hover span.text {
 button.type2:hover span.icon {
   opacity: 1;
 }
+/* ------------ SlideBar --------- */
 
-/* ------------ Utility classes ----------*/
-div.accordion {
-  background-color: #eeeeee;
-  padding: 1.5rem 2rem;
-  margin: 0.4rem;
+section.slidebar{
+  position: fixed;
+  z-index: 2;
+  top: 0;
+  height: 100%;
+  box-shadow: 0rem 0rem 1rem 0.3rem grey;
+}
+
+section.slidebar.left{
+  left: 0; /* override it by filterbar left = -39rem (i.e. width of slidebar) */
+  transition: left 0.3s ease-in-out !important;
+  -webkit-transition: left 0.3s ease-in-out !important;
+}
+
+section.slidebar.right{
+  right: 0; /* override it by userbar right = -39rem (i.e. width of slidebar) */
+  transition: right 0.5s ease-in-out!important;
+  -webkit-transition: right 0.5s ease-in-out !important;
+}
+
+section.slidebar div.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding : 1.5rem;
+}
+
+section.slidebar div.head div.sbarcross i {
+  padding:1rem 1.5rem;
+  font-size: 2.5rem;
+  margin-right: 0rem;
+  border-width: 0.2rem;
+  border-color: transparent; 
+  border-style: solid;
+  transition: border 0.2s;
+}
+
+section.slidebar div.head div.sbarcross i:hover  {
+  color: rgb(var(--primary-green-yellow));
   cursor: pointer;
-  transition: background-color 0.2s;
+  border-style: solid;
+  border-color: rgb(var(--primary-green-yellow));
+}
+
+section.slidebar div.body div.sbaritem div.sbaraccordion div.title {
+  cursor: pointer;
+}
+
+section.slidebar div.body div.sbaritem div.sbaraccordion div.body{
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.3s;
+}
+
+section.slidebar div.body div.sbaritem div.sbaraccordion div.body.visible{
+  overflow: visible;
+  max-height: 50rem;
+}
+
+/* ############ Main Section ############ */
+
+/* filter bar */
+#filterbar{
+  background-color: rgba(var(--primary-white),0.2);
+  backdrop-filter: blur(20px);
+  left: -39rem;
+}
+
+#filterbar div.head div.sbartitle h3.gradient{
+  text-shadow: 2px 2px 3px rgb(var(--primary-grey-2));
+  color: rgb(var(--primary-blue));
+}
+
+#filterbar div.body div.sbaritem div.sbaraccordion div.title {
+  background-color:rgb(var(--secondry-grey-1)) ;
+  text-shadow: 0.1px 0.1px 0.1px rgba(var(--primary-grey-1,0.05));
+  padding: 1.5rem 2rem;
+  /* margin: 0.4rem; */
+  font-weight: 600;
+  cursor: pointer;
+  text-transform: uppercase;
+  text-align: center;
+  letter-spacing: 0.3ch;
+  margin-bottom: 0;
+  border-bottom: 0.2rem solid rgb(var(--primary-grey-3));
+}
+
+#filterbar div.body div.sbaritem:first-child div.sbaraccordion div.title {
+  border-top: 0.2rem solid rgb(var(--primary-grey-3));
+}
+
+#filterbar div.body div.sbaritem div.sbaraccordion div.title:hover {
+  background-color: rgb(var(--secondry-grey-2));
+}
+
+#filterbar div.body div.sbaritem div.sbaraccordion div.body {
+  backdrop-filter: blur(10px);
+  background-color: rgba(var(--primary-white),0.7);
+}
+
+#filterbar div.body div.sbaritem div.sbaraccordion div.body.visible {
+  z-index: 1;
+}
+
+#filterbar div.body div.sbaritem div.sbaraccordion div.body div.price-filter {
+  display: flex;
+  border-bottom: 0.2rem solid rgb(var(--primary-grey-3));
+  justify-content: space-around; 
+  align-items: center;
+  padding-top: 4rem;
+  width: 100%;
+  padding-bottom: 2rem;
+}
+
+#filterbar div.body div.sbaritem div.sbaraccordion div.body div.price-filter span{
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+#filterbar div.body div.sbaritem div.sbaraccordion div.body div.price-filter span.range{
+  width: 65%;
+  margin: 0 1rem;
+}
+#filterbar div.body div.sbaritem div.sbaraccordion div.body div.price-filter span.number{
+  width: 15%;
+  margin: 0 1rem;
+}
+
+#filterbar div.body div.sbaritem div.sbaraccordion div.body div.price-filter span span{
+  position: absolute;
+  border: 2px solid rgb(var(--primary-grey-1));
+  top:-3.3rem;
+  padding:0rem 0.3rem;
+  border-radius:5px;
+}
+#filterbar div.body div.sbaritem div.sbaraccordion div.body div.price-filter span span::after{
+  content: "";
+  position: absolute;
+  border:6px solid transparent; 
+  border-top-color: rgb(var(--primary-grey-1));
+  bottom: -1.2rem;
+}
+#filterbar div.body div.sbaritem div.sbaraccordion div.body div.price-filter span span.left{
+  left: -1rem;
+}
+#filterbar div.body div.sbaritem div.sbaraccordion div.body div.price-filter span span.left::after{
+  left: 14%;
+}
+#filterbar div.body div.sbaritem div.sbaraccordion div.body div.price-filter span span.right{
+  right: -2.5rem;
+}
+#filterbar div.body div.sbaritem div.sbaraccordion div.body div.price-filter span span.right::after{
+  left: 40%;
+}
+
+#filterbar div.body div.sbaritem div.sbaraccordion div.body div.price-filter input[type=range]{
+	-webkit-appearance: none;
+  appearance: none;
+	width: 100%;
+	background: transparent;
+}
+
+#filterbar div.body div.sbaritem div.sbaraccordion div.body div.price-filter input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance: none;
+}
+
+#filterbar div.body div.sbaritem div.sbaraccordion div.body div.price-filter input[type=range]:focus{
+  outline: none;
+}
+
+#filterbar div.body div.sbaritem div.sbaraccordion div.body div.price-filter input[type=range]::-ms-track{
+  width: 100%;
+  cursor: pointer;
+  /* Hides the slider so custom styles can be added */
+  background: transparent; 
+  border-color: transparent;
+  color: transparent;
+}
+
+#filterbar div.body div.sbaritem div.sbaraccordion div.body div.price-filter input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance: none;
+  border: 1px solid #000000;
+  height: 30px;
+  width: 16px;
+  border-radius: 3px;
+  background: #ffffff;
+  cursor: pointer;
+  margin-top: -14px; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d; /* Add cool effects to your sliders! */
+}
+/* All the same stuff for Firefox */
+#filterbar div.body div.sbaritem div.sbaraccordion div.body div.price-filter input[type=range]::-moz-range-thumb{
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+  border: 1px solid #000000;
+  height: 30px;
+  width: 16px;
+  border-radius: 3px;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+/* All the same stuff for IE */
+#filterbar div.body div.sbaritem div.sbaraccordion div.body div.price-filter input[type=range]::-ms-thumb{
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+  border: 1px solid #000000;
+  height: 30px;
+  width: 16px;
+  border-radius: 3px;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+/* Styling track now */
+#filterbar div.body div.sbaritem div.sbaraccordion div.body div.price-filter input[type=range]::-webkit-slider-runnable-track{
+  width: 100%;
+  height: 8.4px;
+  cursor: pointer;
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+  background: rgb(var(--primary-blue));
+  border-radius: 1.3px;
+  border: 0.2px solid #010101;
+}
+
+#filterbar div.body div.sbaritem div.sbaraccordion div.body div.price-filter input[type=range]:focus::-webkit-slider-runnable-track{
+  background: rgb(var(--primary-blue));
+}
+
+#filterbar div.body div.sbaritem div.sbaraccordion div.body div.price-filter input[type=range]::-moz-range-track{
+  width: 100%;
+  height: 8.4px;
+  cursor: pointer;
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+  background: rgb(var(--primary-blue)); 
+  border-radius: 1.3px;
+  border: 0.2px solid #010101;
+}
+
+#filterbar div.body div.sbaritem div.sbaraccordion div.body div.price-filter input[type=range]::-ms-track{
+  width: 100%;
+  height: 8.4px;
+  cursor: pointer;
+  background: transparent;
+  border-color: transparent;
+  border-width: 16px 0;
+  color: transparent;
+}
+
+#filterbar div.body div.sbaritem div.sbaraccordion div.body div.price-filter input[type=range]::-ms-fill-lower{
+  background: rgb(var(--primary-blue));
+  border: 0.2px solid #010101;
+  border-radius: 2.6px;
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+}
+
+#filterbar div.body div.sbaritem div.sbaraccordion div.body div.price-filter input[type=range]::-ms-fill-lower{
+  background: rgb(var(--primary-blue));
+}
+
+#filterbar div.body div.sbaritem div.sbaraccordion div.body div.price-filter input[type=range]::-ms-fill-upper{
+  background: rgb(var(--primary-blue));
+  border: 0.2px solid #010101;
+  border-radius: 2.6px;
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+}
+
+#filterbar div.body div.sbaritem div.sbaraccordion div.body div.price-filter input[type=range]:focus::-ms-fill-upper{
+  background: rgb(var(--primary-blue));
+}
+
+#filterbar div.body div.sbaritem div.sbaraccordion div.body div.price-filter input[type=number]::-webkit-inner-spin-button,
+#filterbar div.body div.sbaritem div.sbaraccordion div.body div.price-filter input[type=number]::-webkit-outer-spin-button{
+  -webkit-appearance: none;
+  margin: 0;
+  text-align: center;
+}
+
+#filterbar div.body div.sbaritem div.sbaraccordion div.body div.price-filter input[type=number]{
+  -moz-appearance: textfield ;
+  margin: 0;
+  appearance: textfield ;
+  -webkit-appearance: textfield;
+  width: 100%;
+  text-align: center;
+  /* box-shadow: 0px 0px 5px 2px rgb(var(--secondry-blue)) ; */
+  border: 2px solid rgb(var(--primary-blue));
+}
+
+#filterbar div.body div.sbaritem div.sbaraccordion div.body div.price-filter input[type=number]:focus{
+  outline: none;
+}
+
+#filterbar div.body div.sbaritem div.sbaraccordion div.body div.category-filter {
+  text-align: center;
+  padding:1.5rem 0;
+  border-bottom: 0.2rem solid rgb(var(--primary-grey-3));
+} 
+#filterbar div.body div.sbaritem div.sbaraccordion div.body div.category-filter div label{
+  width: 50%;
+  margin: 0.2rem 0;
+  padding: 1rem 1.2rem;
+  border: 2px solid transparent; 
+  letter-spacing: 0.4ch;
+  border-radius: 10px;
+  font-size: 1.4rem;
+  text-transform: uppercase;
+  position: relative;
+}
+#filterbar div.body div.sbaritem div.sbaraccordion div.body div.category-filter div label:hover{
+  background-color:rgba(var(--primary-blue),0.5); 
+}
+#filterbar div.body div.sbaritem div.sbaraccordion div.body div.category-filter div input[type=radio]{
+  /* position: relative; */
+  display: none;
+}
+#filterbar div.body div.sbaritem div.sbaraccordion div.body div.category-filter div input[type=radio]:checked + label{
+  border:0.2rem solid rgb(var(--primary-blue));
+}
+
+/* user bar */
+#userbar {
+  background-color: rgba(var(--primary-white),0.2);
+  backdrop-filter: blur(20px);
+  right: -34rem;
+}
+
+#userbar div.head {
+  flex-direction: row-reverse;
+}
+
+#userbar div.head div.sbartitle h3.gradient{
+  text-shadow: 2px 2px 3px rgb(var(--primary-grey-2));
+  color: rgb(var(--primary-blue));
+}
+
+#userbar div.body div.sbaritem div.sbarbutton a{
+  background-color:rgb(var(--secondry-grey-1)) ;
+  display: block;
+  text-shadow: 0.1px 0.1px 0.1px rgba(var(--primary-grey-1,0.05));
+  padding: 1.5rem 2rem;
+  /* margin: 0.4rem; */
+  font-weight: 600;
+  cursor: pointer;
   text-transform: uppercase;
   letter-spacing: 0.3ch;
   margin-bottom: 0;
+  border-bottom: 0.2rem solid rgb(var(--primary-grey-3));
 }
 
-div.accordion:hover {
-  background-color: #dedede;
+#userbar div.body div.sbaritem:first-child div.sbarbutton a {
+  border-top: 0.2rem solid rgb(var(--primary-grey-3));
 }
 
-div.accordion + div.panel{
-  position: absolute;
-  margin: 0.4rem;
-  visibility: hidden;
-  transition: visibility 0.2s;
-  z-index: -9;
-  margin-top: 0;
-  padding: 0.2rem;
-  padding-top: 0.5rem;
-  background-color: #efefef;
-}
-
-div.accordion + div.panel.active{
-  visibility: visible;
-  position: relative;
-  z-index: 1;
+#userbar div.body div.sbaritem div.sbarbutton a:hover {
+  background-color: rgb(var(--secondry-grey-2));
 }
 
 /* ------------ Navbar ---------*/
@@ -285,11 +620,12 @@ div.accordion + div.panel.active{
   box-shadow: 0rem 0rem 1rem 0.3rem grey;
   margin-bottom: 2rem;
   display: flex;
-  position: fixed;
+  position: relative;
+  justify-content: space-between;
   width: 100%;
-  z-index: 1;
+  z-index: 2;
   background-color: white;
-  margin-top:calc(var(--space-from-top)*-1);
+  /* margin-top:calc(var(--space-from-top)*-1); */
 }
 
 
@@ -314,19 +650,21 @@ div.accordion + div.panel.active{
 }
 
 #header #navbar > div.sidebar-icon {
-  width: 10%;
   text-align: center;
+  margin-right: auto;
 }
 #header #navbar > div.wrap-search-user {
-  width: 20%;
+  /* width: 20%; */
   text-align: center;
   display: flex;
+  margin-left: auto;
+  margin-right: 0;
+  width: min-content;
 }
 #header #navbar > div.wrap-search-user input {
   font-size: 2rem;
   margin: auto 0;
-  max-width: 70%;
-  margin-left: auto;
+  max-width: 50%;
   margin-right: 0.1rem;
   border: 0;
   transition: 0.2s all;
@@ -335,14 +673,14 @@ div.accordion + div.panel.active{
 }
 #header #navbar > div.wrap-search-user input:focus {
   border: none;
-  border-bottom: 0.2rem solid var(--primary-blue) !important;
+  border-bottom: 0.2rem solid rgb(var(--primary-blue)) !important;
 }
 #header #navbar > div.wrap-search-user input:hover {
   border: none;
-  border-bottom: 0.2rem solid var(--primary-blue) !important;
+  border-bottom: 0.2rem solid rgb(var(--primary-blue)) !important;
 }
 #header #navbar > div.wrap-search-user input::placeholder {
-  color: var(--primary-dark);
+  color: rgba(0, 0, 0, 0.5);
 }
 #header #navbar > div.wrap-search-user input:hover::placeholder {
   color: black; 
@@ -351,134 +689,85 @@ div.accordion + div.panel.active{
   color: black; 
 }
 
-#header #navbar > h1 {
-  padding-left: 5%;
+#header #navbar > div.wrap-search-user span.search {
+  font-size: 2.5rem;
+  border: none;
+  display: inline-flex;
+  margin-left: auto;
 }
-
-/* header sidebar */
-#header #sidebar{
-  position: fixed;
-  display: inline-block;
-  top: 0px;
-  width:39rem;
-  box-shadow: 0rem 0rem 1rem 0.3rem grey;
-  background-color: white;
-  z-index: 2;
-  bottom: 0px;
-  visibility: hidden;
-  animation: slideSidebar 0.3s ease-in-out ;
-}
-
-@keyframes slideSidebar {
-  0%{
-    left: -30rem;
-  }
-  100%{
-    left: 0rem;
-  }
-}
-
-#header #sidebar div.heading{
-  display: flex;
-  margin: 1rem 0;
-}
-
-#header #sidebar div.heading h3.gradient{
-  padding: 0.5rem 1rem;
-}
-
-#header #sidebar div.heading h3.icon {
-  padding:0.5rem 1.5rem;
-  margin-right: 1.5rem;
-  border-width: 0.2rem;
-  border-color: white; 
-  border-style: solid;
-  transition: border 0.2s;
-}
-#header #sidebar div.heading h3.icon:hover{
-  color: var(--primary-green-yellow);
-  border-style: solid;
-  border-color: var(--primary-green-yellow);
-}
-
-#header #sidebar div.filter-price + div.panel span:nth-child(1){
-  width: 80%;
-  display: inline-block;
-}
-#header #sidebar div.filter-price + div.panel span:nth-child(2){
-  width: 20%;
-  display: inline-block;
-}
-
-#header #sidebar div.filter-price + div.panel span:nth-child(1) input{
-  width: 80%;
-}
-
-#header #sidebar div.filter-price + div.panel span:nth-child(1) i{
-  font-size: large;
-  width: 10%;
-  text-align: center;
-  vertical-align: top;
-}
-
-
-#header #sidebar div.filter-price + div.panel span:nth-child(2) input{
-  display: inline;
-  width: 100%;
-}
-
-/* header popup */
-#header #popup {
-  border: 2px solid var(--primary-green);
-  width: auto;
-  height: fit-content;
-  position: fixed;
-  background-color: white;
-  right: 0.5rem;
-  z-index: 10;
-  border-radius: 0.7rem;
-  top: 7rem ;
-  visibility: hidden;
-  transition: visibility 0.3s ;
-}
-
-#header #popup h4{
-  padding: 0.8rem 1.5rem;
-  text-transform: uppercase;
-  letter-spacing: 0.3rem;
-  font-size: 1.4rem;
-  text-align: center;
+#header #navbar > div.wrap-search-user span.search i {
+  border: none;
   transition: all 0.2s;
-  font-weight: 700;
+  padding: 1rem;
+  align-self: center;
+  padding: none;
+  color: rgba(0, 0, 0, 0.5);
+  margin-left: auto;
+}
+#header #navbar > div.wrap-search-user span.search i:hover{
+  cursor: pointer;
+}
+#header #navbar > div.wrap-search-user span.search i.invisible {
+  color: transparent;
 }
 
-#header #popup h4:first-child{
-  border-top-left-radius: 0.7rem;
-  border-top-right-radius: 0.7rem;
+#header #navbar > h1 {
+  /* padding-left: 8%; */
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  right: 0;
+  margin-right: auto;
 }
 
-#header #popup h4:last-child{
-  border-bottom-left-radius: 0.7rem;
-  border-bottom-right-radius: 0.7rem;
-  color: var(--primary-red);
+
+/* header searchResults */
+/* TODO: make this results div more responsive */
+#header div#searchResults {
+  position: absolute;
+  margin-top:-2rem; 
+  box-shadow: 0rem 0rem 0.1rem 0.3rem rgb(var(--secondry-grey-2));
+  z-index: 2;
+  right: 2%;
+  background-color: white;
+  width: 40rem;
+  padding: 1rem;
+  max-height: 50rem;
+  overflow-y: scroll;
 }
 
-#header #popup h4:hover{
-  background-image: linear-gradient(40deg, var(--primary-yellow) 10% , var(--primary-green-yellow), var(--primary-orange));
-  box-shadow:0 0 4px 4px #aaa ;
+#header div#searchResults ul {
+  list-style: none;
 }
 
-#header #popup h4:not(:last-child){
-  border-bottom: 2px solid var(--primary-green);
+#header div#searchResults ul li{
+  margin: 0.2rem;
+}
+#header div#searchResults ul li div{
+  display: flex;
+  align-items: center;
 }
 
-#header #popup h4 a{
-  display: inline-block;
-  width: 100%;
-  height: 100%;
+#header div#searchResults ul li img{
+  width: 10rem;
+  margin: 0.1rem;
+  display: block;
+  margin-right: 0.5rem;
+}
+
+#header div#searchResults ul li div{
+  pointer-events: none;
+}
+#header div#searchResults ul li div:hover{
+  background-color: rgb(var(--secondry-grey-1));
+}
+#header div#searchResults ul li div span{
+  pointer-events: auto;
+  cursor: pointer;
 }
 
 /*header banner*/
+
 
 #header #banner {
   position: relative;
@@ -512,6 +801,10 @@ div.accordion + div.panel.active{
 #header #banner img{
   width: 100%;
 }
+/* ----------- Main -------------- */
+/* #main {
+  padding-top: var(--space-from-top);
+} */
 
 /* ------------ UserAdminAuth Section------------ */
 #useradminauth {
@@ -577,7 +870,7 @@ div.accordion + div.panel.active{
 #useradminauth div.backdrop div.row div.body div.field label {
   position: absolute;  
   opacity: 0;
-  color: var(--primary-dark-blue);
+  color: rgb(var(--primary-dark-blue));
   top: 10px;
   transition: top 0.2s;
 }
@@ -586,15 +879,15 @@ div.accordion + div.panel.active{
   top:0px;
   opacity: 1;
   font-size: 1.6rem;
-  color:var(--primary-blue)
+  color:rgb(var(--primary-blue));
 }
 
 #useradminauth div.backdrop div.row div.body input:focus {
-  border-bottom: 4px solid var(--primary-blue) !important; 
+  border-bottom: 4px solid rgb(var(--primary-blue)) !important; 
 }
 
 #useradminauth div.backdrop div.row div.body input::placeholder {
-  color: var(--secondary-dark-blue);
+  color: rgb(var(--secondry-dark-blue));
   font-size: 2rem;
   opacity: 0.8;
   transition: opacity 0.2s;
@@ -619,13 +912,13 @@ div.backdrop div.row div.body input:focus::placeholder {
   width: 25%;
 }
 
-/* ------------Main section------------ */
-#main .mycard{
-height: 50rem;
-padding: 2rem;
+/* ------------Home section------------ */
+#home .mycard{
+  height: 50rem;
+  padding: 2rem;
 }
-#main .mycard .content{
-  border: 3px solid var(--primary-grey);
+#home .mycard .content{
+  border: 3px solid rgb(var(--primary-grey));
   border-radius: 5px;
   width: 100%;
   height: 100%;
@@ -639,69 +932,71 @@ padding: 2rem;
   flex-direction: column;
   justify-content: space-between;
 }
-#main .mycard a:hover{
+#home .mycard a:hover{
   text-decoration: none;
 }
-#main .mycard .content:hover {
+#home .mycard .content:hover {
   background-size: 130%;
   background-position-x: 60%;
   background-position-y: 60%;
   box-shadow: 0 0 40px 10px #aaa ;
 }
-#main .mycard .content .background {
+#home .mycard .content .background {
   position: absolute;
   top: 0;
   left:0;
-  background-color: var(--primary-blue);
+  background-color: rgb(var(--primary-blue));
   width: 100%;
   height: 100%;
   opacity:0 ;
   transition: opacity 0.3s;
 }
-#main .mycard .content .background span {
+#home .mycard .content .background span {
   position: relative;
   display: block;
   text-align: center;
   top: 42%;
-  color:var(--secondary-dark-blue);
+  color:rgb(var(--secondry-dark-blue));
   font-size: 4rem;
 }
-#main .mycard .content:hover .background {
+#home .mycard .content:hover .background {
   opacity: 0.75;
 }
-#main .mycard .content .title{
+#home .mycard .content .title{
   width: 100%;
   height: 20%;
-  background-color: var(--primary-grey);
-  color: var(--primary-orange);
+  background-color: rgb(var(--primary-grey));
+  /* color: var(--primary-orange); */
+  color: rgb(var(--primary-grey-3));
   display: flex;
   transition: opacity 0.2s;
 }
-#main .mycard .content:hover .title {
+#home .mycard .content:hover .title {
   opacity: 0;
 }
-#main .mycard .content .title h4{
+#home .mycard .content .title h4{
   text-align: center;
   width:80%;
   display: inline-block;
   margin: auto;
+  font-weight: 900;
 }
-#main .mycard .content .title div.rating{
+#home .mycard .content .title div.rating{
   width: 20%;
   justify-content: center;
   display: flex;
   align-items: center;
 }
-#main .mycard .content .title div.rating span{
+#home .mycard .content .title div.rating span{
   font-size:2rem;
-  color:var(--primary-yellow);
+  color:rgb(var(--primary-yellow));
 }
-#main .mycard .content .title div.rating span.text{
+#home .mycard .content .title div.rating span.text{
   font-size:2.2rem;
   margin-right: 4px;
   color:black
 }
-#main .mycard .content div.price{
+#home .mycard .content div.price{
   width: 100%;
   flex-direction: row;
   justify-content: space-between;
@@ -709,12 +1004,12 @@ padding: 2rem;
   transition: opacity 0.2s;
 }
 
-#main .mycard .content:hover div.price {
+#home .mycard .content:hover div.price {
   opacity: 0;
 }
 
-#main .mycard .content div.price h4{
-  background-color: var(--primary-green-yellow);
+#home .mycard .content div.price h4{
+  background-color: rgb(var(--primary-green-yellow));
   display: inline-flex;
   font-size: 2rem;
   width: 40%;
@@ -724,11 +1019,11 @@ padding: 2rem;
   color: white;
 }
 
-#main .mycard .content div.price h4:first-child{
-  background-color: var(--primary-grey);
+#home .mycard .content div.price h4:first-child{
+  background-color: rgb(var(--primary-grey));
   text-transform: uppercase;
   width: 60%;
-  color: var(--primary-blue);
+  color: rgb(var(--primary-blue));
 }
 
 /* ------------Product Page------------ */
@@ -747,7 +1042,7 @@ padding: 2rem;
 }
 
 #gallery #scrolldiv div.selected {
-  border: 2px solid var(--primary-dark-blue);
+  border: 2px solid rgb(var(--primary-dark-blue));
 }
 
 @media screen and (max-width:576px) {
@@ -780,7 +1075,7 @@ padding: 2rem;
   border-bottom-left-radius: 15px;
   border-bottom-right-radius: 5px;
   padding: 2rem;
-  background-image: linear-gradient(40deg, var(--primary-green-yellow) 10% , var(--primary-green));
+  background-image: linear-gradient(40deg, rgb(var(--primary-green-yellow)) 10% , rgb(var(--primary-green)));
   color: white;
   font-weight: 900;
   font-size: 2rem;
@@ -799,7 +1094,7 @@ padding: 2rem;
   text-shadow: 0px 0px 2px black;
 }
 #actions div.rating span.solid{
-  color: var(--primary-yellow);
+  color: rgb(var(--primary-yellow));
 }
 #actions div.rating p{
   display: inline-block;
@@ -817,18 +1112,18 @@ padding: 2rem;
 }
 
 #actions div.btndiv button#removefromcart {
-  border-color:var(--primary-red);
+  border-color:rgb(var(--primary-red));
 }
 #actions div.btndiv button#removefromcart:hover {
-  box-shadow: 0px 0px 4px 1px var(--primary-red);
+  box-shadow: 0px 0px 4px 1px rgb(var(--primary-red));
 }
 
 #actions div.btndiv button#addtocart {
-  border-color:var(--primary-green);
+  border-color:rgb(var(--primary-green));
 }
 #actions div.btndiv button#addtocart:hover {
-  border-color:var(--primary-blue);
-  box-shadow: 0px 0px 4px 1px var(--primary-blue);
+  border-color:rgb(var(--primary-blue));
+  box-shadow: 0px 0px 4px 1px rgb(var(--primary-blue));
 }
 /* Description */
 #description {
@@ -846,14 +1141,46 @@ padding: 2rem;
   text-shadow: 0px 0px 2px black;
 }
 #review div.rating span.solid{
-  color: var(--primary-yellow);
+  color: rgb(var(--primary-yellow));
 }
 #review div.rating span:hover{
   cursor: pointer;
 }
 #review div.review textarea{
-  border: 2px solid var(--primary-dark-blue);
+  border: 2px solid rgb(var(--primary-dark-blue));
   font-size: 2rem;
   outline: none;
 }
 
+/* --------Cart Page------- */
+#cart h2{
+  margin:4rem 0;
+}
+#cart table tr{
+  font-size: 1.8rem;
+}
+
+#cart table {
+  text-transform: uppercase;
+}
+
+#cart table th {
+  background-color: rgb(var(--secondry-grey-2));
+}
+
+#cart table tr td{
+  color:rgb(var(--primary-grey-3));
+}
+
+#cart table tr td a{
+  transition: color 0.4s;
+  color:rgb(var(--primary-grey-1)) !important;
+  font-weight: 650;
+}
+#cart table tr td a:hover{
+  color:black !important;
+}
+
+#cart table tr td i:hover{
+  cursor: pointer;
+}

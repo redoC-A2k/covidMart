@@ -1,11 +1,9 @@
 import React, { Component, useState } from 'react'
 import { useEffect } from 'react';
-// import { Row, Col, Button, Divider } from 'antd';
 import { connect } from "react-redux";
-// import { DeleteOutlined } from '@ant-design/icons';
 import { deleteProductFromCart } from '../redux/ActionCreators/deleteProductFromCart'
 import { fetchcart } from '../redux/ActionCreators/fetchCart';
-import Header from './Header';
+import { Link } from 'react-router-dom/cjs/react-router-dom';
 
 
 const mapStateToProps = state => {
@@ -13,23 +11,34 @@ const mapStateToProps = state => {
 }
 const mapDispatchToProps = dispatch => {
     return {
-        fetchcart: () => { dispatch(fetchcart()) },
-        deleteProductFromCart: (userId, productId) => { dispatch(deleteProductFromCart(userId, productId)) }
+        fetchcart: (setPrice) => { dispatch(fetchcart(setPrice)) },
+        deleteProductFromCart: (userId, productId, setPrice) => { dispatch(deleteProductFromCart(userId, productId, setPrice)) }
     }
 }
 function Cart(props) {
     const [totalprice,setTotalPrice] = useState(0)
+
+    function setPrice(price){
+        setTotalPrice(price);
+    }
+    
+    // function setCart(newCart){
+    //     setUserCart(newCart);
+    // }
+
+   
     useEffect(()=>{
-        console.log("fetching ..")
-        props.fetchcart()
-        //razorpay script loading
+        // console.log("fetching ..")
+        props.fetchcart(setPrice)
+        //razorpay scrript loading
         const script = document.createElement("script");
         script.src = "https://checkout.razorpay.com/v1/checkout.js";
         script.async = true;
         document.body.appendChild(script);
     },[])
 
-    let openPayModal = (amount, fetchcart, setTotalpricezero) => {
+
+    let openPayModal = (amount, fetchcart, setPrice) => {
         amount = amount * 100;
         amount = Math.ceil(amount)
         let options = {
@@ -55,8 +64,7 @@ function Cart(props) {
                     .then(data => {
                         if (data.message === "ok") {
                             console.log("if runs")
-                            fetchcart()
-                            setTotalpricezero()
+                            fetchcart(setPrice)
                             alert("Payment successful")
                         }
                     })
@@ -82,80 +90,68 @@ function Cart(props) {
     }
 
     let setTotalpricezero = () => {
-        setTotalPrice(0
-            // window.location.reload()
-        )
+        setTotalPrice(0)
     }
-        let MyCart = () => {
-            let sum = 0;
-            if (props.mycart && props.mycart[0].productId != "empty") {
-                let myproductsarray = props.mycart.map((eachProduct, ind) => {
-                    sum = sum + eachProduct.quantity * eachProduct.price
-                    if ((props.mycart.length - 1 === ind) && (totalprice === 0)) {
-                        setTotalPrice({ totalprice: sum })
-                    }
-                    return (
-                        <div className="row" key={ind} style={{ width: "100%" }}>
-                            <div className="col-4">
-                                {eachProduct.title}
-                            </div>
-                            <div className="col-2">
-                                {eachProduct.quantity}
-                            </div>
-                            <div className='col-2'>
-                                {eachProduct.price}
-                            </div>
-                            <div className='col-2'>
-                                {eachProduct.quantity * eachProduct.price}
-                            </div>
-                            <div className='col-2'>
-                                <span onClick={() => { props.deleteProductFromCart(localStorage.getItem("userId"), eachProduct.productId) }} > Delete </span>
-                            </div>
-                        </div>
-                    )
-                })
-                return myproductsarray
-            }
-            else {
-                return (<h4 style={{ textAlign: "center", width: "100%" }}>cart is empty</h4>)
-            }
-        }
-        // if((props.mycart.length-1===ind)&&(state.totalprice===0))
-        // totalprice=sum
-        // // setState({totalprice:sum})
         return (
-            <div className='row'style={{ width: "100%" }}>
-                {/*</div><div style={{ display: 'none' }}>
-                    <Header />
-        </div>*/}
-                <div className='col-12'>
-                    <h1 style={{ textAlign: "center" }}>Cart</h1>
-                </div>
-                <div className='ro' style={{ width: "100%" }}>
-                    <div className='col-4'>
-                        <h3>Product title</h3>
-                    </div>
-                    <div className='col-2'>
-                        <h3>Product qunatity</h3>
-                    </div>
-                    <div className='col-2'>
-                        <h3>Product price</h3>
-                    </div>
-                    <div className='col-2'>
-                        <h3>Total price</h3>
+            <section className='container' id="cart">
+                <div className="row">
+                    <div className='col-12'>
+                        <h2 className='gradient' style={{ textAlign: "center" }}>Cart</h2>
                     </div>
                 </div>
-                <div className='row' style={{ width: "100%" }}>
-                    <MyCart />
-                </div>
-                <hr />
-                <div className='row' style={{ width: "100%", justifyContent: "center" }}>
-                    <button onClick={() => {
-                        console.log(totalprice)
-                        openPayModal(totalprice, fetchcart, setTotalpricezero)
-                    }}>Proceed to pay </button>
-                </div>
-            </div>
+                {totalprice?
+                (<div className='row'>
+                    <table className='table hoverable'>
+                        <thead className='dark'>
+                            <tr>
+                                <th scope='col'></th>
+                                <th scope='col'>Product<br/>Title</th>
+                                <th scope='col'>Product<br/>Quantity</th>
+                                <th scope='col'>Product<br/>Price</th>
+                                <th scope='col'>Total<br/>Price</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {props.mycart && props.mycart.length!=0?
+                                props.mycart.map((eachItem,ind)=>{
+                                    return (
+                                        <tr key={ind}>
+                                            <td>{ind+1}</td>
+                                            <td><Link to={`/product/${eachItem.productId}`}>{eachItem.title}</Link></td>
+                                            <td>{eachItem.quantity}</td>
+                                            <td>{eachItem.price}₹</td>
+                                            <td>{eachItem.quantity * eachItem.price}₹</td>
+                                            <td><i className="fa-regular fa-trash-can" onClick={() => { props.deleteProductFromCart(localStorage.getItem("userId"), eachItem.productId, setPrice) }}> </i></td>
+                                        </tr>
+                                    )
+                                })
+                                :
+                            <></>}
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td style={{fontWeight:600}}>Amount Payable : </td>
+                                <td style={{fontWeight:600}}>{totalprice}₹</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <hr />
+                    <div className='row w-100' style={{ justifyContent: "center" }}>
+                            <button className="type1 " onClick={() => {
+                                console.log(totalprice)
+                                openPayModal(totalprice, fetchcart, setPrice)
+                            }}><span className='background'></span><span className='text'>pay</span><span className='fa-solid fa-indian-rupee-sign icon'></span></button>
+                    </div>
+                </div>):
+                ( <div className="row">
+                    <div className="col-12">
+                        <center>Cart is Empty</center>
+                    </div>
+                </div> )}
+            </section>
         )
 }
 

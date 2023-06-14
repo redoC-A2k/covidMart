@@ -56,7 +56,7 @@ function Sidebar(props){
             let eachbtn = radiobtns[index];
             if(eachbtn.checked){
                 setCategory(eachbtn.value);
-                console.log(eachbtn.value)
+                // console.log(eachbtn.value)
                 props.applyFilter(priceValue,eachbtn.value)
                 break;
             }
@@ -74,7 +74,7 @@ function Sidebar(props){
     }
     
 
-    return (<div id="sidebar">
+return (<div id="sidebar">
         <div className="heading">
             <h3 className="gradient">Filter Products</h3>
             <h3 className="icon"><i onClick={closeSidebar} className="fa-solid fa-xmark"></i></h3>
