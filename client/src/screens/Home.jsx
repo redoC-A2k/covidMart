@@ -24,7 +24,7 @@ function Home(props) {
 
   useEffect(()=>{
     if (localStorage.getItem("jwt") === null) {
-      window.location = ("http://localhost:3000/auth")
+      window.location = ("/auth")
       alert("you are not logged in")
     }
     // console.log(props);

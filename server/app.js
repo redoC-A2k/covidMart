@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("path")
 const app = express();
 const Port = 4000;
 const { MONGOURI } = require("./keys");
@@ -42,6 +43,13 @@ app.use(routerproduct)
 app.use(routercart)
 app.use(routeruser)
 app.use(routerorder)
+let thispath = path.join(__dirname,'..','client','build')
+console.log(thispath)
+app.use(express.static(thispath))
+app.get('/*', (req,res)=>{
+  res.sendFile(thispath+"/index.html")
+  // res.json("hello")
+})
 app.listen(Port, () => {
   logger.info("server is running on "+ Port);
 });
