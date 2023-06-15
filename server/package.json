@@ -4,7 +4,7 @@
   "description": "directory for server of this covid19-webapp",
   "main": "app",
   "scripts": {
-    "start": "node app",
+    "start": "nodemon app",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -17,7 +17,7 @@
     "mongoose": "^5.10.5",
     "mongoose-fuzzy-searching": "^2.0.2",
     "nodemon": "^2.0.4",
-    "pinoemon ": "^8.14.1",
+    "pino": "^8.14.1",
     "pino-pretty": "^10.0.0",
     "razorpay": "^2.0.6"
   }
