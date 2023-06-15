@@ -2,7 +2,7 @@ import { ADD_PRODUCT_IN_CART } from "../types";
 export const addProductInCart = (productId, price, title) => {
   return (dispatch) => {
     let userId = localStorage.getItem("userId");
-    fetch("http://localhost:4000/addToCart", {
+    fetch(`${process.env.REACT_APP_BACKEND}/addToCart`, {
       method: "post",
       headers: {
         "Content-Type": "application/json",

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import {showToast} from '../assets/js/showToast';
+import {showToast} from 'toast';
+import CtaButton from './CtaButton';
 
 // TODO: Make this component responsive on phone
 export default function Actions (props) {
@@ -79,10 +80,16 @@ export default function Actions (props) {
                 <hr/>
                 <div className='btndiv row'>
                     {/* TODO: Only Allow adding here and increment product when more than once add to cart button has been added */}
-                    <div className="col-sm-7 offset-1">
-                        <button id="buynow" onClick={handleBuyNow} className='type1 w-100'><span className="background"></span><span className='text'>Buy Now</span><span className="fa-solid fa-bag-shopping icon"></span></button>
-                        <button id="addtocart" onClick={handleAddCart} className='type2 w-100'><span className="background"></span><span className='text'>Add to Cart</span><span className="fa-solid fa-cart-shopping icon"></span></button>
+                    <div className="col-11 offset-1">
+                        <CtaButton solid id="buynow" onClick={handleBuyNow}><span className="fa-solid fa-bag-shopping icon"></span><span className='text'>Buy Now</span></CtaButton>
+                        <CtaButton id="addtocart" onClick={handleAddCart}><span className="fa-solid fa-cart-shopping icon"></span><span className='text'>Add to Cart</span></CtaButton>
                     </div>
+                    {/* <div>
+                        <span className="fa-solid fa-cart-shopping"></span>
+                        <br></br>
+                        <span className="test"></span>
+
+                    </div> */}
                 </div>
             </div>
         </div>

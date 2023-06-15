@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import Img from "../assets/images/backimage.jpg";
 import Header from "../components/Header";
+import CtaButton from "../components/CtaButton";
 
 // TODO: Make responsive
 // TODO: Verify Authentication flow and messages
@@ -16,7 +16,7 @@ export default function UserAdminAuth() {
   function authenticate_btn_handler(event) {
     if (showname) {
       event.preventDefault()
-      fetch("http://localhost:4000/signup", {
+      fetch(`${process.env.REACT_APP_BACKEND}/signup`, {
         method: "post",
         headers: {
           "Content-Type": "application/json"
@@ -33,7 +33,7 @@ export default function UserAdminAuth() {
     }
     else {
       event.preventDefault()
-      fetch("http://localhost:4000/signin", { method: "post", headers: { "Content-Type": "application/json" },
+      fetch(`${process.env.REACT_APP_BACKEND}/signin`, { method: "post", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email: email,
           password: password
@@ -76,71 +76,74 @@ export default function UserAdminAuth() {
 
 	return (
 		<section id="useradminauth" >
-			<img className="backimage" src={Img} alt="background" />
-			<div className="container-fluid backdrop" >
-				<div className="row">
-					<div className="col heading">
-            {isAdmin && !showname ? "Hello Admin" : <h1 className='brand'><Link to="/"> CovidMart</Link></h1>}
-						<h4 className="title" >
-							We have got all the precautionary products <br/> to keep you safe from coronavirus
-            </h4>
-					</div>
-					<div className="col body">
-            {formcomp()}
-            <div className="field">
-              <input
-                type="email"
-                autoComplete="off"
-                placeholder="Email"
-                id="email"
-                name="email"
-                onChange={(e) => { setEmail(e.target.value) }}
-                required
-              />
-              <label htmlFor="email">Email</label>
-            </div>
-            <div className="field">
-              <input
-                placeholder="Password"
-                autoComplete="off"
-                type="password"
-                name="password"
-                id="password"
-                onChange={(e) => { setPassword(e.target.value) }}
-                required
-              />
-              <label htmlFor="password">Password</label>
-            </div>
-            <div className="row w-100 auth">
-              <div className="col-md-6 col-lg-5">
-                <button
-                  className="type1 w-100"
-                  onClick={authenticate_btn_handler}
-                >
-                  <span className="background"></span>
-                  {showname?
-                  (<><span className='text'>signup</span><span className="fa-solid fa-user-plus icon"></span></>)
-                  :
-                  (<><span className='text'>signin</span><span className="fa-solid fa-arrow-right-to-bracket icon"></span></>)}
-                </button>
+			<img className="backimage" src="/assets/images/backimage.jpg" alt="background" />
+			<div className="backdrop container-fluid" >
+        <div className="row w-100" style={{marginRight:"0"}}>
+          <div className="offset-lg-3 col-lg-6 col-xs-12">
+
+            <div className="row" style={{marginLeft:"auto",marginRight:"auto"}}>
+              <div className="col-12 heading">
+                {isAdmin && !showname ? "Hello Admin" : <h1 className='brand'><Link to="/"> CovidMart</Link></h1>}
+                <h4 className="title" >
+                  We have got all the precautionary products <br/> to keep you safe from coronavirus
+                </h4>
+              </div>
+              <div className="col-12 body">
+                {formcomp()}
+                <div className="field">
+                  <input
+                    type="email"
+                    autoComplete="off"
+                    placeholder="Email"
+                    id="email"
+                    name="email"
+                    onChange={(e) => { setEmail(e.target.value) }}
+                    required
+                  />
+                  <label htmlFor="email">Email</label>
+                </div>
+                <div className="field">
+                  <input
+                    placeholder="Password"
+                    autoComplete="off"
+                    type="password"
+                    name="password"
+                    id="password"
+                    onChange={(e) => { setPassword(e.target.value) }}
+                    required
+                  />
+                  <label htmlFor="password">Password</label>
+                </div>
+                <div className="row auth">
+                  <div className="col-12">
+                    <CtaButton
+                      solid
+                      onClick={authenticate_btn_handler}
+                    >
+                      <span className={`fa-solid ${showname?"fa-user-plus":"fa-arrow-right-to-bracket"} icon`}></span>
+                      <span className={`text`}>{showname?"Signup":"Signin"}</span>
+                    </CtaButton>
+                  </div>
+                </div>
+                <div>
+                  <button onClick={() => { setIsAdmin(true) }} >
+                    {isAdmin || showname ? "" : "Are you admin ?"}
+                  </button>
+                </div>
+                <div>
+                  <button onClick={() => {
+                        setShowname(prevstate => !prevstate);
+                        setIsAdmin(false)
+                      }}
+                  >
+                    {showname || isAdmin ? "Back" : "Create account"}
+                  </button>
+                </div>
               </div>
             </div>
-            <div>
-              <button onClick={() => { setIsAdmin(true) }} >
-                {isAdmin || showname ? "" : "Are you admin ?"}
-              </button>
-            </div>
-            <div>
-              <button onClick={() => {
-                    setShowname(prevstate => !prevstate);
-                    setIsAdmin(false)
-                  }}
-              >
-                {showname || isAdmin ? "Back" : "Create account"}
-              </button>
-            </div>
+
           </div>
-				</div>
+        </div>
 			</div>
 		</section>
 	);

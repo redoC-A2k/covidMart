@@ -5,7 +5,7 @@ export default function Card (props) {
     let imageUrl = "url("+props.product.images[0]+")"
     let product_url = "/product/"+props.product._id;
     return (
-        <div className='mycard col-sm-6 col-lg-4 '>
+        <div className='mycard col-md-6 col-xl-4'>
             <Link to={product_url}>
                 <div className="content"  style={{backgroundImage:imageUrl}}>
                     <div className="background"><span className="fa fa-eye" aria-hidden="true"></span></div>
@@ -14,7 +14,7 @@ export default function Card (props) {
                         <h4>Rs {props.product.price}</h4>
                     </div>
                     <div className='title'>
-                        <h4>{props.product.title}</h4>
+                        <h5>{props.product.title}</h5>
                         <div className='rating'>
                             <span className='text'>{props.product.rating.value}</span><span className='fa-solid fa-star'></span>
                         </div>

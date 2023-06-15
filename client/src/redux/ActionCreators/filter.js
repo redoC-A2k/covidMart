@@ -4,7 +4,7 @@ import { FILTER_BY_PRICE } from "../types";
 //   return (dispatch) => {
 //     console.log(noOfProducts)
 //     let newArray = []
-//     fetch("http://localhost:4000/filterByPrice", {
+//     fetch(`${process.env.REACT_APP_BACKEND}/filterByPrice`, {
 //       method: "post",
 //       headers: {
 //         authorization: "Bearer " + localStorage.getItem("jwt"),
@@ -51,7 +51,7 @@ import { FILTER_BY_PRICE } from "../types";
 
 export const applyFilter = (price, category) => {
 	return (dispatch) => {
-		fetch("http://localhost:4000/filter", {
+		fetch(`${process.env.REACT_APP_BACKEND}/filter`, {
 			method: "post",
 			headers: {
 				authorization: "Bearer " + localStorage.getItem("jwt"),

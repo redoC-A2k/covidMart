@@ -1,7 +1,7 @@
 import {FETCH_USER} from '../types'
 export const fetchUserdata = (userId) =>{
     return (dispatch)=>{
-        fetch("http://localhost:4000/getUserdata",{
+        fetch(`${process.env.REACT_APP_BACKEND}/getUserdata`,{
             method:"post",
             headers:{
                 "Content-Type":"application/json"

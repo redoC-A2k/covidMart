@@ -1,7 +1,7 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import SearchResults from "./SearchResults";
 import { useLocation } from "react-router-dom";
-import back from '../assets/images/back5croppednew.jpg'
+// import back from '../../public/assets/images/back5croppednew.jpg'
 import Navbar from "./Navbar";
 import FilterSlideBar from "./FilterSlideBar";
 import UserSlidebar from "./UserSlidebar";
@@ -26,9 +26,10 @@ function Header(props){
     }
     setRight(arg);
   }
+  
 
   return (
-    <section id="header">
+    <section style={{visibility:props.visibility}} id="header">
       <Navbar 
         toggleBool={(value) => { props.toggleBool(value) }} 
         applyFilterPrice={(price) => { props.applyFilterPrice(price) }} 
@@ -53,7 +54,7 @@ function Header(props){
         <div id="banner">
           <h1 className="title"><span>We Care for you</span></h1>
           <h2 className="subtitle"><span>CovidMart</span></h2>
-          <img src={back} alt="backimg" />
+          <img src="/assets/images/back5croppednew.jpg" alt="backimg" />
         </div>
       </div>):(<div></div>)}
     </section>

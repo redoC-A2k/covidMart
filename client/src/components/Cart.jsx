@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { deleteProductFromCart } from '../redux/ActionCreators/deleteProductFromCart'
 import { fetchcart } from '../redux/ActionCreators/fetchCart';
 import { Link } from 'react-router-dom/cjs/react-router-dom';
+import CtaButton from './CtaButton';
 
 
 const mapStateToProps = state => {
@@ -48,7 +49,7 @@ function Cart(props) {
             "name": "CovidMart",
             "order_id": "",
             "handler": function (response) {
-                fetch("http://localhost:4000/payment", {
+                fetch(`${process.env.REACT_APP_BACKEND}/payment`, {
                     method: "post",
                     headers: {
                         "Content-Type": "application/json"
@@ -70,7 +71,7 @@ function Cart(props) {
                     })
             }
         }
-        fetch("http://localhost:4000/order", {
+        fetch(`${process.env.REACT_APP_BACKEND}/order`, {
             method: "post",
             headers: {
                 "Content-Type": "application/json"
@@ -105,10 +106,10 @@ function Cart(props) {
                         <thead className='dark'>
                             <tr>
                                 <th scope='col'></th>
-                                <th scope='col'>Product<br/>Title</th>
-                                <th scope='col'>Product<br/>Quantity</th>
-                                <th scope='col'>Product<br/>Price</th>
-                                <th scope='col'>Total<br/>Price</th>
+                                <th scope='col'>Title</th>
+                                <th scope='col'>Quantity</th>
+                                <th scope='col'>Price</th>
+                                <th scope='col'>Total</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -140,10 +141,10 @@ function Cart(props) {
                     </table>
                     <hr />
                     <div className='row w-100' style={{ justifyContent: "center" }}>
-                            <button className="type1 " onClick={() => {
+                            <CtaButton solid onClick={() => {
                                 console.log(totalprice)
                                 openPayModal(totalprice, fetchcart, setPrice)
-                            }}><span className='background'></span><span className='text'>pay</span><span className='fa-solid fa-indian-rupee-sign icon'></span></button>
+                            }}><span className='fa-solid fa-indian-rupee-sign icon'></span><span className='text'>pay</span></CtaButton>
                     </div>
                 </div>):
                 ( <div className="row">

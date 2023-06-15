@@ -1,7 +1,7 @@
 import { DELETE_PRODUCT_FROM_CART } from "../types";
 export const deleteProductFromCart = (userId,productId,setPrice) => {
   return (dispatch) => {
-    fetch("http://localhost:4000/deleteProductFromCart", {
+    fetch(`${process.env.REACT_APP_BACKEND}/deleteProductFromCart`, {
       method: "post",
       headers: {
         "Content-Type": "application/json",

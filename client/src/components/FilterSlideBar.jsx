@@ -1,7 +1,7 @@
 import React,{useState} from "react";
 import { SlideBar,SBarTitle,SBarPosition, SBarAccordion, SBarAccTitle, SBarAccBody } from "./SlideBar";
 import { connect } from "react-redux";
-import {debounce} from "../assets/js/utilityFunctions"
+import {debounce} from "utility"
 import { applyFilter } from '../redux/ActionCreators/filter'
 
 const mapStateToProps = state => {

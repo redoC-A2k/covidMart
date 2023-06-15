@@ -1,14 +1,22 @@
 import React, { useEffect } from "react"
-import logo from "../assets/images/CovidMart logo no background.png"
+// import logo from "../../public/assets/images/CovidMart logo no background.png"
 import { Link } from 'react-router-dom';
 import { useState } from "react";
 
 function Navbar(props){
-    const [searchTxt , setSearchTxt] = useState("");
+    const [showCross , setShowCross] = useState(false);
+    const [searchTxt, setSearchTxt] = useState("");
+
+    useEffect(()=>{
+        let inputelement = document.querySelector('#header #navbar > div.wrap-search-user input')
+        inputelement.addEventListener('focus',()=>{
+            setShowCross(true)
+        })
+    },[])
 
    function handleSearch(event) {
         if(event.charCode==13 && searchTxt.length!=0){
-           fetch("http://localhost:4000/products/search",{
+           fetch(`${process.env.REACT_APP_BACKEND}/products/search`,{
                 method:"put",
                 headers:{
                     authorization:"Bearer "+localStorage.getItem("jwt"),
@@ -34,29 +42,46 @@ function Navbar(props){
 
     function handleChange(event){
         if(event.currentTarget.value==="")
-        handleClear();
+        handleCross();
         else setSearchTxt(event.currentTarget.value)
     }
 
-    function handleClear(){
+    function handleCross(){
         setSearchTxt("");
         props.setSearchResult([]);
+        let h1element = document.querySelector('#header #navbar > h1')
+        // if(h1element.classList.contains("invisible"))
+        h1element.classList.remove("invisible")
+        let inputelement = document.querySelector('#header #navbar > div.wrap-search-user input')
+        inputelement.classList.remove("visible")
+        let searchicon = document.querySelector('#header #navbar > div.wrap-search-user i#searchicon')
+        searchicon.classList.remove("invisible")
+        setShowCross(false)
     }
 
+    function handleSearchIconClick(){
+        let h1element = document.querySelector('#header #navbar > h1')
+        h1element.classList.add("invisible")
+        let inputelement = document.querySelector('#header #navbar > div.wrap-search-user input')
+        inputelement.classList.add("visible")
+        inputelement.focus();
+        let searchicon = document.querySelector('#header #navbar > div.wrap-search-user i#searchicon')
+        searchicon.classList.add("invisible")
+    }
 
     //TODO: Show navbar only on home page
     return (
         <section id="navbar">
-            {/* <div><i className="fa fa-bars"></i></div> */}
             <div className="sidebar-icon">
                 <i className="fa-solid fa-bars" onClick={()=>props.setLeft("0")}></i>
             </div>
            
-            <h1 className="brand"><Link to="/">CovidMart</Link><img src={logo} alt="logo" /> </h1>
+            <h1 className="brand"><Link to="/">CovidMart</Link><img src={process.env.PUBLIC_URL+"/assets/images/CovidMart logo no background.png"} alt="logo" /> </h1>
             
             <div className="wrap-search-user">
-                <span className="search">{searchTxt.length?<i onClick={handleClear} className="fa-solid fa-xmark"></i>:<i className="invisible fa-solid fa-xmark"></i>}</span>
-                <input onChange={(e)=>{handleChange(e)}} onKeyPress={(e)=>handleSearch(e)}  value={searchTxt} type="text" placeholder=" Type to Search"></input>
+                <span className="search"><i onClick={handleCross} className={`fa-solid fa-xmark ${showCross?"":"invisible"}`}></i></span>
+                <input onChange={(e)=>{handleChange(e)}} onKeyPress={(e)=>handleSearch(e)}  value={searchTxt} type="text" placeholder=" Type to Search"/>
+                <i id="searchicon" className="fa-solid fa-magnifying-glass" onClick={handleSearchIconClick}></i>
                 <i  className="fa fa-user" onClick={()=>props.setRight("0")}></i>
             </div>
         </section>

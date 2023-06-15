@@ -2,7 +2,7 @@ import { FETCH_A_PRODUCT } from "../types";
 import { FETCH_USER } from "../types";
 export const fetchAProduct = (productId) => {
   return (dispatch) => {
-    fetch("http://localhost:4000/product", {
+    fetch(`${process.env.REACT_APP_BACKEND}/product`, {
       method: "post",
       headers: {
         authorization: "Bearer " + localStorage.getItem("jwt"),
@@ -53,7 +53,7 @@ export const fetchAProduct = (productId) => {
 
 export const giveRating = (productId, userId, value) => {
   return (dispatch) => {
-    fetch("http://localhost:4000/giveRatingAndGetUserdata", {
+    fetch(`${process.env.REACT_APP_BACKEND}/giveRatingAndGetUserdata`, {
       method: "post",
       headers: {
         authorization: "Bearer " + localStorage.getItem("jwt"),

@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 // import { Card, Row, Divider, Col, Button, Spin, Rate } from 'antd';
 import Card from "../components/Card";
 import { useEffect } from 'react';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 
 
@@ -21,10 +22,11 @@ function Home(props) {
     const [isLoading,setIsLoading] = useState(true);
     const [price,setPrice] = useState(4000);
     const [category,setCategory] = useState("all");
+    const history = useHistory();
 
   useEffect(()=>{
     if (localStorage.getItem("jwt") === null) {
-      window.location = ("/auth")
+      history.push(process.env.PUBLIC_URL+"/auth")
       alert("you are not logged in")
     }
     // console.log(props);

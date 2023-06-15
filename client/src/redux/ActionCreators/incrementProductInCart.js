@@ -2,7 +2,7 @@ import { INCREMENT_PRODUCT_IN_CART } from "../types";
 export const incrementProductInCart = (productId, newno, price, title) => {
   return(dispatch) =>{
     const userId = localStorage.getItem("userId");
-    fetch("http://localhost:4000/updateCart", {
+    fetch(`${process.env.REACT_APP_BACKEND}/updateCart`, {
       method: "post",
       headers: {
         "Content-Type": "application/json",

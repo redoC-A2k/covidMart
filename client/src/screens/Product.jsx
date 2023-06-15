@@ -51,10 +51,10 @@ function Product(props){
         (props.myproduct!=null&&props.userdata!=null)
         ?
         (<div className='row'>
-          <div className="col-sm-7">
+          <div className="col-lg-7">
             <Gallery product={props.myproduct}/>
           </div>
-          <div className="col-sm-5">
+          <div className="col-lg-5">
             <Actions user={props.userdata} product={props.myproduct} addToCart={props.addProductInCart} />
           </div>
           <div className="col-12">

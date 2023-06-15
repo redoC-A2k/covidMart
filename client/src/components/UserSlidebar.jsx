@@ -1,7 +1,7 @@
 import React,{useState} from "react";
 import { SlideBar,SBarTitle,SBarPosition, SBarButton} from "./SlideBar";
 import { connect } from "react-redux";
-import {debounce} from "../assets/js/utilityFunctions"
+import {debounce} from "utility"
 import { applyFilter } from '../redux/ActionCreators/filter'
 import { Link } from "react-router-dom";
 

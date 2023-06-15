@@ -7,6 +7,7 @@ html::-webkit-scrollbar{
   width: 0;
   height: 0;
 }
+
 *{
   margin: 0px;
   padding: 0px;
@@ -32,6 +33,12 @@ html::-webkit-scrollbar{
   --secondry-grey-2:221, 221, 221;
 
   --space-from-top:85px;
+
+  /* bootstrap breakpoints */
+  /* --sm-break:576px;
+  --md-break:768px;
+  --lg-break:992px;
+  --xl-break:1200px; */
 }
 
 a{
@@ -65,7 +72,7 @@ h2 {
 }
 
 h3 {
-  font-size: 3rem;
+  font-size: 2.8rem;
   font-family: 'Nunito', sans-serif;
   font-weight: 400;
   margin-bottom: 0;
@@ -83,6 +90,13 @@ h3 {
 }
 
 h4{
+  font-size: 2.2rem;
+  font-family: 'Roboto', sans-serif;
+  letter-spacing: 1px;
+  margin-bottom: 0;
+}
+
+h5{
   font-size:1.8rem;
   font-family: 'Roboto', sans-serif;
   letter-spacing: 1px;
@@ -149,111 +163,77 @@ h1.brand a::first-letter {
 }
 
 /* customized buttons */
-  button.type1 {
+button.ctabutton {
   outline: none;
-  padding: 4px 24px;
-  border-radius: 50px;
+  padding: 4px 1.5ch;
+  border-radius: 20px;
   font-size: 1.8rem;
+  color:white;
+  text-shadow: 0px 0px 4px rgb(var(--secondry-dark-blue));
   border: 3px solid rgb(var(--primary-green));
-  transition: all 0.5s;
+  transition: all 0.4s;
   text-transform: uppercase;
   display: flex;
   align-items: center;
-  background-color: transparent;
+  backdrop-filter: blur(9px);
+  background-color: rgba(var(--primary-blue), 0.25);
+  justify-content: center;
   position: relative;
   overflow: hidden;
+  font-weight: 700;
+  box-sizing: border-box;
 }
 
-button.type1 span.background{
+button.ctabutton.solid::before{
+  content: "";
+  background-color: rgba(var(--primary-green),0.6);
+  backdrop-filter: blur(10px);
   position: absolute;
-  background-color: rgb(var(--primary-green));
-  top: -1%;
-  height: 102%;
-  left: -1%;
-  width: 102%;
+  left: 0;
+  width: 100%;
+  top: 0;
+  height: 100%;
+  z-index: 0;
   transition: all 0.4s;
 }
 
-button.type1 span.text {
-  transform: translateX(0%);
-  transition: all 0.4s;
-  letter-spacing: 5px;
-  color: black;
-}
-
-button.type1 span.icon {
-  position: absolute;
-  transition: opacity 0.4s;
-  color: white;
+button.ctabutton span.icon{
+  transition:opacity 0.4s, width 0.4s;
+  width: 0;
+  /* overflow: hidden; */
   opacity: 0;
-  left: 4%;
+  display: inline-block;
+  z-index: 1;
 }
 
-button.type1:hover {
+button.ctabutton span.text{
+  letter-spacing: 0.6ex;
+  width: 100%;
+  display: inline-block;
+  transition: all 0.4s;
+  z-index: 1;
+}
+
+button.ctabutton:hover {
   border: 3px solid rgb(var(--primary-blue)) ;
   box-shadow: 0px 0px 4px 1px rgb(var(--primary-blue));
+  justify-content: space-between;
 }
 
-button.type1:hover span.background {
-  width:20%;
-  box-shadow: 0px 0px 4px 1px rgb(var(--primary-green));
+button.ctabutton.solid:hover::before{
+  width: calc(3px + 1.5ch + 2.3ch);
 }
 
-button.type1:hover span.text {
-  transform: translateX(55%);
-  letter-spacing: 2px;
-  text-shadow: 0px 0px 12px #999;
-}
-
-button.type1:hover span.icon {
+button.ctabutton:hover span.icon {
+  width:2ch;
+  /* overflow: visible; */
   opacity: 1;
 }
 
-button.type2 {
-  outline: none;
-  padding: 4px 24px;
-  border-radius: 50px;
-  font-size: 1.8rem;
-  border: 3px solid rgb(var(--primary-green));
-  transition: all 0.5s;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  display: flex;
-  align-items: center;
-  background-color: transparent;
-  position: relative;
-  overflow: hidden;
+button.ctabutton:hover span.text {
+  letter-spacing: 0ch;
 }
 
-button.type2 span.text {
-  transform: translateX(0%);
-  transition: all 0.4s;
-  letter-spacing: 4px;
-  color: black;
-}
-
-button.type2 span.icon {
-  position: absolute;
-  transition: opacity 0.4s;
-  color: black;
-  opacity: 0;
-  left: 4%;
-}
-
-button.type2:hover {
-  border: 3px solid rgb(var(--primary-blue));
-  box-shadow: 0px 0px 4px 1px rgb(var(--primary-blue));
-}
-
-button.type2:hover span.text {
-  transform: translateX(30%);
-  letter-spacing: 1.5px;
-  text-shadow: 0px 0px 12px #999;
-}
-
-button.type2:hover span.icon {
-  opacity: 1;
-}
 /* ------------ SlideBar --------- */
 
 section.slidebar{
@@ -625,6 +605,7 @@ section.slidebar div.body div.sbaritem div.sbaraccordion div.body.visible{
   width: 100%;
   z-index: 2;
   background-color: white;
+  align-items: center;
   /* margin-top:calc(var(--space-from-top)*-1); */
 }
 
@@ -703,12 +684,17 @@ section.slidebar div.body div.sbaritem div.sbaraccordion div.body.visible{
   padding: none;
   color: rgba(0, 0, 0, 0.5);
   margin-left: auto;
+  display: initial;
 }
 #header #navbar > div.wrap-search-user span.search i:hover{
   cursor: pointer;
 }
 #header #navbar > div.wrap-search-user span.search i.invisible {
-  color: transparent;
+  display: none;
+}
+
+#header #navbar > div.wrap-search-user i#searchicon {
+  display: none;
 }
 
 #header #navbar > h1 {
@@ -720,6 +706,48 @@ section.slidebar div.body div.sbaritem div.sbaraccordion div.body.visible{
   margin-right: auto;
 }
 
+@media all and (max-width: 992px) {
+  #header #navbar > h1.brand.invisible{
+    display: none;
+  }
+
+  #header #navbar > div.wrap-search-user {
+    width: 100%;
+  }
+
+  #header #navbar > div.wrap-search-user input{
+    display: none;
+    max-width: 100%;
+    width: 100%;
+  }
+  #header #navbar > div.wrap-search-user input.visible{
+    display: initial;
+  }
+
+  #header #navbar > div.wrap-search-user i#searchicon {
+    display:initial ;
+  }
+  #header #navbar > div.wrap-search-user i#searchicon.invisible {
+    display:none ;
+  }
+}
+
+@media all and (max-width:602px) {
+  #header #navbar > div{
+    font-size: 2.7rem;
+  }
+  #header #navbar > h1.brand{
+    font-size: 3rem;
+    position: relative;
+  }
+  #header #navbar img{
+    height: 3rem;
+  }
+  #header #navbar > div.wrap-search-user {
+    width: fit-content;
+  }
+
+}
 
 /* header searchResults */
 /* TODO: make this results div more responsive */
@@ -811,7 +839,7 @@ section.slidebar div.body div.sbaritem div.sbaraccordion div.body.visible{
   height: 100vh;
   position: absolute;
   top: 0;
-  width: 100%;
+  width: 100vw;
 }
 
 #useradminauth .backimage {
@@ -832,8 +860,7 @@ section.slidebar div.body div.sbaritem div.sbaraccordion div.body.visible{
 }
 
 #useradminauth div.backdrop div.row{
-  width: 35%;
-  display: block;
+  width: 43rem;
 }
 
 #useradminauth div.backdrop div.row div.heading {
@@ -904,19 +931,18 @@ div.backdrop div.row div.body input:focus::placeholder {
   outline: none;
 }
 
-#useradminauth button.type1 span.icon {
-  color: black;
-}
-
-#useradminauth button.type1:hover span.background {
-  width: 25%;
-}
-
 /* ------------Home section------------ */
 #home .mycard{
   height: 50rem;
   padding: 2rem;
 }
+
+@media screen and (min-width:500px) and (max-width:991px)  {
+  #home .mycard{
+    height: 55rem;
+  }
+}
+
 #home .mycard .content{
   border: 3px solid rgb(var(--primary-grey));
   border-radius: 5px;
@@ -974,7 +1000,7 @@ div.backdrop div.row div.body input:focus::placeholder {
 #home .mycard .content:hover .title {
   opacity: 0;
 }
-#home .mycard .content .title h4{
+#home .mycard .content .title h5{
   text-align: center;
   width:80%;
   display: inline-block;
@@ -1118,19 +1144,25 @@ div.backdrop div.row div.body input:focus::placeholder {
   box-shadow: 0px 0px 4px 1px rgb(var(--primary-red));
 }
 
-#actions div.btndiv button#addtocart {
+/* #actions div.btndiv button#addtocart {
   border-color:rgb(var(--primary-green));
 }
 #actions div.btndiv button#addtocart:hover {
   border-color:rgb(var(--primary-blue));
   box-shadow: 0px 0px 4px 1px rgb(var(--primary-blue));
-}
+} */
 /* Description */
 #description {
   font-size: 1.8rem;
   margin: 5rem 0;
   box-shadow: 0 0 4px 1px #aaa ;
   padding : 5rem
+}
+
+#description h3{
+  text-transform: uppercase;
+  letter-spacing: 0.2ch;
+  margin-bottom: 2rem;
 }
 
 /* review */
@@ -1152,6 +1184,10 @@ div.backdrop div.row div.body input:focus::placeholder {
   outline: none;
 }
 
+#review h3{
+  text-transform: uppercase;
+  letter-spacing: 0.2ch;
+}
 /* --------Cart Page------- */
 #cart h2{
   margin:4rem 0;
@@ -1183,4 +1219,12 @@ div.backdrop div.row div.body input:focus::placeholder {
 
 #cart table tr td i:hover{
   cursor: pointer;
+}
+
+
+/*------- For width less than 43-----*/
+@media screen and (max-width: 496px) {
+  #useradminauth div.backdrop div.row{
+    width: 100%;
+  }
 }
