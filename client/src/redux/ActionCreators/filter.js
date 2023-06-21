@@ -1,6 +1,6 @@
 import { FILTERED_PRODUCTS } from "../types";
-import { showInfoToast,showErrorToast } from 'toast';
-import {showLoader,hideLoader} from "utility"
+import {showErrorToast } from 'toast';
+import {hideLoader} from "utility"
 export const applyFilter = (price, category) => {
 	return (dispatch) => {
 		fetch(`${process.env.REACT_APP_BACKEND}/filter`, {
@@ -18,7 +18,7 @@ export const applyFilter = (price, category) => {
 			.then((products) => {
 				hideLoader()
 				if (products.error) {
-					window.location.href = "http://localhost:3000/auth"
+					window.location.href = `${process.env.REACT_APP_URL}/auth` 
 					alert(products.error)
 				}
 				else if (products.length === 0) {
