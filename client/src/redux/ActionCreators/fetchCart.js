@@ -1,4 +1,5 @@
 import { FETCH_CART } from "../types";
+import {hideLoader} from "utility"
 export const fetchcart = (setPrice) => {
   let userId = localStorage.getItem("userId");
   return (dispatch) => {
@@ -14,6 +15,7 @@ export const fetchcart = (setPrice) => {
     })
     .then(res => res.json())
     .then(data => {
+        hideLoader()
         if (data.error) {
           console.log(data.error)
           alert(data.error)

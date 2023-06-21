@@ -33,6 +33,11 @@ html::-webkit-scrollbar{
   --secondry-grey-2:221, 221, 221;
 
   --space-from-top:85px;
+  --filterbar-width-desktop:39rem;
+  --filterbar-width-mobile:100vw;
+  --userbar-width-desktop:34rem;
+  --userbar-width-mobile:100vw;
+
 
   /* bootstrap breakpoints */
   /* --sm-break:576px;
@@ -132,6 +137,10 @@ div#toast{
   visibility: hidden;
 }
 
+div#toast.error{
+  background-image: linear-gradient(40deg, rgb(var(--primary-red)) 20% , rgb(var(--primary-orange)));
+}
+
 div#toast.show{
   visibility: visible;
 }
@@ -170,7 +179,7 @@ button.ctabutton {
   font-size: 1.8rem;
   color:white;
   text-shadow: 0px 0px 4px rgb(var(--secondry-dark-blue));
-  border: 3px solid rgb(var(--primary-green));
+  border: 3px solid rgb(var(--primary-green)) !important;
   transition: all 0.4s;
   text-transform: uppercase;
   display: flex;
@@ -186,7 +195,7 @@ button.ctabutton {
 
 button.ctabutton.solid::before{
   content: "";
-  background-color: rgba(var(--primary-green),0.6);
+  background-color: rgba(var(--primary-green),0.8);
   backdrop-filter: blur(10px);
   position: absolute;
   left: 0;
@@ -234,6 +243,76 @@ button.ctabutton:hover span.text {
   letter-spacing: 0ch;
 }
 
+/* ---------- Custom Form -------- */
+form.myform fieldset{
+  position: relative;
+  margin-bottom: 1.8rem;
+}
+
+form.myform fieldset:last-of-type{
+  margin-bottom: 3rem;
+}
+
+form.myform fieldset input {
+  display: block;
+  padding-top: 2rem;
+  background-color: transparent;
+  border-top: none;
+  border-right: none;
+  outline: none;
+  border-left: none;
+  border-bottom: 4px solid transparent;
+  font-size: 2rem;
+  width: 70%;
+  transition: border 0.2s;
+  position:relative ;
+}
+
+form.myform fieldset input[type="password"]::after{
+  content: "";
+  position: absolute;
+}
+
+form.myform fieldset label {
+  position: absolute;  
+  opacity: 0;
+  top: 24px;
+  transition: top 0.2s;
+  color:rgb(var(--primary-blue));
+}
+
+form.myform fieldset input:not(:placeholder-shown) + label ,
+form.myform fieldset input:focus + label {
+  font-weight: bold;
+  opacity: 1;
+  top:0px;
+  font-size: 1.6rem;
+}
+
+form.myform fieldset input:not(:placeholder-shown) ,
+form.myform fieldset input:focus {
+  border-bottom: 4px solid rgb(var(--primary-blue)) ; 
+}
+
+form.myform fieldset input::placeholder {
+  color: rgb(var(--secondry-dark-blue));
+  font-size: 2rem;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+  font-weight: 700;
+}
+
+form.myform fieldset input:focus::placeholder {
+  opacity: 0 !important;
+}
+
+form.myform fieldset input:not(:placeholder-shown):invalid {
+  border-bottom: 4px solid red; 
+}
+
+form.myform fieldset input:not(:placeholder-shown):invalid + label {
+  color: red;
+}
 /* ------------ SlideBar --------- */
 
 section.slidebar{
@@ -252,8 +331,8 @@ section.slidebar.left{
 
 section.slidebar.right{
   right: 0; /* override it by userbar right = -39rem (i.e. width of slidebar) */
-  transition: right 0.5s ease-in-out!important;
-  -webkit-transition: right 0.5s ease-in-out !important;
+  transition: right 0.3s ease-in-out!important;
+  -webkit-transition: right 0.3s ease-in-out !important;
 }
 
 section.slidebar div.head {
@@ -296,13 +375,74 @@ section.slidebar div.body div.sbaritem div.sbaraccordion div.body.visible{
   max-height: 50rem;
 }
 
+/* Spinner */
+#spinner {
+  position: fixed;
+  z-index: -4;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  background-color: white;
+  opacity: 0;
+  justify-content: center;
+  align-items: center;
+}
+
+#spinner.show {
+  z-index: 5;
+  opacity:1;
+}
+
+#spinner div{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#spinner div img{
+  width: 10vw;
+  display: block;
+}
+
+#spinner div span{
+  width: 10vw;
+  height: 2rem;
+  border-radius: 10px;
+  border:2px solid rgb(var(--primary-dark-blue));
+  display: block;
+  position: relative;
+  overflow: hidden;
+}
+
+#spinner div span::after{
+  content: "";
+  left:-25%;
+  position: absolute;
+  width: 25%;
+  height: 1.8rem;
+  display: block;
+  background-color: rgb(var(--primary-blue));
+}
+
+#spinner.show div span::after{
+  animation: move 1s ease-in-out infinite alternate;
+}
+@keyframes move {
+  0%{
+    left: -25%;
+  }
+  100%{
+    left: 100%;
+  }
+
+}
 /* ############ Main Section ############ */
 
 /* filter bar */
 #filterbar{
   background-color: rgba(var(--primary-white),0.2);
   backdrop-filter: blur(20px);
-  left: -39rem;
+  left: -var(--filterbar-width-desktop);
 }
 
 #filterbar div.head div.sbartitle h3.gradient{
@@ -556,11 +696,18 @@ section.slidebar div.body div.sbaritem div.sbaraccordion div.body.visible{
   border:0.2rem solid rgb(var(--primary-blue));
 }
 
+@media screen and (max-width:40rem){
+  #filterbar{
+    left: -var(--filterbar-width-mobile);
+  }
+}
+
+
 /* user bar */
 #userbar {
   background-color: rgba(var(--primary-white),0.2);
   backdrop-filter: blur(20px);
-  right: -34rem;
+  right: -var(--userbar-width-desktop);
 }
 
 #userbar div.head {
@@ -592,6 +739,12 @@ section.slidebar div.body div.sbaritem div.sbaraccordion div.body.visible{
 
 #userbar div.body div.sbaritem div.sbarbutton a:hover {
   background-color: rgb(var(--secondry-grey-2));
+}
+
+@media screen and (max-width:40rem){
+  #userbar{
+    right: -var(--userbar-width-mobile);
+  }
 }
 
 /* ------------ Navbar ---------*/
@@ -711,7 +864,7 @@ section.slidebar div.body div.sbaritem div.sbaraccordion div.body.visible{
     display: none;
   }
 
-  #header #navbar > div.wrap-search-user {
+  #header #navbar > div.wrap-search-user.expand {
     width: 100%;
   }
 
@@ -734,19 +887,18 @@ section.slidebar div.body div.sbaritem div.sbaraccordion div.body.visible{
 
 @media all and (max-width:602px) {
   #header #navbar > div{
-    font-size: 2.7rem;
+    font-size: 2.1rem;
   }
   #header #navbar > h1.brand{
-    font-size: 3rem;
+    font-size: 2.7rem;
     position: relative;
   }
   #header #navbar img{
-    height: 3rem;
+    height: 2.7rem;
   }
   #header #navbar > div.wrap-search-user {
-    width: fit-content;
+    width: fit-content; 
   }
-
 }
 
 /* header searchResults */
@@ -870,65 +1022,26 @@ section.slidebar div.body div.sbaritem div.sbaraccordion div.body.visible{
   text-align: center;
 }
 
-#useradminauth div.backdrop div.row div.body div.field{
-  position: relative;
-}
-
 #useradminauth div.backdrop div.row div.body div.auth {
   margin-top: 5rem;
   margin-bottom: 1rem;
 }
 
-#useradminauth div.backdrop div.row div.body div.field input {
-  display: block;
-  margin: 2rem 0;
-  padding-top: 2rem;
-  background-color: transparent;
-  border-top: none;
-  border-right: none;
-  outline: none;
-  border-left: none;
-  border-bottom: 4px solid transparent;
-  font-size: 2rem;
-  width: 70%;
-  transition: border 0.2s;
-  position:relative ;
-}
-#useradminauth div.backdrop div.row div.body div.field label {
-  position: absolute;  
-  opacity: 0;
-  color: rgb(var(--primary-dark-blue));
-  top: 10px;
-  transition: top 0.2s;
-}
-#useradminauth div.backdrop div.row div.body div.field input:focus + label {
-  font-weight: bold;
-  top:0px;
-  opacity: 1;
-  font-size: 1.6rem;
-  color:rgb(var(--primary-blue));
-}
-
-#useradminauth div.backdrop div.row div.body input:focus {
-  border-bottom: 4px solid rgb(var(--primary-blue)) !important; 
-}
-
-#useradminauth div.backdrop div.row div.body input::placeholder {
-  color: rgb(var(--secondry-dark-blue));
-  font-size: 2rem;
-  opacity: 0.8;
-  transition: opacity 0.2s;
-  font-weight: 700;
-}
-
-div.backdrop div.row div.body input:focus::placeholder {
-  opacity: 0 !important;
-}
 
 #useradminauth div.backdrop div.row div.body button {
   background-color: transparent;
   border: none;
+  border-bottom: 2px solid transparent;
   outline: none;
+}
+#useradminauth div.backdrop div.row div.body button:hover {
+  border-bottom: 2px solid rgb(var(--primary-blue));
+}
+
+@media screen and (max-width: 496px) {
+  #useradminauth div.backdrop div.row{
+    width: 100%;
+  }
 }
 
 /* ------------Home section------------ */
@@ -1055,16 +1168,25 @@ div.backdrop div.row div.body input:focus::placeholder {
 /* ------------Product Page------------ */
 
 /* Gallery */
+#gallery [class*="col-"]{
+  padding: 0; /* overriding boostrap padding due col or row classes */
+}
+
+#gallery [class*="row"]{
+  margin: 0;
+}
 #gallery #currdiv {
   z-index: -1 ;
 }
 
 #gallery #scrolldiv {
   overflow: scroll;
+  /* margin-left: 2rem; */
+  /*width: 100%; no need for this , but putting it as this scroll div was 
+  going out of the page in width , don't know why */
 }
-
-#gallery #scrolldiv div {
-  box-sizing: border-box;
+#gallery #scrolldiv::-webkit-scrollbar {
+  display: none;
 }
 
 #gallery #scrolldiv div.selected {
@@ -1156,7 +1278,13 @@ div.backdrop div.row div.body input:focus::placeholder {
   font-size: 1.8rem;
   margin: 5rem 0;
   box-shadow: 0 0 4px 1px #aaa ;
-  padding : 5rem
+  padding : 5rem;
+}
+
+@media screen and (max-width:768px){
+  #description{
+    padding : 2rem;
+  }
 }
 
 #description h3{
@@ -1172,17 +1300,16 @@ div.backdrop div.row div.body input:focus::placeholder {
   color: white;
   text-shadow: 0px 0px 2px black;
 }
+ 
 #review div.rating span.solid{
   color: rgb(var(--primary-yellow));
 }
+
 #review div.rating span:hover{
   cursor: pointer;
 }
-#review div.review textarea{
-  border: 2px solid rgb(var(--primary-dark-blue));
-  font-size: 2rem;
-  outline: none;
-}
+
+/* #review div. */
 
 #review h3{
   text-transform: uppercase;
@@ -1221,10 +1348,15 @@ div.backdrop div.row div.body input:focus::placeholder {
   cursor: pointer;
 }
 
+#cart table tr:last-child td:nth-child(4) span{
+  display: block;
+  width: max-content;
+}
 
-/*------- For width less than 43-----*/
-@media screen and (max-width: 496px) {
-  #useradminauth div.backdrop div.row{
-    width: 100%;
-  }
+/* ------ Password Reset Page ------- */
+#passwordreset form{
+  width: 30rem;
+  margin: 0 auto;
+}
+#passwordreset form fieldset{
 }

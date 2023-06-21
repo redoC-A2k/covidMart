@@ -46,5 +46,4 @@ const productSchema = new mongoose.Schema({
 productSchema.plugin(mongoose_fuzzy,{
     fields:['title'],
 })
-const Products = mongoose.model("Product", productSchema)
-module.exports = Products;
+module.exports = mongoose.model("Product", productSchema)

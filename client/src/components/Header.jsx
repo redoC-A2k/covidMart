@@ -13,15 +13,29 @@ function Header(props){
   const [left,setLeft] = useState("-"+leftWidth)
   const [right,setRight] = useState("-"+rightWidth)
 
+  useEffect(()=>{
+    window.addEventListener('resize',()=>{
+      // console.log(window.innerWidth)
+      if(window.innerWidth<=400){
+        setLeftWidth("100vw");
+        setRightWidth("100vw");
+      }
+      else {
+        setLeftWidth("39rem")
+        setRightWidth("34rem")
+      }
+    })
+  },[])
+
   function wrapSetLeft(arg){
-    if(arg=="0"||arg=="0rem"){
+    if(arg==="0"||arg==="0rem"){
       setRight("-"+rightWidth)
     }
     setLeft(arg);
   }
 
   function wrapSetRight(arg){
-    if(arg=="0"||arg=="0rem"){
+    if(arg==="0"||arg==="0rem"){
       setLeft("-"+leftWidth)
     }
     setRight(arg);

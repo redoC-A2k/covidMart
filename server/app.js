@@ -2,7 +2,6 @@ const express = require("express");
 const path = require("path")
 const app = express();
 const Port = 4000;
-const { MONGOURI } = require("./keys");
 const mongoose = require("mongoose");
 const routeruserauth = require("./routes/userauth")
 const routeradmin = require("./routes/adminauth")
@@ -14,8 +13,9 @@ const routeruser = require("./routes/user")
 const routerorder = require("./routes/order")
 const cors = require("cors")
 const logger = require("./services/logger")
+require("dotenv").config()
 
-mongoose.connect(MONGOURI,{
+mongoose.connect(`${process.env.MONGOURI}`,{
     useNewUrlParser:true,
     useUnifiedTopology:true,
     useCreateIndex: true,
@@ -45,7 +45,7 @@ app.use(routeruser)
 app.use(routerorder)
 let thispath = path.join(__dirname,'..','client','build')
 app.use(express.static(thispath))
-console.log(process.env.PORT)
+// console.log(process.env.PORT)
 app.get('/*', (req,res)=>{
   res.sendFile(thispath+"/index.html")
   // res.json("hello")

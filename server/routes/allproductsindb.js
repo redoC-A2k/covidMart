@@ -14,6 +14,7 @@ router.get("/allproducts", requireLogin, (req, res) => {
 });
 
 router.post("/filter",requireLogin, (req, res) => {
+  console.log(req.body.price,req.body.category)
   const { price, category } = req.body;
   let filter ;
   if(category==="all"){

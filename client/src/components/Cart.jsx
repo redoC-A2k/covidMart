@@ -5,6 +5,8 @@ import { deleteProductFromCart } from '../redux/ActionCreators/deleteProductFrom
 import { fetchcart } from '../redux/ActionCreators/fetchCart';
 import { Link } from 'react-router-dom/cjs/react-router-dom';
 import CtaButton from './CtaButton';
+import { showInfoToast,showErrorToast } from 'toast';
+import {showLoader,hideLoader} from "utility"
 
 
 const mapStateToProps = state => {
@@ -22,20 +24,17 @@ function Cart(props) {
     function setPrice(price){
         setTotalPrice(price);
     }
-    
-    // function setCart(newCart){
-    //     setUserCart(newCart);
-    // }
-
    
     useEffect(()=>{
         // console.log("fetching ..")
+        showLoader()
         props.fetchcart(setPrice)
         //razorpay scrript loading
         const script = document.createElement("script");
         script.src = "https://checkout.razorpay.com/v1/checkout.js";
         script.async = true;
         document.body.appendChild(script);
+
     },[])
 
 
@@ -90,19 +89,17 @@ function Cart(props) {
             })
     }
 
-    let setTotalpricezero = () => {
-        setTotalPrice(0)
-    }
-        return (
-            <section className='container' id="cart">
-                <div className="row">
-                    <div className='col-12'>
-                        <h2 className='gradient' style={{ textAlign: "center" }}>Cart</h2>
-                    </div>
+    return (
+        <section className='container' id="cart">
+            <div className="row">
+                <div className='col-12'>
+                    <h2 className='gradient' style={{ textAlign: "center" }}>Cart</h2>
                 </div>
-                {totalprice?
-                (<div className='row'>
-                    <table className='table hoverable'>
+            </div>
+            {totalprice?
+            (<div className='row'>
+                <div className="col-12">
+                    <table className='table table-responsive hoverable'>
                         <thead className='dark'>
                             <tr>
                                 <th scope='col'></th>
@@ -133,27 +130,28 @@ function Cart(props) {
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td style={{fontWeight:600}}>Amount Payable : </td>
+                                <td style={{fontWeight:600}}>Amount <span>Payable :</span> </td>
                                 <td style={{fontWeight:600}}>{totalprice}₹</td>
                                 <td></td>
                             </tr>
                         </tbody>
                     </table>
-                    <hr />
-                    <div className='row w-100' style={{ justifyContent: "center" }}>
-                            <CtaButton solid onClick={() => {
-                                console.log(totalprice)
-                                openPayModal(totalprice, fetchcart, setPrice)
-                            }}><span className='fa-solid fa-indian-rupee-sign icon'></span><span className='text'>pay</span></CtaButton>
-                    </div>
-                </div>):
-                ( <div className="row">
-                    <div className="col-12">
-                        <center>Cart is Empty</center>
-                    </div>
-                </div> )}
-            </section>
-        )
+                </div>
+                <hr />
+                <div className='row w-100' style={{ justifyContent: "center" }}>
+                        <CtaButton solid onClick={() => {
+                            console.log(totalprice)
+                            openPayModal(totalprice, fetchcart, setPrice)
+                        }}><span className='fa-solid fa-indian-rupee-sign icon'></span><span className='text'>pay</span></CtaButton>
+                </div>
+            </div>):
+            ( <div className="row">
+                <div className="col-12">
+                    <center>Cart is Empty</center>
+                </div>
+            </div> )}
+        </section>
+    )
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cart);

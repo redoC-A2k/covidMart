@@ -1,54 +1,6 @@
 import { FILTERED_PRODUCTS } from "../types";
-import { FILTER_BY_PRICE } from "../types";
-// export const filterByPrice = (price,noOfProducts) => {
-//   return (dispatch) => {
-//     console.log(noOfProducts)
-//     let newArray = []
-//     fetch(`${process.env.REACT_APP_BACKEND}/filterByPrice`, {
-//       method: "post",
-//       headers: {
-//         authorization: "Bearer " + localStorage.getItem("jwt"),
-//         "Content-Type": "application/json",
-//       },
-//       body: JSON.stringify({
-//         price: price,
-//       }),
-//     })
-//       .then((res) => res.json())
-//       .then((filteredProducts) => {
-//         for(let i = 0 ; i < noOfProducts && i < filteredProducts.length; i++){
-//           newArray.push(filteredProducts[i])
-//         }
-//         dispatch({
-//           type: FILTER_BY_PRICE,
-//           payload: newArray,
-//         });
-//       });
-//   };
-// };
-
-// export const filterByCategory = (category,noOfProducts) => {
-//     return (dispatch)=>{
-//         fetch("http://localhost:4000/filterByCategory",{
-//             method:"post",
-//             headers:{
-//                 authorization:"Bearer "+localStorage.getItem("jwt"),
-//                 "Content-Type":"application/json"
-//             },
-//             body:JSON.stringify({
-//               category:category
-//             })
-//         })
-//         .then(res => res.json())
-//         .then(filteredProducts =>{
-//             dispatch({
-//                 type:FILTER_BY_CATEGORY,
-//                 payload:filteredProducts
-//             })
-//         } )
-//     }
-// };
-
+import { showInfoToast,showErrorToast } from 'toast';
+import {showLoader,hideLoader} from "utility"
 export const applyFilter = (price, category) => {
 	return (dispatch) => {
 		fetch(`${process.env.REACT_APP_BACKEND}/filter`, {
@@ -64,16 +16,15 @@ export const applyFilter = (price, category) => {
 		})
 			.then((res) => res.json())
 			.then((products) => {
-				if (products.error === "jwtNotMatched") {
-					window.alert("Problem with current account create new account")
+				hideLoader()
+				if (products.error) {
 					window.location.href = "http://localhost:3000/auth"
+					alert(products.error)
 				}
-				if (products.length === 0) {
-					window.alert("Applied filter does not match to our products range")
+				else if (products.length === 0) {
+					showErrorToast("Applied filter does not match to our products range")
 				}
 				else {
-					console.log(products)
-					// console.log(products);
 					let newArrayOfProducts = [];
 					let putInArray = (product) => {
 						newArrayOfProducts.push(product);

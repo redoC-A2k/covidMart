@@ -69,7 +69,6 @@ function SlideBar(props){
             let element = document.querySelector('section.slidebar.left')    
             element.style.left = props.left;
             element.style.width = props.leftWidth;
-            console.log(props.leftWidth)
         } else if(props.position==SBarPosition.Right){
             let element = document.querySelector('section.slidebar.right')    
             element.style.right = props.right;

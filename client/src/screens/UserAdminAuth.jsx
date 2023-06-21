@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import Header from "../components/Header";
+import {showInfoToast,showErrorToast} from 'toast';
 import CtaButton from "../components/CtaButton";
 
-// TODO: Make responsive
-// TODO: Verify Authentication flow and messages
 export default function UserAdminAuth() {
   const [showname, setShowname] = useState(false)
   const [isAdmin, setIsAdmin] = useState(false)
@@ -13,9 +12,33 @@ export default function UserAdminAuth() {
   const [password, setPassword] = useState("")
   const history = useHistory()
 
+  function handleForgot(event){
+    event.preventDefault()
+    let element = document.querySelector('#useradminauth div.backdrop form fieldset input[type="email"]')
+    if(element.checkValidity()){
+      // console.log(email)
+      fetch(`${process.env.REACT_APP_BACKEND}/user/forgot-password`,{
+        method:"post",
+        headers:{
+          "Content-Type":"application/json"
+        },
+        body:JSON.stringify({
+          email,
+        })
+      })
+      .then(res=>res.json())
+      .then(data => {
+        showInfoToast(data.message)
+      })
+    }
+    else
+    element.reportValidity()
+  }
+
   function authenticate_btn_handler(event) {
     if (showname) {
       event.preventDefault()
+
       fetch(`${process.env.REACT_APP_BACKEND}/signup`, {
         method: "post",
         headers: {
@@ -27,12 +50,18 @@ export default function UserAdminAuth() {
           password: password
         })
       })
-        .then(res => res.json()) .then(data => {
-          alert("now login with credentials")
-        })
+      .then(res => res.json()) 
+      .then(data => {
+        console.log(data.error)
+        if(data.error)
+        showErrorToast(data.error.toString())
+        else
+        showInfoToast("Now login with credentials")
+      })
     }
     else {
       event.preventDefault()
+
       fetch(`${process.env.REACT_APP_BACKEND}/signin`, { method: "post", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email: email,
@@ -43,9 +72,9 @@ export default function UserAdminAuth() {
         .then(data => {
           if (data.error) {
             if(data.error==="userNotExist")
-            alert("Your account not exist ! Create new")
+            showErrorToast("Your account not exist ! Create new")
             else
-            alert("Incorrect email or password")
+            showErrorToast("Incorrect email or password")
           }
           else {
             localStorage.setItem("jwt", data.token)
@@ -55,10 +84,11 @@ export default function UserAdminAuth() {
         })
     }
   }
+
 	let formcomp = () => {
 		if (showname) {
 			return (
-        <div className="field">
+        <fieldset>
           <input
             type="text"
             autoComplete="off"
@@ -69,7 +99,7 @@ export default function UserAdminAuth() {
             required
           />
           <label htmlFor="name">Name</label>
-        </div>
+        </fieldset>
       )
 		}
 	}
@@ -89,42 +119,48 @@ export default function UserAdminAuth() {
                 </h4>
               </div>
               <div className="col-12 body">
+                <form className="myform" onSubmit={authenticate_btn_handler} autoComplete="off">
                 {formcomp()}
-                <div className="field">
+                <fieldset>
                   <input
                     type="email"
                     autoComplete="off"
                     placeholder="Email"
                     id="email"
                     name="email"
+                    title="Please an enter a valid email address"
                     onChange={(e) => { setEmail(e.target.value) }}
                     required
                   />
                   <label htmlFor="email">Email</label>
-                </div>
-                <div className="field">
+                </fieldset>
+                <fieldset>
                   <input
                     placeholder="Password"
                     autoComplete="off"
                     type="password"
                     name="password"
+                    pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                    title="Must contain at least one  number and one uppercase and lowercase letter, and at least 8 or more characters."
                     id="password"
                     onChange={(e) => { setPassword(e.target.value) }}
                     required
                   />
                   <label htmlFor="password">Password</label>
-                </div>
+                </fieldset>
                 <div className="row auth">
-                  <div className="col-12">
+                  <div className="col-12 row justify-content-between">
                     <CtaButton
                       solid
-                      onClick={authenticate_btn_handler}
+                      type="submit"
                     >
                       <span className={`fa-solid ${showname?"fa-user-plus":"fa-arrow-right-to-bracket"} icon`}></span>
                       <span className={`text`}>{showname?"Signup":"Signin"}</span>
                     </CtaButton>
+                    <button onClick={handleForgot}>{!showname?"Forgot Password ?":""}</button>
                   </div>
                 </div>
+                </form>
                 <div>
                   <button onClick={() => { setIsAdmin(true) }} >
                     {isAdmin || showname ? "" : "Are you admin ?"}
@@ -136,7 +172,7 @@ export default function UserAdminAuth() {
                         setIsAdmin(false)
                       }}
                   >
-                    {showname || isAdmin ? "Back" : "Create account"}
+                    {showname || isAdmin? "Back" : "Create account"}
                   </button>
                 </div>
               </div>

@@ -4,8 +4,10 @@ import { applyFilter } from '../redux/ActionCreators/filter'
 import { connect } from "react-redux";
 // import { Card, Row, Divider, Col, Button, Spin, Rate } from 'antd';
 import Card from "../components/Card";
+import { showInfoToast,showErrorToast } from 'toast';
 import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+import {showLoader,hideLoader} from "utility"
 
 
 
@@ -19,7 +21,7 @@ const mapDispatchToProps = dispatch => {
 }
 
 function Home(props) {
-    const [isLoading,setIsLoading] = useState(true);
+    // const [isLoading,setIsLoading] = useState(true);
     const [price,setPrice] = useState(4000);
     const [category,setCategory] = useState("all");
     const history = useHistory();
@@ -27,20 +29,21 @@ function Home(props) {
   useEffect(()=>{
     if (localStorage.getItem("jwt") === null) {
       history.push(process.env.PUBLIC_URL+"/auth")
-      alert("you are not logged in")
+      showErrorToast("you are not logged in")
     }
     // console.log(props);
     // await this.props.fetchdata(this.state.noOfProducts)
-    if(props.allproducts==null)
-    props.applyFilter(price,category)
+    if(props.allproducts==null){
+      props.applyFilter(price,category)
+      showLoader()
+    }
   },[])
 
   if (props.allproducts===null) {
-    return ( 
-    <div className='row'>Loading</div>
-    )
+    return <></>
   } 
   else{
+    hideLoader()
     return ( <section id="home">
       <div className='row'>
       {props.allproducts.map((eachProduct , ind)=>{

@@ -2,10 +2,12 @@ import React, { useEffect } from "react"
 // import logo from "../../public/assets/images/CovidMart logo no background.png"
 import { Link } from 'react-router-dom';
 import { useState } from "react";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 function Navbar(props){
     const [showCross , setShowCross] = useState(false);
     const [searchTxt, setSearchTxt] = useState("");
+    const history = useHistory()
 
     useEffect(()=>{
         let inputelement = document.querySelector('#header #navbar > div.wrap-search-user input')
@@ -56,6 +58,8 @@ function Navbar(props){
         inputelement.classList.remove("visible")
         let searchicon = document.querySelector('#header #navbar > div.wrap-search-user i#searchicon')
         searchicon.classList.remove("invisible")
+        let wrapsearchuserdiv = document.querySelector('#header #navbar > div.wrap-search-user');
+        wrapsearchuserdiv.classList.remove("expand")
         setShowCross(false)
     }
 
@@ -67,13 +71,19 @@ function Navbar(props){
         inputelement.focus();
         let searchicon = document.querySelector('#header #navbar > div.wrap-search-user i#searchicon')
         searchicon.classList.add("invisible")
+        let wrapsearchuserdiv = document.querySelector('#header #navbar > div.wrap-search-user');
+        wrapsearchuserdiv.classList.add("expand")
+    }
+    
+    function handleBarsIcon(){
+        if(history.location.pathname==='/')
+        props.setLeft("0")
     }
 
-    //TODO: Show navbar only on home page
     return (
         <section id="navbar">
             <div className="sidebar-icon">
-                <i className="fa-solid fa-bars" onClick={()=>props.setLeft("0")}></i>
+                <i className="fa-solid fa-bars" onClick={handleBarsIcon}></i>
             </div>
            
             <h1 className="brand"><Link to="/">CovidMart</Link><img src={process.env.PUBLIC_URL+"/assets/images/CovidMart logo no background.png"} alt="logo" /> </h1>

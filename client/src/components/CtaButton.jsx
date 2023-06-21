@@ -12,7 +12,7 @@ export default function CtaButton(props){
         // 6px(both sides border) + 3ch(both sides padding)+ (content box width)
     },[])
     return (
-        <button onClick={props.onClick} id={props.id} style={{width:width}} className={`${props.solid?"ctabutton solid":"ctabutton"}`}>
+        <button onClick={props.onClick} type={props.type} id={props.id} style={{width:width}} className={`${props.solid?"ctabutton solid":"ctabutton"}`}>
             {props.children}
         </button>
     )

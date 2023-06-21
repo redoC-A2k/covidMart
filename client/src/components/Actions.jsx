@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import {showToast} from 'toast';
+import {showInfoToast} from 'toast';
 import CtaButton from './CtaButton';
 
-// TODO: Make this component responsive on phone
 export default function Actions (props) {
     // console.log(props.product)
     // const [isInCart,setIsInCart] = useState(false);
@@ -16,7 +15,7 @@ export default function Actions (props) {
     let handleAddCart = ()=>{
         props.addToCart(props.product._id, props.product.price, props.product.title);
         // setIsInCart(true)
-        showToast("Product Added to Cart");
+        showInfoToast("Product Added to Cart");
     }
 
     // let handleRemoveCart = ()=>{
@@ -28,7 +27,7 @@ export default function Actions (props) {
     let List = function (props) {
         return (
             <div className='row'>
-                <div className="col-11 offset-1">
+                <div className="col-12 col-md-11 offset-md-1">
                     {
                         props.product.features.map((eachFeature,ind)=>{
                             return (
@@ -63,7 +62,7 @@ export default function Actions (props) {
             arr.push((<p key={5}>({props.product.rating.count})</p>))
         return(
                 <div className="row rating">
-                    <div className="col-11 offset-1">
+                    <div className="col-12 col-md-11 offset-md-1">
                         {arr}
                     </div>
                 </div>
@@ -80,7 +79,7 @@ export default function Actions (props) {
                 <hr/>
                 <div className='btndiv row'>
                     {/* TODO: Only Allow adding here and increment product when more than once add to cart button has been added */}
-                    <div className="col-11 offset-1">
+                    <div className="col-12 col-md-11 offset-md-1">
                         <CtaButton solid id="buynow" onClick={handleBuyNow}><span className="fa-solid fa-bag-shopping icon"></span><span className='text'>Buy Now</span></CtaButton>
                         <CtaButton id="addtocart" onClick={handleAddCart}><span className="fa-solid fa-cart-shopping icon"></span><span className='text'>Add to Cart</span></CtaButton>
                     </div>

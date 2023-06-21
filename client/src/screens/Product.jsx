@@ -11,11 +11,11 @@ import Gallery from '../components/Gallery';
 import Actions from '../components/Actions';
 import Description from '../components/Descriptions';
 import Review from '../components/Review';
+import {showLoader,hideLoader} from "utility"
 
 const mapStateToProps = state => {
   return {
     myproduct: state.myproduct,
-    // mycart: state.cart,
     userdata: state.user
   };
 }
@@ -33,24 +33,20 @@ const mapDispatchToProps = dispatch => {
 
 function Product(props){
   let productId=props.location.pathname.split("/")[2];
-  // const [showcartdiv, setShowCartDiv] = useState(true);
-  // const [inputquantity, setShowInputQuantity] = useState(0)
-  // const [showbadge,setShowBadge ] = useState(false)
-  // const [bool, setBool] = useState(false)
 
   useEffect(()=>{
     // props.fetchCart();
     props.fetchAProduct(productId)
     props.fetchUserdata(localStorage.getItem("userId"))
     // console.log(props.location.pathname)
+    showLoader()
   },[props.location.pathname])
-
-  return(
-    <section id="product">
-      {
-        (props.myproduct!=null&&props.userdata!=null)
-        ?
-        (<div className='row'>
+  
+  if(props.myproduct!==null && props.userdata!==null){
+    hideLoader();
+    return(
+      <section id="product">
+        <div className='row'>
           <div className="col-lg-7">
             <Gallery product={props.myproduct}/>
           </div>
@@ -63,12 +59,13 @@ function Product(props){
           <div className="col-12">
             <Review productId={props.myproduct._id} userId={props.userdata._id} giveRating={props.giveRating}/>
           </div>
-        </div>)
-        :
-        (<div>Loading...</div>)
-      }
-    </section>
-  )
+        </div>
+      </section>
+    )
+  }
+  else {
+    return<></>
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Product)
