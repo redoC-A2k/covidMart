@@ -31,10 +31,10 @@ export default function Review (props) {
                 <span key={3} onMouseOver={()=>handleRate(3)} className="star-icon">★</span>
                 <span key={4} onMouseOver={()=>handleRate(4)} className="star-icon">★</span>
             </div>
-            <div className="review">
+            <div className="review-area">
                 {/* <textarea name="review" className='w-100' rows="2" placeholder='Write your review here!'></textarea> */}
                 {/* TODO: Add a review area  */}
-                <button className="submit" onClick={giveRating}>Submit</button>
+                <button onClick={giveRating}>Submit</button>
             </div>
         </div>
         <div className="col-sm-6">

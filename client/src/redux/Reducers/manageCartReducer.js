@@ -1,4 +1,4 @@
-import { INCREMENT_PRODUCT_IN_CART, DELETE_PRODUCT_FROM_CART,FETCH_CART ,ADD_PRODUCT_IN_CART} from "../types";
+import { INCREMENT_PRODUCT_IN_CART, DELETE_PRODUCT_FROM_CART,FETCH_CART ,ADD_PRODUCT_IN_CART, UPDATE_PRODUCT_IN_CART} from "../types";
 export const manageCartReducer = (state = [], action) => {
   if (action.type === ADD_PRODUCT_IN_CART) {
     let myarray
@@ -40,6 +40,27 @@ export const manageCartReducer = (state = [], action) => {
       else return eachproduct
     })
     return newState ;
+  }
+  else if(action.type === UPDATE_PRODUCT_IN_CART){
+    // console.log(action)
+    let newState = state
+    for(let i=0; i<newState.length; i++){
+      if(newState[i].productId==action.payload.productId){
+        let oldquantity = newState[i].quantity;
+        let newquantity = action.payload.quantity;
+        newState[i].quantity = newquantity
+        if(oldquantity<newquantity){
+          let diff = newquantity-oldquantity
+          action.callback(oldprice => oldprice+(diff*newState[i].price))
+        }
+        else if(oldquantity > newquantity){
+          let diff = oldquantity-newquantity;
+          action.callback(oldprice => oldprice-(diff*newState[i].price))
+        }
+        break;
+      }
+    }
+    return newState;
   }
   else if(action.type === DELETE_PRODUCT_FROM_CART){
     return action.payload

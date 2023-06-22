@@ -1,12 +1,8 @@
 import React, {useEffect } from 'react';
 import { connect } from "react-redux";
 import { fetchAProduct, giveRating } from "../redux/ActionCreators/fetchAProduct"
-import { incrementProductInCart } from "../redux/ActionCreators/incrementProductInCart";
-import { addProductInCart } from "../redux/ActionCreators/addproductincart";
-import { fetchcart } from '../redux/ActionCreators/fetchCart';
-import { deleteProductFromCart } from '../redux/ActionCreators/deleteProductFromCart';
+import { addProductInCart } from "../redux/ActionCreators/cart";
 import { fetchUserdata } from '../redux/ActionCreators/fetchUserdata';
-import { useState } from 'react';
 import Gallery from '../components/Gallery';
 import Actions from '../components/Actions';
 import Description from '../components/Descriptions';
@@ -22,10 +18,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     fetchAProduct: (productId) => { dispatch(fetchAProduct(productId)) },
-    addProductInCart: (productId, price, myproductTitle) => { dispatch(addProductInCart(productId, price, myproductTitle)) },
-    // updateProductInCart: (productId, quantityno, price, myproductTitle) => { dispatch(incrementProductInCart(productId, quantityno, price, myproductTitle)) },
-    // deleteProductFromCart: (userId, productId) => { dispatch(deleteProductFromCart(userId, productId)) },
-    // fetchCart: () => { dispatch(fetchcart()) },
+    addProductInCart: (productId, price, myproductTitle, callback) => { dispatch(addProductInCart(productId, price, myproductTitle, callback)) },
     giveRating: (productId, userId, value) => { dispatch(giveRating(productId, userId, value)) },
     fetchUserdata: (userId) => { dispatch(fetchUserdata(userId)) }
   }

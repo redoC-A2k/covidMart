@@ -12,11 +12,11 @@ import "./index.css";
 import Footer from './components/Footer';
 import Toast from './components/Toast';
 import ErrorPage from './screens/ErrorPage';
-import Spinner from './components/Spinner';
+import Loader from './components/Loader';
 
 function App(props) {
   useEffect(()=>{
-    let element = document.getElementById("spinner");
+    let element = document.getElementById("loader");
     ['mouseover','wheel','scroll'].forEach(evt => {
       element.addEventListener(evt,(event)=>{
         event.preventDefault()
@@ -27,7 +27,7 @@ function App(props) {
   return (
       <>
         <Toast/>
-        <Spinner/>
+        <Loader/>
         {props.location.pathname!=='/auth'?<Header/>:<></>}
         <section id="main" className={`${props.location.pathname!=='/auth'?"container":""}`}>
           <Switch>

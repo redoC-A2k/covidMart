@@ -1,7 +1,8 @@
 import { FILTERED_PRODUCTS } from "../types";
 import {showErrorToast } from 'toast';
-import {hideLoader} from "utility"
+import {showLoader,hideLoader} from "utility"
 export const applyFilter = (price, category) => {
+	showLoader()
 	return (dispatch) => {
 		fetch(`${process.env.REACT_APP_BACKEND}/filter`, {
 			method: "post",
@@ -19,7 +20,7 @@ export const applyFilter = (price, category) => {
 				hideLoader()
 				if (products.error) {
 					window.location.href = `${process.env.REACT_APP_URL}/auth` 
-					alert(products.error)
+					showErrorToast(products.error)
 				}
 				else if (products.length === 0) {
 					showErrorToast("Applied filter does not match to our products range")

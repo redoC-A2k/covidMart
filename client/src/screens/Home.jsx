@@ -7,7 +7,6 @@ import Card from "../components/Card";
 import { showInfoToast,showErrorToast } from 'toast';
 import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
-import {showLoader,hideLoader} from "utility"
 
 
 
@@ -21,7 +20,6 @@ const mapDispatchToProps = dispatch => {
 }
 
 function Home(props) {
-    // const [isLoading,setIsLoading] = useState(true);
     const [price,setPrice] = useState(4000);
     const [category,setCategory] = useState("all");
     const history = useHistory();
@@ -31,11 +29,8 @@ function Home(props) {
       history.push(process.env.PUBLIC_URL+"/auth")
       showErrorToast("you are not logged in")
     }
-    // console.log(props);
-    // await this.props.fetchdata(this.state.noOfProducts)
     if(props.allproducts==null){
       props.applyFilter(price,category)
-      showLoader()
     }
   },[])
 
@@ -43,7 +38,6 @@ function Home(props) {
     return <></>
   } 
   else{
-    hideLoader()
     return ( <section id="home">
       <div className='row'>
       {props.allproducts.map((eachProduct , ind)=>{

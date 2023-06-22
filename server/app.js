@@ -45,7 +45,6 @@ app.use(routeruser)
 app.use(routerorder)
 let thispath = path.join(__dirname,'..','client','build')
 app.use(express.static(thispath))
-// console.log(process.env.PORT)
 app.get('/*', (req,res)=>{
   res.sendFile(thispath+"/index.html")
   // res.json("hello")

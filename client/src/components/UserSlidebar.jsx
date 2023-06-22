@@ -1,12 +1,14 @@
-import React,{useState} from "react";
+import React from "react";
 import { SlideBar,SBarTitle,SBarPosition, SBarButton} from "./SlideBar";
-import { connect } from "react-redux";
-import {debounce} from "utility"
-import { applyFilter } from '../redux/ActionCreators/filter'
 import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom/cjs/react-router-dom";
 
 function UserSlidebar (props) {
-
+    const history = useHistory()
+    function logout(){
+        localStorage.clear()
+        history.push('/auth')
+    }
     return(
         <SlideBar id="userbar" rightWidth={props.rightWidth} right={props.right} setRight={props.setRight} position={SBarPosition.Right}>
             <SBarTitle>
@@ -19,7 +21,7 @@ function UserSlidebar (props) {
                 <Link to="/user/cart">Cart</Link>
             </SBarButton>
             <SBarButton>
-                <Link to="/auth" onClick={()=>{}}>Logout</Link>
+                <Link to="/auth" onClick={logout}>Logout</Link>
             </SBarButton>
         </SlideBar>
     )

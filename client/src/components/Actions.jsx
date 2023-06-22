@@ -1,28 +1,26 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import {showInfoToast} from 'toast';
 import CtaButton from './CtaButton';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 export default function Actions (props) {
     // console.log(props.product)
     // const [isInCart,setIsInCart] = useState(false);
+    const history = useHistory()
+
+    let callback = ()=>{
+        history.push('/user/cart')
+    }
 
     let handleBuyNow = function() {
-
+        props.addToCart(props.product._id, props.product.price, props.product.title,callback);
     }
 
     let handleAddCart = ()=>{
         props.addToCart(props.product._id, props.product.price, props.product.title);
-        // setIsInCart(true)
-        showInfoToast("Product Added to Cart");
     }
 
-    // let handleRemoveCart = ()=>{
-    //     props.deleteFromCart(props.user._id,props.product._id)
-    //     setIsInCart(false);
-    //     showToast("product removed from cart");
-    // }
 
     let List = function (props) {
         return (
@@ -45,7 +43,6 @@ export default function Actions (props) {
 
     let Ratings = function(props) {
         let arr = []
-        // TODO: Add rating hover tooltip with content "you can give your rating below"
         for (let index = 0; index < 5; index++) {
             if(props.product.rating.value > 0){
                 if(index < props.product.rating.value){
@@ -64,6 +61,7 @@ export default function Actions (props) {
                 <div className="row rating">
                     <div className="col-12 col-md-11 offset-md-1">
                         {arr}
+                        <span className='mytooltip'>Give your rating <br></br>at the end of page</span>
                     </div>
                 </div>
         )
@@ -78,7 +76,6 @@ export default function Actions (props) {
                 <Ratings product={props.product} />
                 <hr/>
                 <div className='btndiv row'>
-                    {/* TODO: Only Allow adding here and increment product when more than once add to cart button has been added */}
                     <div className="col-12 col-md-11 offset-md-1">
                         <CtaButton solid id="buynow" onClick={handleBuyNow}><span className="fa-solid fa-bag-shopping icon"></span><span className='text'>Buy Now</span></CtaButton>
                         <CtaButton id="addtocart" onClick={handleAddCart}><span className="fa-solid fa-cart-shopping icon"></span><span className='text'>Add to Cart</span></CtaButton>

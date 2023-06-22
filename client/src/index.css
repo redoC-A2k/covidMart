@@ -13,6 +13,11 @@ html::-webkit-scrollbar{
   padding: 0px;
 }
 
+#root { /* selecting root div of react see - public/index.html*/
+  min-height: 99vh;
+  position: relative;
+}
+
 :root{
   --primary-blue: 24, 144, 255; 
   --primary-dark-blue: 36, 48, 83;
@@ -375,8 +380,8 @@ section.slidebar div.body div.sbaritem div.sbaraccordion div.body.visible{
   max-height: 50rem;
 }
 
-/* Spinner */
-#spinner {
+/* Loader */
+#loader {
   position: fixed;
   z-index: -4;
   width: 100vw;
@@ -388,25 +393,25 @@ section.slidebar div.body div.sbaritem div.sbaraccordion div.body.visible{
   align-items: center;
 }
 
-#spinner.show {
+#loader.show {
   z-index: 5;
   opacity:1;
 }
 
-#spinner div{
+#loader div{
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-#spinner div img{
+#loader div img{
   width: 10vw;
   display: block;
 }
 
-#spinner div span{
+#loader div span{
   width: 10vw;
-  height: 2rem;
+  height: 1rem;
   border-radius: 10px;
   border:2px solid rgb(var(--primary-dark-blue));
   display: block;
@@ -414,17 +419,17 @@ section.slidebar div.body div.sbaritem div.sbaraccordion div.body.visible{
   overflow: hidden;
 }
 
-#spinner div span::after{
+#loader div span::after{
   content: "";
   left:-25%;
   position: absolute;
   width: 25%;
-  height: 1.8rem;
+  height: 0.8rem;
   display: block;
   background-color: rgb(var(--primary-blue));
 }
 
-#spinner.show div span::after{
+#loader.show div span::after{
   animation: move 1s ease-in-out infinite alternate;
 }
 @keyframes move {
@@ -741,6 +746,10 @@ section.slidebar div.body div.sbaritem div.sbaraccordion div.body.visible{
   background-color: rgb(var(--secondry-grey-2));
 }
 
+#userbar div.body div.sbaritem:last-child div.sbarbutton a {
+  color: red !important;
+}
+
 @media screen and (max-width:40rem){
   #userbar{
     right: -var(--userbar-width-mobile);
@@ -902,7 +911,6 @@ section.slidebar div.body div.sbaritem div.sbaraccordion div.body.visible{
 }
 
 /* header searchResults */
-/* TODO: make this results div more responsive */
 #header div#searchResults {
   position: absolute;
   margin-top:-2rem; 
@@ -1237,17 +1245,57 @@ section.slidebar div.body div.sbaritem div.sbaraccordion div.body.visible{
 
 #actions div.rating span.star-icon{
   font-size: 4rem ;
+  cursor: default;
   font-weight: 900;
   color: white;
   text-shadow: 0px 0px 2px black;
 }
+
 #actions div.rating span.solid{
   color: rgb(var(--primary-yellow));
 }
+
 #actions div.rating p{
   display: inline-block;
   font-size: 3rem;
   margin-left: 2rem;
+}
+
+#actions div.rating div{
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+#actions div.rating div span.mytooltip{
+  position: absolute;
+  right: 0;
+  display: flex;
+  background-color: rgb(var(--primary-grey));
+  opacity: 0;
+  z-index: -2;
+  box-shadow: 0px 0px 2px 1px black;
+  height: min-content;
+  padding: 0.2rem 0.5rem;
+  border-radius: 5px;
+  margin:0 auto;
+  align-items: center;
+}
+#actions div.rating div span.mytooltip::before{
+  content: "";
+  position: absolute;
+  display: inline-block;
+  width: 0px;
+  left: 0;
+  height: 0px;
+  border: 5px solid transparent; 
+  border-right: 5px solid black; 
+  left:-10px
+}
+
+#actions div.rating div span.star-icon:hover ~ span.mytooltip{
+  opacity: 1;
+  z-index: 1;
 }
 
 #actions div.btndiv {
@@ -1294,6 +1342,11 @@ section.slidebar div.body div.sbaritem div.sbaraccordion div.body.visible{
 }
 
 /* review */
+#review h3{
+  text-transform: uppercase;
+  letter-spacing: 0.2ch;
+}
+
 #review div.rating span.star-icon{
   font-size: 4rem ;
   font-weight: 900;
@@ -1309,11 +1362,19 @@ section.slidebar div.body div.sbaritem div.sbaraccordion div.body.visible{
   cursor: pointer;
 }
 
-/* #review div. */
-
-#review h3{
+#review div.review-area button{
+  padding: 0.5rem 2rem;
+  letter-spacing: 0.3ch;
   text-transform: uppercase;
-  letter-spacing: 0.2ch;
+  outline: none;
+  background: white;
+  border: 2px solid rgb(var(--primary-blue));
+  font-size: 1.8rem;
+  border-radius: 5rem;
+}
+#review div.review-area button:hover{
+  box-shadow: 0px 0px 4px 0.5px rgb(var(--primary-blue));
+  background-color: rgb(var(--primary-white));
 }
 /* --------Cart Page------- */
 #cart h2{
@@ -1358,5 +1419,8 @@ section.slidebar div.body div.sbaritem div.sbaraccordion div.body.visible{
   width: 30rem;
   margin: 0 auto;
 }
-#passwordreset form fieldset{
+
+/* ------- Footer -----*/
+#footer{
+  background-color: rgba(var(--primary-grey),1);
 }

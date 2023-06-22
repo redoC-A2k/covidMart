@@ -71,7 +71,7 @@ function FilterSlideBar (props) {
                 <SBarAccTitle>Filter by Category</SBarAccTitle>
                 <SBarAccBody>
                     <div className="category-filter">
-                        <div><input id="all"   value="all" defaultChecked="on" onChange={categoryChange} type="radio" name="category" /> <label htmlFor="id">All</label></div>
+                        <div><input id="all"   value="all" defaultChecked="on" onChange={categoryChange} type="radio" name="category" /> <label htmlFor="all">All</label></div>
                         <div><input id="masks"  value="masks" onChange={categoryChange} type="radio" name="category" /> <label htmlFor="masks">Masks</label></div>
                         <div><input id="ppekit"  value="ppekit" onChange={categoryChange} type="radio" name="category" /> <label htmlFor="ppekit">PPE-Kit</label></div>
                         <div><input id="gloves" value="gloves" onChange={categoryChange} type="radio" name="category" /> <label htmlFor="gloves">Gloves</label></div>

@@ -1,60 +1,73 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/userModel");
-const { Promise } = require("mongoose");
 const requireLogin = require("../middleware/requireLogin");
 const logger = require("../services/logger")
 
 router.post("/addToCart",requireLogin, (req, res) => {
-  const { userId, productId, quantity, title, price } = req.body;
+  const { userId, productId,  title, price } = req.body;
   const cartelem = {
     productId: productId,
-    quantity: quantity,
+    quantity: 1,
     title: title,
     price: price,
   };
-  User.findById(userId, (err, savedUser) => {
-    if (err) logger.error("error in cart.js addToCart" + err);
-    else {
-      let isProductInCart = false;
-      savedUser.cart.map((cartItem)=>{
-        if(cartItem.productId == cartelem.productId)
+  try {
+    User.findById(userId, async (err, savedUser) => {
+      if (err) logger.error("error in cart.js addToCart" + err);
+      else {
+        let isProductInCart = false;
+        for(let i=0; i<savedUser.cart.length; i++)
+        if(savedUser.cart[i].productId == cartelem.productId){
           isProductInCart = true;
-      })
-      if(!isProductInCart){
-        savedUser.cart.push(cartelem);
-        res.json(cartelem)
-        savedUser.save();
+          if(savedUser.cart[i].quantity<9){
+            savedUser.cart[i].quantity+=1;
+            savedUser.save()
+            .then(savedDocument=>{
+              res.json({message:"Product added to cart successfully"})
+            })
+          }
+          else 
+          res.json({message:"Max cart limit reached"})
+          break;
+        }
+        if(!isProductInCart){
+          savedUser.cart.push(cartelem);
+          savedUser.save()
+          .then((savedDocument)=>{
+            res.json({message:"Product added to cart successfully"})
+          })
+        }
       }
-    }
-  })
+    })
+  } catch (error) {
+    logger.error("Error occured while adding product to cart in addToCart function")
+    res.json({error:"Something went wrong while adding product to cart"})
+  }
 });
 
-let newCart
 
-router.post("/updateCart",requireLogin, (req, res) => {
-  const { userId, productId, quantity, title, price } = req.body;
-  User.findById(userId, (err, savedUser) => {
-    if (err) logger.error("error in cart.js updateCart");
-    else {
-      new Promise((resolve, rej) => {
-         newCart = savedUser.cart.map((cartelem) => {
-          if (cartelem.productId === productId) {
-            cartelem.quantity = quantity;
-            res.json(cartelem)
-            resolve()
-            return cartelem
-          } else {
-              return cartelem;
-          };
-        });
-      }).then(() => {
-        savedUser.cart = newCart
-        savedUser.save()
-      })
-      .catch(err => logger.error("error in updateCart ",err));
-    }
-  });
+router.put("/updateCart",requireLogin, (req, res) => {
+  const { userId, productId, quantity} = req.body;
+  try {
+    User.findById(userId, (err, savedUser) => {
+      if (err) logger.error("error in cart.js updateCart");
+      else if(!savedUser) res.json({error:"Unable to find user"})
+      else {
+        for(let i=0; i<savedUser.cart.length; i++){
+          if(savedUser.cart[i].productId===productId){
+            savedUser.cart[i].quantity = quantity;
+            savedUser.save()
+            res.json({message:"quantity updated"})
+            break;
+          }
+        }
+      }
+    });
+  } catch (error) {
+  logger.error("error in updating cart of the user",error)
+  res.json({error:"Unable to update quantity"})
+  }
 });
 
 router.post("/deleteProductFromCart", requireLogin, (req,res)=>{

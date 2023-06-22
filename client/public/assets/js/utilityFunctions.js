@@ -10,12 +10,12 @@ function debounce(cb,delay) {
 }
 
 function showLoader(){
-    let element = document.getElementById('spinner')
+    let element = document.getElementById('loader')
     element.classList.add("show")
 }
 
 function hideLoader(){
-    let element = document.getElementById('spinner')
+    let element = document.getElementById('loader')
     element.classList.remove("show")
 }
 export {debounce, showLoader, hideLoader}

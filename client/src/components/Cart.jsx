@@ -1,11 +1,10 @@
-import React, { Component, useState } from 'react'
+import React, {  useState } from 'react'
 import { useEffect } from 'react';
 import { connect } from "react-redux";
-import { deleteProductFromCart } from '../redux/ActionCreators/deleteProductFromCart'
-import { fetchcart } from '../redux/ActionCreators/fetchCart';
+import { deleteProductFromCart, updateProductInCart } from '../redux/ActionCreators/cart'
+import { fetchcart } from '../redux/ActionCreators/cart';
 import { Link } from 'react-router-dom/cjs/react-router-dom';
 import CtaButton from './CtaButton';
-import { showInfoToast,showErrorToast } from 'toast';
 import {showLoader,hideLoader} from "utility"
 
 
@@ -15,7 +14,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         fetchcart: (setPrice) => { dispatch(fetchcart(setPrice)) },
-        deleteProductFromCart: (userId, productId, setPrice) => { dispatch(deleteProductFromCart(userId, productId, setPrice)) }
+        deleteProductFromCart: (userId, productId, setPrice) => { dispatch(deleteProductFromCart(userId, productId, setPrice)) },
+        updateProductInCart: (userId, productId, quantity, setPrice) =>{ dispatch(updateProductInCart(userId, productId, quantity, setPrice))}
     }
 }
 function Cart(props) {
@@ -26,10 +26,9 @@ function Cart(props) {
     }
    
     useEffect(()=>{
-        // console.log("fetching ..")
         showLoader()
         props.fetchcart(setPrice)
-        //razorpay scrript loading
+        //razorpay script loading
         const script = document.createElement("script");
         script.src = "https://checkout.razorpay.com/v1/checkout.js";
         script.async = true;
@@ -98,8 +97,8 @@ function Cart(props) {
             </div>
             {totalprice?
             (<div className='row'>
-                <div className="col-12">
-                    <table className='table table-responsive hoverable'>
+                <div className="col-12 table-responsive">
+                    <table className='table hoverable'>
                         <thead className='dark'>
                             <tr>
                                 <th scope='col'></th>
@@ -117,7 +116,20 @@ function Cart(props) {
                                         <tr key={ind}>
                                             <td>{ind+1}</td>
                                             <td><Link to={`/product/${eachItem.productId}`}>{eachItem.title}</Link></td>
-                                            <td>{eachItem.quantity}</td>
+                                            <td>
+                                                <select value={eachItem.quantity} onChange={(event)=>props.updateProductInCart(localStorage.getItem("userId"),eachItem.productId,event.target.value,setPrice)}>
+                                                    <option value={1}>1</option>
+                                                    <option value={2}>2</option>
+                                                    <option value={3}>3</option>
+                                                    <option value={4}>4</option>
+                                                    <option value={5}>5</option>
+                                                    <option value={6}>6</option>
+                                                    <option value={7}>7</option>
+                                                    <option value={8}>8</option>
+                                                    <option value={9}>9</option>
+                                                    <option value={10}>10</option>
+                                                </select>
+                                            </td>
                                             <td>{eachItem.price}₹</td>
                                             <td>{eachItem.quantity * eachItem.price}₹</td>
                                             <td><i className="fa-regular fa-trash-can" onClick={() => { props.deleteProductFromCart(localStorage.getItem("userId"), eachItem.productId, setPrice) }}> </i></td>
