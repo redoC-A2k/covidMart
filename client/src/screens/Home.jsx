@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-//import { fetchAllProducts } from "../redux/ActionCreators/fetchAllProducts";
 import { applyFilter } from '../redux/ActionCreators/filter'
 import { connect } from "react-redux";
-// import { Card, Row, Divider, Col, Button, Spin, Rate } from 'antd';
 import Card from "../components/Card";
 import { showInfoToast,showErrorToast } from 'toast';
 import { useEffect } from 'react';

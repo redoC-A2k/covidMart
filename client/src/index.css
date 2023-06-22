@@ -990,9 +990,9 @@ section.slidebar div.body div.sbaritem div.sbaraccordion div.body.visible{
   width: 100%;
 }
 /* ----------- Main -------------- */
-/* #main {
-  padding-top: var(--space-from-top);
-} */
+#main {
+  min-height: 85vh;
+}
 
 /* ------------ UserAdminAuth Section------------ */
 #useradminauth {
@@ -1422,5 +1422,41 @@ section.slidebar div.body div.sbaritem div.sbaraccordion div.body.visible{
 
 /* ------- Footer -----*/
 #footer{
-  background-color: rgba(var(--primary-grey),1);
+  background-color: rgba(var(--primary-white),1);
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: flex;
+  padding: 1rem;
+  box-shadow: 0rem 0rem 4px 0.8px grey;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+#footer div{
+  text-align: center;
+}
+
+#footer div h5{
+  font-size: 1.4rem;
+  margin-top: 0.5rem;
+}
+
+#footer div.info img.logo{
+  height: 5.2rem;
+}
+
+#footer div.contact{
+  margin-top: 1rem;
+}
+
+#footer div.contact div img.social{
+  background-color: rgb(var(--primary-blue));
+  border-radius: 55%;
+  border: 2px solid transparent;
+  height: 4rem;
+  margin-right: 2rem;
 }
