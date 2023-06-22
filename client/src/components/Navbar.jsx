@@ -84,6 +84,7 @@ function Navbar(props){
         <section id="navbar">
             <div className="sidebar-icon">
                 <i className="fa-solid fa-bars" onClick={handleBarsIcon}></i>
+                {history.location.pathname==='/'?<></>:<span className="mytooltip">Go To homepage for filtering products</span>}
             </div>
            
             <h1 className="brand"><Link to="/">CovidMart</Link><img src={process.env.PUBLIC_URL+"/assets/images/CovidMart logo no background.png"} alt="logo" /> </h1>

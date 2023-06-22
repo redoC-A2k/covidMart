@@ -80,12 +80,6 @@ export default function Actions (props) {
                         <CtaButton solid id="buynow" onClick={handleBuyNow}><span className="fa-solid fa-bag-shopping icon"></span><span className='text'>Buy Now</span></CtaButton>
                         <CtaButton id="addtocart" onClick={handleAddCart}><span className="fa-solid fa-cart-shopping icon"></span><span className='text'>Add to Cart</span></CtaButton>
                     </div>
-                    {/* <div>
-                        <span className="fa-solid fa-cart-shopping"></span>
-                        <br></br>
-                        <span className="test"></span>
-
-                    </div> */}
                 </div>
             </div>
         </div>

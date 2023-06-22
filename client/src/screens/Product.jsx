@@ -28,10 +28,8 @@ function Product(props){
   let productId=props.location.pathname.split("/")[2];
 
   useEffect(()=>{
-    // props.fetchCart();
     props.fetchAProduct(productId)
     props.fetchUserdata(localStorage.getItem("userId"))
-    // console.log(props.location.pathname)
     showLoader()
   },[props.location.pathname])
   

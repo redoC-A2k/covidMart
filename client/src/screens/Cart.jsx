@@ -2,20 +2,23 @@ import React, {  useState } from 'react'
 import { useEffect } from 'react';
 import { connect } from "react-redux";
 import { deleteProductFromCart, updateProductInCart } from '../redux/ActionCreators/cart'
+import {fetchUserdata} from '../redux/ActionCreators/fetchUserdata'
 import { fetchcart } from '../redux/ActionCreators/cart';
 import { Link } from 'react-router-dom/cjs/react-router-dom';
-import CtaButton from './CtaButton';
-import {showLoader,hideLoader} from "utility"
+import CtaButton from '../components/CtaButton';
+import {showLoader} from "utility"
+import {showInfoToast,showErrorToast} from "toast"
 
 
 const mapStateToProps = state => {
-    return { mycart: state.cart }
+    return { mycart: state.cart , userdata: state.user}
 }
 const mapDispatchToProps = dispatch => {
     return {
         fetchcart: (setPrice) => { dispatch(fetchcart(setPrice)) },
         deleteProductFromCart: (userId, productId, setPrice) => { dispatch(deleteProductFromCart(userId, productId, setPrice)) },
-        updateProductInCart: (userId, productId, quantity, setPrice) =>{ dispatch(updateProductInCart(userId, productId, quantity, setPrice))}
+        updateProductInCart: (userId, productId, quantity, setPrice) =>{ dispatch(updateProductInCart(userId, productId, quantity, setPrice))},
+        fetchUserdata: (userId) => { dispatch(fetchUserdata(userId)) }
     }
 }
 function Cart(props) {
@@ -28,12 +31,12 @@ function Cart(props) {
     useEffect(()=>{
         showLoader()
         props.fetchcart(setPrice)
+        props.fetchUserdata(localStorage.getItem("userId"))
         //razorpay script loading
         const script = document.createElement("script");
         script.src = "https://checkout.razorpay.com/v1/checkout.js";
         script.async = true;
         document.body.appendChild(script);
-
     },[])
 
 
@@ -153,7 +156,9 @@ function Cart(props) {
                 <div className='row w-100' style={{ justifyContent: "center" }}>
                         <CtaButton solid onClick={() => {
                             console.log(totalprice)
+                            if(props.userdata.address!=="")
                             openPayModal(totalprice, fetchcart, setPrice)
+                            else showErrorToast("Update your address in profile")
                         }}><span className='fa-solid fa-indian-rupee-sign icon'></span><span className='text'>pay</span></CtaButton>
                 </div>
             </div>):

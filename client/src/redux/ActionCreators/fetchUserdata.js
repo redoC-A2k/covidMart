@@ -4,7 +4,9 @@ export const fetchUserdata = (userId) =>{
         fetch(`${process.env.REACT_APP_BACKEND}/getUserdata`,{
             method:"post",
             headers:{
-                "Content-Type":"application/json"
+                "Content-Type":"application/json",
+                authorization: "Bearer "+localStorage.getItem("jwt")
+
             },
             body:JSON.stringify({
                 userId:userId

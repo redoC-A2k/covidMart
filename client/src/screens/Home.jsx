@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { applyFilter } from '../redux/ActionCreators/filter'
 import { connect } from "react-redux";
 import Card from "../components/Card";
-import { showInfoToast,showErrorToast } from 'toast';
+import { showErrorToast } from 'toast';
 import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 

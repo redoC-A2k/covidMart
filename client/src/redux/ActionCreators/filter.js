@@ -7,8 +7,8 @@ export const applyFilter = (price, category) => {
 		fetch(`${process.env.REACT_APP_BACKEND}/filter`, {
 			method: "post",
 			headers: {
-				authorization: "Bearer " + localStorage.getItem("jwt"),
 				"Content-Type": "application/json",
+				authorization: "Bearer " + localStorage.getItem("jwt"),
 			},
 			body: JSON.stringify({
 				price: price,
