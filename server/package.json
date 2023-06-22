@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon app",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prod": "pm2 start app.js && pm2 logs --lines 500"
+    "prod": "pm2 start app.js && pm2 logs --lines 100000"
   },
   "author": "",
   "license": "ISC",
