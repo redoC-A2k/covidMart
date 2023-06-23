@@ -1,15 +1,5 @@
 import React, { useEffect, useState } from "react"
 
-// import { Sidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
-
-/* <Slidebar title="">
-   <SBarButton>
-   <SBarAccordion>
-        <AccTitle></AccTitle>
-        <AccBody></AccBody>
-   </SBarAccordion>
- </Slidebar> */
-
 const SBarPosition = {
     Left:"left",
     Right:"right"
@@ -29,7 +19,6 @@ function SBarAccordion(props){
     useEffect(()=>{
         let SBarAccTitle = document.getElementById(id).children[0]
         let SBarAccBody = document.getElementById(id).children[1]
-        // console.log(SBarAccTitle,SBarAccBody)
         // As by default the expanded is false so we need to hide accordion body
         // document.getElementById(id).children[1].classList.add("visible")
         // console.log(document.getElementById(id).children[1].classList)

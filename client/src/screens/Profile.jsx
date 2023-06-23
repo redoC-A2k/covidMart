@@ -27,7 +27,7 @@ function Profile(props){
     function handleSubmit(event){
         event.preventDefault();
         showLoader()
-        let namefield = document.querySelector("#profile form.myform #name") 
+        let namefield = document.querySelector("#profile form.myform #profilename") 
         let addressfield = document.querySelector("#profile form.myform #address") 
         if(name==="")
         setName(props.userdata.name)
@@ -63,13 +63,13 @@ function Profile(props){
                         type="text"
                         autoComplete="off"
                         placeholder="Name"
-                        id="name"
-                        name="name"
+                        id="profilename"
+                        name="profilename"
                         onChange={(e) => { setName(e.target.value) }}
                         defaultValue={props.userdata.name}
                         required
                     />
-                    <label htmlFor="name">Name</label>
+                    <label htmlFor="profilename">Name</label>
                 </fieldset>
                 <fieldset>
                     <input

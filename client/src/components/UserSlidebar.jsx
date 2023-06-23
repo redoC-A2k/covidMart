@@ -9,16 +9,19 @@ function UserSlidebar (props) {
         localStorage.clear()
         history.push('/auth')
     }
+    function closeRightSlidebar(){
+        props.setRight("-".concat(props.rightWidth))
+    }
     return(
         <SlideBar id="userbar" rightWidth={props.rightWidth} right={props.right} setRight={props.setRight} position={SBarPosition.Right}>
             <SBarTitle>
                 <h3 className="gradient">User Section</h3>
             </SBarTitle>
-            <SBarButton>
-                <Link to="/user/profile">Profile</Link>
+            <SBarButton >
+                <Link onClick={closeRightSlidebar} to="/user/profile">Profile</Link>
             </SBarButton>
-            <SBarButton>
-                <Link to="/user/cart">Cart</Link>
+            <SBarButton >
+                <Link onClick={closeRightSlidebar} to="/user/cart">Cart</Link>
             </SBarButton>
             <SBarButton>
                 <Link to="/auth" onClick={logout}>Logout</Link>

@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import Header from "../components/Header";
 import {showInfoToast,showErrorToast} from 'toast';
 import CtaButton from "../components/CtaButton";
+import {showLoader,hideLoader} from "utility"
 
 export default function UserAdminAuth() {
   const [showname, setShowname] = useState(false)
@@ -14,9 +14,9 @@ export default function UserAdminAuth() {
 
   function handleForgot(event){
     event.preventDefault()
+    showLoader()
     let element = document.querySelector('#useradminauth div.backdrop form fieldset input[type="email"]')
     if(element.checkValidity()){
-      // console.log(email)
       fetch(`${process.env.REACT_APP_BACKEND}/user/forgot-password`,{
         method:"post",
         headers:{
@@ -28,7 +28,10 @@ export default function UserAdminAuth() {
       })
       .then(res=>res.json())
       .then(data => {
+        hideLoader()
+        if(data.message)
         showInfoToast(data.message)
+        else showErrorToast(data.error)
       })
     }
     else
@@ -36,9 +39,9 @@ export default function UserAdminAuth() {
   }
 
   function authenticate_btn_handler(event) {
+    event.preventDefault()
+    showLoader()
     if (showname) {
-      event.preventDefault()
-
       fetch(`${process.env.REACT_APP_BACKEND}/signup`, {
         method: "post",
         headers: {
@@ -52,6 +55,7 @@ export default function UserAdminAuth() {
       })
       .then(res => res.json()) 
       .then(data => {
+        hideLoader()
         console.log(data.error)
         if(data.error)
         showErrorToast(data.error.toString())
@@ -60,8 +64,6 @@ export default function UserAdminAuth() {
       })
     }
     else {
-      event.preventDefault()
-
       fetch(`${process.env.REACT_APP_BACKEND}/signin`, { method: "post", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email: email,
@@ -70,11 +72,9 @@ export default function UserAdminAuth() {
       })
         .then(res => res.json())
         .then(data => {
+          hideLoader()
           if (data.error) {
-            if(data.error==="userNotExist")
-            showErrorToast("Your account not exist ! Create new")
-            else
-            showErrorToast("Incorrect email or password")
+            showErrorToast(data.error)
           }
           else {
             localStorage.setItem("jwt", data.token)
@@ -113,9 +113,9 @@ export default function UserAdminAuth() {
 
             <div className="row" style={{marginLeft:"auto",marginRight:"auto"}}>
               <div className="col-12 heading">
-                {isAdmin && !showname ? "Hello Admin" : <h1 className='brand'><Link to="/"> CovidMart</Link></h1>}
+                {isAdmin && !showname ? <h1 className="brand">Hello Admin</h1> : <h1 className='brand'><Link to="/"> CovidMart</Link></h1>}
                 <h4 className="title" >
-                  We have got all the precautionary products <br/> to keep you safe from coronavirus
+                  We have got all the precautionary products to keep you safe from coronavirus
                 </h4>
               </div>
               <div className="col-12 body">
@@ -168,8 +168,8 @@ export default function UserAdminAuth() {
                 </div>
                 <div>
                   <button onClick={() => {
-                        setShowname(prevstate => !prevstate);
-                        setIsAdmin(false)
+                        if(isAdmin) setIsAdmin(false)
+                        else setShowname(prevstate => !prevstate);
                       }}
                   >
                     {showname || isAdmin? "Back" : "Create account"}

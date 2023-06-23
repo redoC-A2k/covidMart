@@ -35,6 +35,7 @@ function Header(props){
   }
 
   function wrapSetRight(arg){
+    console.log("right- ",arg)
     if(arg==="0"||arg==="0rem"){
       setLeft("-"+leftWidth)
     }

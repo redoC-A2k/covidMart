@@ -43,7 +43,6 @@ html::-webkit-scrollbar{
   --userbar-width-desktop:34rem;
   --userbar-width-mobile:100vw;
 
-
   /* bootstrap breakpoints */
   /* --sm-break:576px;
   --md-break:768px;
@@ -326,16 +325,20 @@ section.slidebar{
   top: 0;
   height: 100%;
   box-shadow: 0rem 0rem 1rem 0.3rem grey;
+  /* To hide box shadow , a hack is here see - https://stackoverflow.com/questions/34303423/is-it-possible-to-have-a-css-selector-based-on-a-css-property-and-its-value */
+  /* So I am hiding box shadow using above hack
 }
 
 section.slidebar.left{
-  left: 0; /* override it by filterbar left = -39rem (i.e. width of slidebar) */
+  left: -50rem; /* override it by filterbar left = -39rem (i.e. width of slidebar) */
+  opacity: 0;
   transition: left 0.3s ease-in-out !important;
   -webkit-transition: left 0.3s ease-in-out !important;
 }
 
 section.slidebar.right{
-  right: 0; /* override it by userbar right = -39rem (i.e. width of slidebar) */
+  right: -50rem; /* override it by userbar right = -39rem (i.e. width of slidebar) */
+  opacity: 0;
   transition: right 0.3s ease-in-out!important;
   -webkit-transition: right 0.3s ease-in-out !important;
 }
@@ -391,6 +394,8 @@ section.slidebar div.body div.sbaritem div.sbaraccordion div.body.visible{
   opacity: 0;
   justify-content: center;
   align-items: center;
+  --loader-span-after-width:25%;
+  --loader-span-img-width:10vw
 }
 
 #loader.show {
@@ -405,12 +410,12 @@ section.slidebar div.body div.sbaritem div.sbaraccordion div.body.visible{
 }
 
 #loader div img{
-  width: 10vw;
+  width:var(--loader-span-img-width); 
   display: block;
 }
 
 #loader div span{
-  width: 10vw;
+  width: var(--loader-span-img-width);
   height: 1rem;
   border-radius: 10px;
   border:2px solid rgb(var(--primary-dark-blue));
@@ -421,9 +426,9 @@ section.slidebar div.body div.sbaritem div.sbaraccordion div.body.visible{
 
 #loader div span::after{
   content: "";
-  left:-25%;
+  left: calc(var(--loader-span-after-width) * -1);
   position: absolute;
-  width: 25%;
+  width:  var(--loader-span-after-width);
   height: 0.8rem;
   display: block;
   background-color: rgb(var(--primary-blue));
@@ -434,12 +439,31 @@ section.slidebar div.body div.sbaritem div.sbaraccordion div.body.visible{
 }
 @keyframes move {
   0%{
-    left: -25%;
+    left: calc(var(--loader-span-after-width) * -1);
   }
   100%{
     left: 100%;
   }
+}
 
+@media all and (max-width:992px) {
+  #loader{
+    --loader-span-after-width:35%;
+    --loader-span-img-width:15vw
+  }
+}
+
+@media all and (max-width:768px) {
+  #loader{
+    --loader-span-after-width:45%;
+    --loader-span-img-width:20vw
+  }
+}
+
+@media all and (max-width:576px) {
+  #loader{
+    --loader-span-img-width:30vw
+  }
 }
 
 /* -------- Tooltip ------ */
@@ -481,6 +505,14 @@ div span:not(.mytooltip):hover ~ span.mytooltip{
   background-color: rgba(var(--primary-white),0.2);
   backdrop-filter: blur(20px);
   left: -var(--filterbar-width-desktop);
+  opacity: 1;
+}
+
+#filterbar[style="left: -100vw; width: 100vw; transition: top 0.5s ease 0s;"], /*for chrome mobile*/
+#filterbar[style="left: -39rem; width: 39rem; transition: top 0.5s ease 0s;"], /*for chrome*/
+#filterbar[style="left: -100vw; width: 100vw;"], /* for mobile firefox */
+#filterbar[style="left: -39rem; width: 39rem;"]{ /* for firefox */
+  box-shadow: none;
 }
 
 #filterbar div.head div.sbartitle h3.gradient{
@@ -746,8 +778,15 @@ div span:not(.mytooltip):hover ~ span.mytooltip{
   background-color: rgba(var(--primary-white),0.2);
   backdrop-filter: blur(20px);
   right: -var(--userbar-width-desktop);
+  opacity: 1;
 }
 
+#userbar[style="right: -100vw; width: 100vw; transition: top 0.5s ease 0s;"], /*for chrome mobile*/
+#userbar[style="right: -34rem; width: 34rem; transition: top 0.5s ease 0s;"], /*for chrome*/
+#userbar[style="right: -100vw; width: 100vw;"], /* for mobile firefox */
+#userbar[style="right: -34rem; width: 34rem;"]{ /* for firefox */
+  box-shadow: none;
+}
 #userbar div.head {
   flex-direction: row-reverse;
 }
@@ -1428,9 +1467,9 @@ div span:not(.mytooltip):hover ~ span.mytooltip{
 }
 
 /* ------ Profile ------ */
-#profile{
+/* #profile{
 
-}
+} */
 
 /* ------- Footer -----*/
 #footer{

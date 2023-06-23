@@ -56,7 +56,7 @@ router.post("/signin", (req, res) => {
   }
   User.findOne({ email: email }).then((savedUser) => {
     if (!savedUser) {
-      return res.status(422).json({ error: "userNotExist" });
+      return res.status(422).json({ error: "Your account does not exist" });
     }
     logger.debug(savedUser)
     bcryptjs

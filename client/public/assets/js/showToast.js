@@ -1,5 +1,6 @@
 export let showInfoToast = (text, timeOutInMilliSeconds=1500) =>{
     let elem = document.getElementById("toast");
+    elem.classList.remove("error")
     elem.classList.add("show")
     let span = document.querySelector("#toast span")
     span.innerHTML=text;
