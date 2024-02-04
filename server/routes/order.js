@@ -3,11 +3,13 @@ const logger = require("../services/logger")
 const router = express.Router();
 const Razorpay = require("razorpay");
 const User = require("../models/userModel");
+require('dotenv').config() 
+
 router.post("/order", (req, res) => {
   const { amount } = req.body;
   let instance = new Razorpay({
-    key_id: "rzp_test_hGL6N8M5oGjVNF",
-    key_secret: "aLqp68YlksSJz8swKCUIKVkc",
+    key_id: process.env.RAZORPAY_KEY_ID,
+    key_secret: process.env.RAZORPAY_KEY_SECRET,
   });
   let options = {
     amount: amount,
